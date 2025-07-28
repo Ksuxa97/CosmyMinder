@@ -7,23 +7,24 @@
 
 import UIKit
 
-class MainTabBarController: UITabBarController {
+final class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupTabs()
     }
-    
 
-    /*
-    // MARK: - Navigation
+    private func setupTabs() {
+        // Вкладка с косметикой
+        let cosmeticListVC = CosmeticListViewController()
+        let navigationController = UINavigationController(rootViewController: cosmeticListVC)
+        navigationController.tabBarItem = UITabBarItem(title: "Косметика", image: UIImage(systemName: "sparkles"), tag: 0)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        // Заглушки для будущих экранов
+        let placeholderVC = UIViewController()
+        placeholderVC.view.backgroundColor = .systemBackground
+        placeholderVC.tabBarItem = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person.crop.circle"), tag: 1)
+
+        viewControllers = [navigationController, placeholderVC]
     }
-    */
-
 }
