@@ -34,10 +34,6 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
         showCosmeticList(with: fakeCosmeticItems)
     }
 
-    @objc private func addButtonTapped() {
-        print("Добавить косметику")
-    }
-
     private func showCosmeticList(with items: [CosmeticItem]) {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 80
@@ -54,9 +50,18 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
             action: #selector(addButtonTapped)
         )
     }
+}
+
+// MARK: Navigation to other views
+extension CosmeticListViewController {
+
+    @objc private func addButtonTapped() {
+        let addNewCosmeticItemVC = AddNewCosmeticItemViewController()
+        navigationController?.pushViewController(addNewCosmeticItemVC, animated: true)
+    }
 
     func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
-        let cosmeticItemVC = EditCosmeticItemViewController()
+        let cosmeticItemVC = EditCosmeticItemViewController(cosmeticItem: item)
         navigationController?.pushViewController(cosmeticItemVC, animated: true)
     }
 }
