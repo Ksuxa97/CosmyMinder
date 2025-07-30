@@ -56,8 +56,15 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
 extension CosmeticListViewController {
 
     @objc private func addButtonTapped() {
-        let addNewCosmeticItemVC = AddNewCosmeticItemViewController()
-        navigationController?.pushViewController(addNewCosmeticItemVC, animated: true)
+        let actionSheet = UIAlertController(title: "Добавить новый продукт", message: nil, preferredStyle: .actionSheet)
+
+        actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+
+        present(actionSheet, animated: true)
     }
 
     func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
