@@ -1,2 +1,74 @@
-CosmyMinder.xcodeproj/project.xcworkspace/xcuserdata/ksushi.xcuserdatad/WorkspaceSettings.xcsettings
-/CosmyMinder.xcodeproj/xcuserdata
+# Xcode
+.DS_Store
+*/build/*
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+*.xcscmblueprint
+
+# CocoaPods
+Pods/
+!Podfile
+!Podfile.lock
+
+# Swift Package Manager
+.swiftpm/
+.build/
+.checkouts/
+Packages/
+*.xcodeproj/
+
+# Carthage
+Carthage/
+!Cartfile
+!Cartfile.resolved
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# AppCode
+.idea/
+
+# OS X
+.DS_Store
+
+# Swift
+*.swp
+*.swo
+
+# User settings
+*.orig
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Local development environment
+.env
+.env.local
+
+# Build artifacts
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# System Files
+*.swp
+*.swo
+*~
+
