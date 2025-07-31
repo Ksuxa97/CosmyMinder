@@ -7,10 +7,28 @@
 import Foundation
 
 struct CosmeticItem {
-    var name: String
-    var brand: String
+    let name: String
+    let brand: String
     let productionDate: Date?
     var openDate: Date?
     var expiryDate: Date?
     var imageURL: URL?
+
+    func with(
+        name: String? = nil,
+        brand: String? = nil,
+        productionDate: Date? = nil,
+        openDate: Date? = nil,
+        expiryDate: Date? = nil,
+        imageURL: URL? = nil
+    ) -> CosmeticItem {
+        CosmeticItem(
+            name: name ?? self.name,
+            brand: brand ?? self.brand,
+            productionDate: productionDate ?? self.productionDate,
+            openDate: openDate ?? self.openDate,
+            expiryDate: expiryDate ?? self.expiryDate,
+            imageURL: imageURL ?? self.imageURL
+        )
+    }
 }
