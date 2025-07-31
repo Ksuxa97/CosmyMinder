@@ -111,7 +111,7 @@ class ImageParser {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
 
-        var foundDates = [Date]()
+        var foundDates: [Date] = []
 
         for pattern in patterns {
             guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else {
