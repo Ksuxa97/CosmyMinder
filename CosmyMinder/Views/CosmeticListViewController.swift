@@ -76,6 +76,17 @@ extension CosmeticListViewController {
         let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
         navigationController?.pushViewController(editCosmeticItemVC, animated: true)
     }
+
+    func showAlert() -> Void {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Не вышло загрузить данные",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+        present(alert, animated: true)
+    }
 }
 
 // MARK: TableView operations
@@ -91,7 +102,13 @@ extension CosmeticListViewController {
             fatalError("Ячейка CosmeticItemCell не зарегистрирована")
         }
 
-        cell.configure(with: presenter.getCosmeticItem(at: indexPath.row))
+        guard let item = presenter.getCosmeticItem(at: indexPath.row) else {
+            cell.isHidden = true
+            cell.backgroundColor = .clear
+            return cell
+        }
+
+        cell.configure(with: item)
         return cell
     }
 

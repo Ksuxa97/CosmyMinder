@@ -17,14 +17,18 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
         self.view = view
     }
 
-    func getCosmeticItem(at index: Int) -> CosmeticItem {
+    func getCosmeticItem(at index: Int) -> CosmeticItem? {
         guard index >= 0 && index < cosmeticItems.count else {
-            fatalError("Ivalid index")
+            return nil
         }
         return cosmeticItems[index]
     }
 
     func didSelectCosmeticItem(at index: Int) -> Void {
+        guard index >= 0 && index < cosmeticItems.count else {
+            view?.showAlert()
+            return
+        }
         view?.navigateToEditCosmeticItemScreen(for: cosmeticItems[index])
     }
 }

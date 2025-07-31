@@ -81,7 +81,7 @@ class ImageParser {
     private func detectBrand(in text: String) -> String {
         let tagger = NLTagger(tagSchemes: [.nameType])
         tagger.string = text
-        var brands = [String]()
+        var brands: [String] = []
         let range = text.startIndex..<text.endIndex
 
         tagger.enumerateTags(in: range, unit: .word, scheme: .nameType) { tag, range in
