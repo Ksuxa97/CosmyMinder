@@ -18,7 +18,7 @@ final class AddNewCosmeticItemViewController: UIViewController, AddNewCosmeticIt
     init(presenter: AddNewCosmeticItemPresenterProtocol = AddNewCosmeticItemPresenter()) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter.view = self
+        self.presenter.bindView(view: self)
 
     }
     

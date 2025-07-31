@@ -18,7 +18,7 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
     init(presenter: CosmeticListPresenterProtocol = CosmeticListPresenter()) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter.view = self
+        self.presenter.bindView(view: self)
     }
 
     override func viewDidLoad() {

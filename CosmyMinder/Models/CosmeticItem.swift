@@ -9,7 +9,7 @@ import Foundation
 struct CosmeticItem {
     var name: String
     var brand: String
-    let productionDate: Date!
+    let productionDate: Date?
     var openDate: Date?
     var expiryDate: Date?
     var imageURL: URL?
