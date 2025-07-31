@@ -6,10 +6,9 @@
 //
 
 final class CosmeticListPresenter: CosmeticListPresenterProtocol {
-    weak var view: CosmeticListViewProtocol?
     private var cosmeticItems = fakeCosmeticItems
-
-    func numberOfItems() -> Int {
+    weak var view: CosmeticListViewProtocol?
+    var numberOfItems: Int {
         return cosmeticItems.count
     }
 

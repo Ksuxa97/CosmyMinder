@@ -7,7 +7,7 @@
 
 protocol CosmeticListPresenterProtocol {
     var view: CosmeticListViewProtocol? { get set }
-    func numberOfItems() -> Int
+    var numberOfItems: Int { get }
     func getCosmeticItem(at index: Int) -> CosmeticItem
     func didSelectCosmeticItem(at index: Int) -> Void
 }

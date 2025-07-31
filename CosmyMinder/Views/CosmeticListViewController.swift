@@ -82,7 +82,7 @@ extension CosmeticListViewController {
 extension CosmeticListViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.numberOfItems()
+        presenter.numberOfItems
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> CosmeticItemCell {
