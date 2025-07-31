@@ -5,7 +5,7 @@
 //  Created by Kseniya Semenova on 28.07.2025.
 //
 
-class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
+final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
     private var cosmeticItem: CosmeticItem
     private weak var view: EditCosmeticItemViewProtocol?
 

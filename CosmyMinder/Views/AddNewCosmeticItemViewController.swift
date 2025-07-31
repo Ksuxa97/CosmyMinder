@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddNewCosmeticItemViewController:
+final class AddNewCosmeticItemViewController:
     UIViewController, AddNewCosmeticItemViewProtocols {
     private var presenter: AddNewCosmeticItemPresenterProtocol
 

@@ -9,6 +9,6 @@ import Vision
 import NaturalLanguage
 import UIKit
 
-class AddNewCosmeticItemPresenter: AddNewCosmeticItemPresenterProtocol {
+final class AddNewCosmeticItemPresenter: AddNewCosmeticItemPresenterProtocol {
     var view: (any AddNewCosmeticItemViewProtocols)?
 }

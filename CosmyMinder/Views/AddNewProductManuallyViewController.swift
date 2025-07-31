@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddNewProductManuallyViewController: UIViewController {
+final class AddNewProductManuallyViewController: UIViewController {
 
     private var productStackView: UIStackView = {
         let stackView = UIStackView()
