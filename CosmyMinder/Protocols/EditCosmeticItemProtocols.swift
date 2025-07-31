@@ -6,7 +6,8 @@
 //
 
 protocol EditCosmeticItemPresenterProtocol {
-    var view: EditCosmeticItemViewProtocol? { get set }
+    var productName: String { get }
+    func bindView(view: EditCosmeticItemViewProtocol)
 }
 
 protocol EditCosmeticItemViewProtocol: AnyObject {

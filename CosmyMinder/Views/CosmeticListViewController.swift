@@ -61,15 +61,21 @@ extension CosmeticListViewController {
         actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
         actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
         actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default, handler: showAddNewProductManuallyView))
         actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
 
         present(actionSheet, animated: true)
     }
 
+    private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
+        let addNewProductManuallyVC = AddNewProductManuallyViewController()
+        navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
+    }
+
     func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
-        let cosmeticItemVC = EditCosmeticItemViewController(cosmeticItem: item)
-        navigationController?.pushViewController(cosmeticItemVC, animated: true)
+        let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
+        let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
+        navigationController?.pushViewController(editCosmeticItemVC, animated: true)
     }
 }
 

@@ -9,14 +9,12 @@ import UIKit
 
 final class EditCosmeticItemViewController: UIViewController, EditCosmeticItemViewProtocol {
 
-    private let cosmeticItem: CosmeticItem
-    private var presenter: EditCosmeticItemPresenterProtocol
+    private let presenter: EditCosmeticItemPresenterProtocol
 
-    init(cosmeticItem: CosmeticItem, presenter: EditCosmeticItemPresenterProtocol = EditCosmeticItemPresenter()) {
-        self.cosmeticItem = cosmeticItem
+    init(presenter: EditCosmeticItemPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter.view = self
+        presenter.bindView(view: self)
     }
     
     required init?(coder: NSCoder) {
@@ -25,8 +23,7 @@ final class EditCosmeticItemViewController: UIViewController, EditCosmeticItemVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = cosmeticItem.name
+        title = presenter.productName
         view.backgroundColor = .systemBackground
     }
-
 }
