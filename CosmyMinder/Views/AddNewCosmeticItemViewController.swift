@@ -7,8 +7,7 @@
 
 import UIKit
 
-final class AddNewCosmeticItemViewController:
-    UIViewController, AddNewCosmeticItemViewProtocols {
+final class AddNewCosmeticItemViewController: UIViewController, AddNewCosmeticItemViewProtocols {
     private var presenter: AddNewCosmeticItemPresenterProtocol
 
     override func viewDidLoad() {

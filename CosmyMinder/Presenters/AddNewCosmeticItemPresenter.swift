@@ -10,5 +10,9 @@ import NaturalLanguage
 import UIKit
 
 final class AddNewCosmeticItemPresenter: AddNewCosmeticItemPresenterProtocol {
-    var view: (any AddNewCosmeticItemViewProtocols)?
+    private weak var view: (any AddNewCosmeticItemViewProtocols)?
+
+    func bindView(view: AddNewCosmeticItemViewProtocols) {
+        self.view = view
+    }
 }
