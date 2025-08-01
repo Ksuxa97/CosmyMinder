@@ -149,7 +149,7 @@ class ImageParser {
 }
 
 // Расширение для DateFormatter
-extension DateFormatter {
+private extension DateFormatter {
     static let cosmeticDate: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM.yyyy"
