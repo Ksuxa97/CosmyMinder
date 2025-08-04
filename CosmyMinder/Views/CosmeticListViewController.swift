@@ -9,7 +9,7 @@ import UIKit
 
 final class CosmeticListViewController: UITableViewController, CosmeticListViewProtocol {
 
-    private var presenter: CosmeticListPresenterProtocol
+    private let presenter: CosmeticListPresenterProtocol
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
