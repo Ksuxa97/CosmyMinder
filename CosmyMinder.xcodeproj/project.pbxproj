@@ -20,22 +20,11 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		7150677A2E37B989007A74DE /* Exceptions for "CosmyMinder" folder in "Copy Bundle Resources" phase from "CosmyMinder" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 71E1170C2E31114800ADF9EB /* Resources */;
-			membershipExceptions = (
-				Views/CosmeticListViewController.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		71E117102E31114800ADF9EB /* CosmyMinder */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				715067792E37B989007A74DE /* Exceptions for "CosmyMinder" folder in "CosmyMinder" target */,
-				7150677A2E37B989007A74DE /* Exceptions for "CosmyMinder" folder in "Copy Bundle Resources" phase from "CosmyMinder" target */,
 			);
 			path = CosmyMinder;
 			sourceTree = "<group>";

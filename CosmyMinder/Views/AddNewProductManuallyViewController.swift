@@ -16,18 +16,7 @@ final class AddNewProductManuallyViewController: UIViewController {
         return stackView
     }()
 
-    private var productImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "camera")
-        imageView.tintColor = .systemGray
-        imageView.isUserInteractionEnabled = true
-        imageView.layer.borderColor = UIColor.systemBlue.cgColor
-        imageView.layer.borderWidth = 1
-        imageView.layer.cornerRadius = 5
-
-        return imageView
-    }()
+    private lazy var productImage = ProductImageView(at: self)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +40,8 @@ final class AddNewProductManuallyViewController: UIViewController {
 
         // 3. Констрейнты для изображения
         NSLayoutConstraint.activate([
-            productImage.widthAnchor.constraint(equalToConstant: 100),
-            productImage.heightAnchor.constraint(equalToConstant: 200)
+            productImage.heightAnchor.constraint(equalToConstant: 100),
+            productImage.widthAnchor.constraint(equalTo: productImage.heightAnchor)
         ])
     }
 

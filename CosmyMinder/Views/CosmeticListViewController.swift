@@ -26,6 +26,8 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
         setupUI()
     }
 
+    // MARK: building List
+
     private func setupUI() {
         title = "Моя косметика"
         view.backgroundColor = .systemBackground
@@ -109,12 +111,19 @@ extension CosmeticListViewController {
         }
 
         cell.configure(with: item)
+        presenter.loadImageWithCaching(at: indexPath)
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         presenter.didSelectCosmeticItem(at: indexPath.row)
+    }
+
+    func updateCellImage(_ indexPath: IndexPath, _ image: UIImage?) {
+        if let cell = tableView.cellForRow(at: indexPath) as? CosmeticItemCell {
+            cell.updateImage(image)
+        }
     }
 
 }
