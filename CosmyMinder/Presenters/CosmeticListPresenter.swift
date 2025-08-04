@@ -10,7 +10,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
     weak var view: CosmeticListViewProtocol?
 
     var numberOfItems: Int {
-        return cosmeticItems.count
+        cosmeticItems.count
     }
 
     func getCosmeticItem(at index: Int) -> CosmeticItem? {
