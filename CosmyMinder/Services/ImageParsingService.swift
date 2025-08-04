@@ -74,7 +74,9 @@ class ImageParser {
             name: productName,
             brand: brand,
             productionDate: dates.first,
-            expiryDate: dates.last
+            openDate: nil,
+            expiryDate: dates.last,
+            imageURL: nil
         )
     }
 

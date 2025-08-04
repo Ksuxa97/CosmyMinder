@@ -7,7 +7,7 @@
 
 final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
     private var cosmeticItem: CosmeticItem
-    private weak var view: EditCosmeticItemViewProtocol?
+    weak var view: EditCosmeticItemViewProtocol?
 
     var productName: String {
         return cosmeticItem.name
@@ -15,9 +15,5 @@ final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
 
     init(cosmeticItem: CosmeticItem) {
         self.cosmeticItem = cosmeticItem
-    }
-
-    func bindView(view: EditCosmeticItemViewProtocol) {
-        self.view = view
     }
 }

@@ -15,10 +15,10 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(presenter: CosmeticListPresenterProtocol = CosmeticListPresenter()) {
+    init(presenter: CosmeticListPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter.bindView(view: self)
+        presenter.view = self
     }
 
     override func viewDidLoad() {

@@ -7,14 +7,10 @@
 
 final class CosmeticListPresenter: CosmeticListPresenterProtocol {
     private var cosmeticItems = fakeCosmeticItems
-    private weak var view: CosmeticListViewProtocol?
+    weak var view: CosmeticListViewProtocol?
 
     var numberOfItems: Int {
         return cosmeticItems.count
-    }
-
-    func bindView(view: CosmeticListViewProtocol) {
-        self.view = view
     }
 
     func getCosmeticItem(at index: Int) -> CosmeticItem? {

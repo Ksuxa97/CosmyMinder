@@ -7,7 +7,6 @@
 
 protocol CosmeticListPresenterProtocol {
     var numberOfItems: Int { get }
-    func bindView(view: CosmeticListViewProtocol)
     func getCosmeticItem(at index: Int) -> CosmeticItem?
     func didSelectCosmeticItem(at index: Int) -> Void
 }

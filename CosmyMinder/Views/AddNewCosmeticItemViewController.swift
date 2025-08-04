@@ -15,10 +15,10 @@ final class AddNewCosmeticItemViewController: UIViewController, AddNewCosmeticIt
         title = "Новый продукт"
     }
 
-    init(presenter: AddNewCosmeticItemPresenterProtocol = AddNewCosmeticItemPresenter()) {
+    init(presenter: AddNewCosmeticItemPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter.bindView(view: self)
+        presenter.view = self
 
     }
     
