@@ -10,7 +10,7 @@ final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
     weak var view: EditCosmeticItemViewProtocol?
 
     var productName: String {
-        return cosmeticItem.name
+        cosmeticItem.name
     }
 
     init(cosmeticItem: CosmeticItem) {
