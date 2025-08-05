@@ -52,24 +52,7 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
 
 // MARK: Navigation to other views
 extension CosmeticListViewController {
-
-    @objc private func addButtonTapped() {
-        let actionSheet = UIAlertController(title: "Добавить новый продукт", message: nil, preferredStyle: .actionSheet)
-
-        actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default, handler: showAddNewProductManuallyView))
-        actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
-
-        present(actionSheet, animated: true)
-    }
-
-    private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
-        let addNewProductManuallyVC = AddNewProductManuallyViewController()
-        navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
-    }
-
+    
     func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
         let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
         let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
@@ -86,6 +69,23 @@ extension CosmeticListViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(alert, animated: true)
+    }
+
+    @objc private func addButtonTapped() {
+        let actionSheet = UIAlertController(title: "Добавить новый продукт", message: nil, preferredStyle: .actionSheet)
+
+        actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default, handler: showAddNewProductManuallyView))
+        actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+
+        present(actionSheet, animated: true)
+    }
+
+    private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
+        let addNewProductManuallyVC = AddNewProductManuallyViewController()
+        navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
     }
 }
 

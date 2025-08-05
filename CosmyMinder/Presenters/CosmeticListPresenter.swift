@@ -6,12 +6,12 @@
 //
 
 final class CosmeticListPresenter: CosmeticListPresenterProtocol {
-    private var cosmeticItems = fakeCosmeticItems
     weak var view: CosmeticListViewProtocol?
-
     var numberOfItems: Int {
         cosmeticItems.count
     }
+    
+    private var cosmeticItems = fakeCosmeticItems
 
     func getCosmeticItem(at index: Int) -> CosmeticItem? {
         guard index >= 0 && index < cosmeticItems.count else {

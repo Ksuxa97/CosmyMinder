@@ -46,6 +46,15 @@ final class CosmeticItemCell: UITableViewCell {
         setupCellUI()
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(with item: CosmeticItem) -> Void {
+        productNameLabel.text = item.name
+        brandNameLabel.text = item.brand
+    }
+
     private func setupCellUI() {
         contentView.addSubview(productImageView)
         contentView.addSubview(productNameLabel)
@@ -71,14 +80,4 @@ final class CosmeticItemCell: UITableViewCell {
             brandNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Constants.bottomInset)
         ])
     }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func configure(with item: CosmeticItem) -> Void {
-        productNameLabel.text = item.name
-        brandNameLabel.text = item.brand
-    }
-
 }
