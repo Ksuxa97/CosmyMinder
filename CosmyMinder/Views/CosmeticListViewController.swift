@@ -9,16 +9,16 @@ import UIKit
 
 final class CosmeticListViewController: UITableViewController, CosmeticListViewProtocol {
 
-    private var presenter: CosmeticListPresenterProtocol
+    private let presenter: CosmeticListPresenterProtocol
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(presenter: CosmeticListPresenterProtocol = CosmeticListPresenter()) {
+    init(presenter: CosmeticListPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter.bindView(view: self)
+        presenter.view = self
     }
 
     override func viewDidLoad() {

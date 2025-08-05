@@ -6,7 +6,7 @@
 //
 
 protocol AddNewCosmeticItemPresenterProtocol {
-    func bindView(view: AddNewCosmeticItemViewProtocols)
+    
 }
 
 protocol AddNewCosmeticItemViewProtocols: AnyObject {

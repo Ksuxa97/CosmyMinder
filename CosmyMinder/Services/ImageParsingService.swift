@@ -11,7 +11,8 @@ import UIKit
 
 class ImageParser {
     func addNewCosmeticItem() {
-        parseCosmetic { cosmeticItem in
+        guard let image = UIImage(named: "shis") else { return }
+        parseCosmetic(from: image) { cosmeticItem in
             guard let item = cosmeticItem else {
                 print("Не удалось распознать данные")
                 return
@@ -21,9 +22,8 @@ class ImageParser {
         }
     }
 
-    func parseCosmetic(completion: @escaping (CosmeticItem?) -> Void) {
-        let image = UIImage(named: "shis")
-        recognizeTextFromImage((image?.cgImage!)!) { recognizedText in
+    func parseCosmetic(from image: UIImage, completion: @escaping (CosmeticItem?) -> Void) {
+        recognizeTextFromImage(image.cgImage!) { recognizedText in
             guard let text = recognizedText else {
                 completion(nil)
                 return
@@ -74,7 +74,9 @@ class ImageParser {
             name: productName,
             brand: brand,
             productionDate: dates.first,
-            expiryDate: dates.last
+            openDate: nil,
+            expiryDate: dates.last,
+            imageURL: nil
         )
     }
 

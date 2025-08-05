@@ -8,18 +8,17 @@
 import UIKit
 
 final class AddNewCosmeticItemViewController: UIViewController, AddNewCosmeticItemViewProtocols {
-    private var presenter: AddNewCosmeticItemPresenterProtocol
+    private let presenter: AddNewCosmeticItemPresenterProtocol
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Новый продукт"
     }
 
-    init(presenter: AddNewCosmeticItemPresenterProtocol = AddNewCosmeticItemPresenter()) {
+    init(presenter: AddNewCosmeticItemPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter.bindView(view: self)
-
+        presenter.view = self
     }
     
     required init?(coder: NSCoder) {

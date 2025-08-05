@@ -10,9 +10,9 @@ struct CosmeticItem {
     let name: String
     let brand: String
     let productionDate: Date?
-    var openDate: Date?
-    var expiryDate: Date?
-    var imageURL: URL?
+    let openDate: Date?
+    let expiryDate: Date?
+    let imageURL: URL?
 
     func with(
         name: String? = nil,
