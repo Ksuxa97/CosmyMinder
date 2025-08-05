@@ -15,10 +15,9 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(presenter: CosmeticListPresenter) {
+    init(presenter: CosmeticListPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        presenter.view = self
     }
 
     override func viewDidLoad() {
@@ -74,6 +73,7 @@ extension CosmeticListViewController {
     func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
         let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
         let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
+        editCosmeticItemPresenter.view = editCosmeticItemVC
         navigationController?.pushViewController(editCosmeticItemVC, animated: true)
     }
 

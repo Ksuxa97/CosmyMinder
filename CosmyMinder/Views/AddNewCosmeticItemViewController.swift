@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddNewCosmeticItemViewController: UIViewController, AddNewCosmeticItemViewProtocols {
+final class AddNewCosmeticItemViewController: UIViewController, AddNewCosmeticItemViewProtocol {
     private let presenter: AddNewCosmeticItemPresenterProtocol
 
     override func viewDidLoad() {
@@ -15,10 +15,9 @@ final class AddNewCosmeticItemViewController: UIViewController, AddNewCosmeticIt
         title = "Новый продукт"
     }
 
-    init(presenter: AddNewCosmeticItemPresenter) {
+    init(presenter: AddNewCosmeticItemPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        presenter.view = self
     }
     
     required init?(coder: NSCoder) {

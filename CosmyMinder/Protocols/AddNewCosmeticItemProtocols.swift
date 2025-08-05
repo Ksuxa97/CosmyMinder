@@ -9,6 +9,6 @@ protocol AddNewCosmeticItemPresenterProtocol {
     
 }
 
-protocol AddNewCosmeticItemViewProtocols: AnyObject {
+protocol AddNewCosmeticItemViewProtocol: AnyObject {
 
 }

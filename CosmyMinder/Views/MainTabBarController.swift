@@ -17,7 +17,8 @@ final class MainTabBarController: UITabBarController {
     private func setupTabs() {
         // Вкладка с косметикой
         let cosmeticListPresenter = CosmeticListPresenter()
-        let cosmeticListVC = CosmeticListViewController(presenter:cosmeticListPresenter)
+        let cosmeticListVC = CosmeticListViewController(presenter: cosmeticListPresenter)
+        cosmeticListPresenter.view = cosmeticListVC
         let navigationController = UINavigationController(rootViewController: cosmeticListVC)
         navigationController.tabBarItem = UITabBarItem(title: "Косметика", image: UIImage(systemName: "sparkles"), tag: 0)
 
