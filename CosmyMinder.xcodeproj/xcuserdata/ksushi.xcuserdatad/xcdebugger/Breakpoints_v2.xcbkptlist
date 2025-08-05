@@ -14,9 +14,9 @@
             filePath = "CosmyMinder/Views/CosmeticListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "setupUI()"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "init(presenter:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
