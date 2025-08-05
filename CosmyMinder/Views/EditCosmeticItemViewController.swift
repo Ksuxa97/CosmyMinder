@@ -11,10 +11,9 @@ final class EditCosmeticItemViewController: UIViewController, EditCosmeticItemVi
 
     private let presenter: EditCosmeticItemPresenterProtocol
 
-    init(presenter: EditCosmeticItemPresenter) {
+    init(presenter: EditCosmeticItemPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        presenter.view = self
     }
     
     required init?(coder: NSCoder) {

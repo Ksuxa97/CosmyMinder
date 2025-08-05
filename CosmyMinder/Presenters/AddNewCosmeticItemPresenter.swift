@@ -10,6 +10,5 @@ import NaturalLanguage
 import UIKit
 
 final class AddNewCosmeticItemPresenter: AddNewCosmeticItemPresenterProtocol {
-    weak var view: (any AddNewCosmeticItemViewProtocols)?
-
+    weak var view: AddNewCosmeticItemViewProtocol?
 }

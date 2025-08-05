@@ -15,10 +15,9 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(presenter: CosmeticListPresenter) {
+    init(presenter: CosmeticListPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        presenter.view = self
     }
 
     override func viewDidLoad() {
@@ -27,7 +26,6 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
     }
 
     // MARK: building List
-
     private func setupUI() {
         title = "Моя косметика"
         view.backgroundColor = .systemBackground
@@ -55,6 +53,24 @@ final class CosmeticListViewController: UITableViewController, CosmeticListViewP
 
 // MARK: Navigation to other views
 extension CosmeticListViewController {
+    
+    func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
+        let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
+        let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
+        editCosmeticItemPresenter.view = editCosmeticItemVC
+        navigationController?.pushViewController(editCosmeticItemVC, animated: true)
+    }
+
+    func showAlert() -> Void {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Не вышло загрузить данные",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+        present(alert, animated: true)
+    }
 
     @objc private func addButtonTapped() {
         let actionSheet = UIAlertController(title: "Добавить новый продукт", message: nil, preferredStyle: .actionSheet)
@@ -71,23 +87,6 @@ extension CosmeticListViewController {
     private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
         let addNewProductManuallyVC = AddNewProductManuallyViewController()
         navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
-    }
-
-    func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
-        let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
-        let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
-        navigationController?.pushViewController(editCosmeticItemVC, animated: true)
-    }
-
-    func showAlert() -> Void {
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: "Не вышло загрузить данные",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-
-        present(alert, animated: true)
     }
 }
 
@@ -125,5 +124,4 @@ extension CosmeticListViewController {
             cell.updateImage(image)
         }
     }
-
 }

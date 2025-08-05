@@ -6,12 +6,12 @@
 //
 
 final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
-    private var cosmeticItem: CosmeticItem
-    weak var view: EditCosmeticItemViewProtocol?
 
+    weak var view: EditCosmeticItemViewProtocol?
     var productName: String {
         cosmeticItem.name
     }
+    private var cosmeticItem: CosmeticItem
 
     init(cosmeticItem: CosmeticItem) {
         self.cosmeticItem = cosmeticItem
