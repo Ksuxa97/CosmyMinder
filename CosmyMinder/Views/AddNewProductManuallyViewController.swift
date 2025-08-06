@@ -14,16 +14,15 @@ final class AddNewProductManuallyViewController: UIViewController {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
     private lazy var productImage = ProductImageView(at: self)
+    private let productNameTextField = ProductTextField(mode: .text, placeholder: "Название")
+    private let productBrandTextField = ProductTextField(mode: .text, placeholder: "Бренд")
+    private let productionDatePicker = ProductTextField(mode: .date)
 
-    private var productNameTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Название продукта"
-        return textField
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,24 +34,33 @@ final class AddNewProductManuallyViewController: UIViewController {
 
         productStackView.addArrangedSubview(productImage)
         productStackView.addArrangedSubview(productNameTextField)
+        productStackView.addArrangedSubview(productBrandTextField)
+        productStackView.addArrangedSubview(productionDatePicker)
         view.addSubview(productStackView)
-
-
-        productStackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             productStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            productStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            productStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            productStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            productStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
 
         productImage.translatesAutoresizingMaskIntoConstraints = false
-
-        // 3. Констрейнты для изображения
         NSLayoutConstraint.activate([
             productImage.widthAnchor.constraint(equalTo: productStackView.widthAnchor),
             productImage.heightAnchor.constraint(equalTo: productStackView.widthAnchor, multiplier: 2/3),
             productImage.centerXAnchor.constraint(equalTo: productStackView.centerXAnchor)
+        ])
+
+        productNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            productNameTextField.leadingAnchor.constraint(equalTo: productStackView.leadingAnchor),
+            productNameTextField.trailingAnchor.constraint(equalTo: productStackView.trailingAnchor)
+        ])
+
+        productBrandTextField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            productBrandTextField.leadingAnchor.constraint(equalTo: productStackView.leadingAnchor),
+            productBrandTextField.trailingAnchor.constraint(equalTo: productStackView.trailingAnchor)
         ])
     }
 
