@@ -51,16 +51,16 @@ final class AddNewProductManuallyViewController: UIViewController {
             productImage.centerXAnchor.constraint(equalTo: productStackView.centerXAnchor)
         ])
 
-        productNameTextField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            productNameTextField.leadingAnchor.constraint(equalTo: productStackView.leadingAnchor),
-            productNameTextField.trailingAnchor.constraint(equalTo: productStackView.trailingAnchor)
-        ])
+        setConsstraintsForProductTextField(for: productNameTextField)
+        setConsstraintsForProductTextField(for: productBrandTextField)
+        setConsstraintsForProductTextField(for: productionDatePicker)
+    }
 
-        productBrandTextField.translatesAutoresizingMaskIntoConstraints = false
+    private func setConsstraintsForProductTextField(for item: ProductTextField) {
+        item.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            productBrandTextField.leadingAnchor.constraint(equalTo: productStackView.leadingAnchor),
-            productBrandTextField.trailingAnchor.constraint(equalTo: productStackView.trailingAnchor)
+            item.leadingAnchor.constraint(equalTo: productStackView.leadingAnchor),
+            item.trailingAnchor.constraint(equalTo: productStackView.trailingAnchor)
         ])
     }
 
