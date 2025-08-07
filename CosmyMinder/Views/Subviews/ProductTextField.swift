@@ -96,7 +96,14 @@ class ProductTextField: UITextField {
         if text.count > 6 {
             text = String(text.prefix(6))
         }
-        self.text = text
-    }
 
+        var formattedText = ""
+        for (index, character) in text.enumerated() {
+            if index == 2 || index == 4 {
+                formattedText.append(".")
+            }
+            formattedText.append(character)
+        }
+        self.text = formattedText
+    }
 }
