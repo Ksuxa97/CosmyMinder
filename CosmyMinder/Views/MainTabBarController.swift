@@ -16,7 +16,8 @@ final class MainTabBarController: UITabBarController {
 
     private func setupTabs() {
         // Вкладка с косметикой
-        let cosmeticListPresenter = CosmeticListPresenter()
+        let imageLoader = CachingImageLoader()
+        let cosmeticListPresenter = CosmeticListPresenter(loader: imageLoader)
         let cosmeticListVC = CosmeticListViewController(presenter: cosmeticListPresenter)
         cosmeticListPresenter.view = cosmeticListVC
         let navigationController = UINavigationController(rootViewController: cosmeticListVC)

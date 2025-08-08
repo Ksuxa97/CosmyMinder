@@ -15,6 +15,11 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
     }
     
     private var cosmeticItems = fakeCosmeticItems
+    private var imageLoader: ImageLoaderProtocol
+
+    init(loader: ImageLoaderProtocol) {
+        self.imageLoader = loader
+    }
 
     func getCosmeticItem(at index: Int) -> CosmeticItem? {
         guard index >= 0 && index < cosmeticItems.count else {
@@ -28,13 +33,9 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
 
         guard let imageURL = cosmeticItems[index.row].imageURL else { return }
 
-        URLSession.shared.dataTask(with: imageURL) { data, _, error in
-            guard let data = data, let image = UIImage(data: data), error == nil else { return }
-
-            DispatchQueue.main.async {
-                self.view?.updateCellImage(index, image)
-            }
-        }.resume()
+        imageLoader.getImage(with: imageURL) { image in
+            self.view?.updateCellImage(index, image)
+        }
     }
 
     func didSelectCosmeticItem(at index: Int) -> Void {
