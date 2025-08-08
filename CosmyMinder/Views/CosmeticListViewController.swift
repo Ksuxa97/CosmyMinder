@@ -10,7 +10,13 @@ import UIKit
 final class CosmeticListViewController: UIViewController, CosmeticListViewProtocol {
 
     private let presenter: CosmeticListPresenterProtocol
-    private var tableView = UITableView()
+    private let tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.estimatedRowHeight = 80
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -30,21 +36,19 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
     private func setupUI() {
         title = "Моя косметика"
         view.backgroundColor = .systemBackground
+        tableView.delegate = self
+        tableView.dataSource = self
 
         setupNavigationBar()
         showCosmeticList(with: fakeCosmeticItems)
     }
 
     private func showCosmeticList(with items: [CosmeticItem]) {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.estimatedRowHeight = 80
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 
         tableView.register(CosmeticItemCell.self, forCellReuseIdentifier: CosmeticItemCell.identifier)
 
         view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),

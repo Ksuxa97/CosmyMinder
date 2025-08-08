@@ -9,13 +9,15 @@ import UIKit
 
 final class ProductImageView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    private let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
         imageView.clipsToBounds = true
         imageView.image = UIImage(systemName: "camera.fill")
         imageView.tintColor = .gray
+        imageView.frame = self.bounds
+        imageView.layer.cornerRadius = self.layer.cornerRadius
         return imageView
     }()
 
@@ -66,11 +68,6 @@ final class ProductImageView: UIView, UIImagePickerControllerDelegate, UINavigat
             return
         }
         imageView.image = selectedImage
-        imageView.frame = self.bounds
-        imageView.layer.cornerRadius = self.layer.cornerRadius
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
         picker.dismiss(animated: true)
     }
-
 }
