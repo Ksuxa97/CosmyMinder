@@ -18,7 +18,7 @@ final class AddNewProductManuallyViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var productImage = ProductImageView(at: self)
+    private lazy var productImage = ImagePickerView(at: self)
     private let productNameTextField = ProductTextField(mode: .text, placeholder: "Название")
     private let productBrandTextField = ProductTextField(mode: .text, placeholder: "Бренд")
     private let productionDatePicker = ProductTextField(mode: .date)

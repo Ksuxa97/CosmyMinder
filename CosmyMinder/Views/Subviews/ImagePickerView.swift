@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ProductImageView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()

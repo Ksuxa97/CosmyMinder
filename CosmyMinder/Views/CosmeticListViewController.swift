@@ -135,13 +135,6 @@ extension CosmeticListViewController: UITableViewDataSource {
         }
 
         cell.configure(with: item)
-        presenter.loadImageWithCaching(at: indexPath)
         return cell
-    }
-
-    func updateCellImage(_ indexPath: IndexPath, _ image: UIImage?) {
-        if let cell = tableView.cellForRow(at: indexPath) as? CosmeticItemCell {
-            cell.updateImage(image)
-        }
     }
 }

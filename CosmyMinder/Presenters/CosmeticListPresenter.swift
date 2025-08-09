@@ -28,16 +28,6 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
         return cosmeticItems[index]
     }
 
-    func loadImageWithCaching(at index: IndexPath) {
-        guard index.row >= 0 && index.row < cosmeticItems.count else { return }
-
-        guard let imageURL = cosmeticItems[index.row].imageURL else { return }
-
-        imageLoader.getImage(with: imageURL) { image in
-            self.view?.updateCellImage(index, image)
-        }
-    }
-
     func didSelectCosmeticItem(at index: Int) -> Void {
         guard index >= 0 && index < cosmeticItems.count else {
             view?.showAlert()
