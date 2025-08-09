@@ -14,6 +14,12 @@ enum InputMode {
 
 class ProductTextField: UITextField {
 
+    static var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yy"
+        return formatter
+    }()
+
     private let datePicker = UIDatePicker()
     private lazy var toolBar = {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
@@ -38,7 +44,6 @@ class ProductTextField: UITextField {
             addTarget(self, action: #selector(dateFieldDidChange), for: .editingChanged)
             break
         }
-
         setupStyle()
     }
 
@@ -85,9 +90,7 @@ class ProductTextField: UITextField {
     }
 
     private func updateTextFromPicker() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yy"
-        text = formatter.string(from: datePicker.date)
+        text = ProductTextField.dateFormatter.string(from: datePicker.date)
     }
 
     private func formatDateTextInput() {
