@@ -12,7 +12,7 @@ final class AddNewProductManuallyViewController: UIViewController {
     private var productStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .center
+        stackView.alignment = .fill
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -58,8 +58,7 @@ final class AddNewProductManuallyViewController: UIViewController {
     private func setConstraintsForProductTextField(for item: ProductTextField) {
         item.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            item.leadingAnchor.constraint(equalTo: productStackView.leadingAnchor),
-            item.trailingAnchor.constraint(equalTo: productStackView.trailingAnchor)
+            item.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 

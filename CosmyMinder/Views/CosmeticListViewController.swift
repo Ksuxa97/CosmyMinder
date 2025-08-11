@@ -38,13 +38,6 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
         view.backgroundColor = .systemBackground
         tableView.delegate = self
         tableView.dataSource = self
-
-        setupNavigationBar()
-        showCosmeticList(with: fakeCosmeticItems)
-    }
-
-    private func showCosmeticList(with items: [CosmeticItem]) {
-
         tableView.register(CosmeticItemCell.self, forCellReuseIdentifier: CosmeticItemCell.identifier)
 
         view.addSubview(tableView)
@@ -55,6 +48,8 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+
+        setupNavigationBar()
     }
 
     private func setupNavigationBar() {

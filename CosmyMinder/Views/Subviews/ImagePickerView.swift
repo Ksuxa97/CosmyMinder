@@ -44,7 +44,6 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        // 2. Констрейнты для imageView
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),

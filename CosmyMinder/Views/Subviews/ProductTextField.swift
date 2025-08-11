@@ -20,12 +20,18 @@ class ProductTextField: UITextField {
         return formatter
     }()
 
-    private let datePicker = UIDatePicker()
+    private lazy var datePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        datePicker.addTarget(self, action: #selector(dateFieldDidBeginEditing), for: .editingDidBegin)
+        return datePicker
+    }()
     private lazy var toolBar = {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
-        toolBar.sizeToFit()
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         return toolBar
     }()
@@ -39,9 +45,11 @@ class ProductTextField: UITextField {
             self.placeholder = placeholder
         case .date:
             self.placeholder = "DD.MM.YY"
-            setupDatePicker()
+            inputView = datePicker
             setupInputAccessory()
+            addTarget(self, action: #selector(dateFieldDidBeginEditing), for: .editingDidBegin)
             addTarget(self, action: #selector(dateFieldDidChange), for: .editingChanged)
+
             break
         }
         setupStyle()
@@ -61,9 +69,6 @@ class ProductTextField: UITextField {
     }
 
     private func setupDatePicker() {
-        datePicker.datePickerMode = .date
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         inputView = datePicker
     }
 
@@ -71,8 +76,7 @@ class ProductTextField: UITextField {
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
         toolBar.setItems([flexibleSpace, doneButton], animated: true)
-        toolBar.setNeedsLayout()
-        toolBar.layoutIfNeeded()
+        toolBar.sizeToFit()
         inputAccessoryView = toolBar
     }
 
@@ -83,6 +87,10 @@ class ProductTextField: UITextField {
     @objc private func doneTapped() {
         updateTextFromPicker()
         resignFirstResponder()
+    }
+
+    @objc private func dateFieldDidBeginEditing() {
+        updateTextFromPicker()
     }
 
     @objc func dateFieldDidChange() {
