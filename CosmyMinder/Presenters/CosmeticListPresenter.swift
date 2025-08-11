@@ -15,12 +15,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
     }
     
     private var cosmeticItems = fakeCosmeticItems
-    private var imageLoader: ImageLoaderProtocol
-
-    init(loader: ImageLoaderProtocol) {
-        self.imageLoader = loader
-    }
-
+    
     func getCosmeticItem(at index: Int) -> CosmeticItem? {
         guard index >= 0 && index < cosmeticItems.count else {
             return nil

@@ -5,9 +5,6 @@
 //  Created by Kseniya Semenova on 28.07.2025.
 //
 
-import Foundation
-import UIKit
-
 protocol CosmeticListPresenterProtocol {
     var numberOfItems: Int { get }
     func getCosmeticItem(at index: Int) -> CosmeticItem?
