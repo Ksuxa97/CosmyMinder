@@ -11,5 +11,4 @@ import UIKit
 
 final class AddNewCosmeticItemPresenter: AddNewCosmeticItemPresenterProtocol {
     weak var view: AddNewCosmeticItemViewProtocol?
-
 }

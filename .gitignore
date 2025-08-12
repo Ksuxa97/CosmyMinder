@@ -72,3 +72,4 @@ playground.xcworkspace
 *.swo
 *~
 
+/CosmyMinder.xcodeproj/xcuserdata

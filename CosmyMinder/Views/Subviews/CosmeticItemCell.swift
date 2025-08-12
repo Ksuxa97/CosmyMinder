@@ -15,7 +15,7 @@ final class CosmeticItemCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "photo")
+        imageView.image = UIImage(systemName: "placeholder.fill")
         return imageView
     }()
 
@@ -42,7 +42,7 @@ final class CosmeticItemCell: UITableViewCell {
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super .init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCellUI()
     }
 
@@ -53,6 +53,12 @@ final class CosmeticItemCell: UITableViewCell {
     func configure(with item: CosmeticItem) -> Void {
         productNameLabel.text = item.name
         brandNameLabel.text = item.brand
+
+        if let imageURL = item.imageURL {
+            productImageView.load(url: imageURL, placeholder: UIImage(systemName: "placeholder.fill"))
+        } else {
+            productImageView.image = UIImage(systemName: "placeholder.fill")
+        }
     }
 
     private func setupCellUI() {
@@ -79,5 +85,19 @@ final class CosmeticItemCell: UITableViewCell {
             brandNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: Constants.leftInset),
             brandNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Constants.bottomInset)
         ])
+    }
+}
+
+extension UIImageView {
+    func load(url: URL, placeholder: UIImage? = nil) {
+        self.image = placeholder
+
+        DispatchQueue.global().async { [weak self] in
+            guard let data = try? Data(contentsOf: url) else {return}
+            guard let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async {
+                self?.image = image
+            }
+        }
     }
 }

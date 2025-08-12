@@ -5,6 +5,9 @@
 //  Created by Kseniya Semenova on 23.07.2025.
 //
 
+import Foundation
+import UIKit
+
 final class CosmeticListPresenter: CosmeticListPresenterProtocol {
     weak var view: CosmeticListViewProtocol?
     var numberOfItems: Int {
@@ -12,7 +15,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
     }
     
     private var cosmeticItems = fakeCosmeticItems
-
+    
     func getCosmeticItem(at index: Int) -> CosmeticItem? {
         guard index >= 0 && index < cosmeticItems.count else {
             return nil

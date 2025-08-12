@@ -12,22 +12,17 @@ final class AddNewProductManuallyViewController: UIViewController {
     private var productStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.alignment = .fill
         stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
-    private var productImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "camera")
-        imageView.tintColor = .systemGray
-        imageView.isUserInteractionEnabled = true
-        imageView.layer.borderColor = UIColor.systemBlue.cgColor
-        imageView.layer.borderWidth = 1
-        imageView.layer.cornerRadius = 5
+    private lazy var productImage = ImagePickerView(at: self)
+    private let productNameTextField = ProductTextField(mode: .text, placeholder: "Название")
+    private let productBrandTextField = ProductTextField(mode: .text, placeholder: "Бренд")
+    private let productionDatePicker = ProductTextField(mode: .date)
 
-        return imageView
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,23 +31,34 @@ final class AddNewProductManuallyViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = .systemBackground
+
         productStackView.addArrangedSubview(productImage)
+        productStackView.addArrangedSubview(productNameTextField)
+        productStackView.addArrangedSubview(productBrandTextField)
+        productStackView.addArrangedSubview(productionDatePicker)
         view.addSubview(productStackView)
 
-        productStackView.translatesAutoresizingMaskIntoConstraints = false
-
         NSLayoutConstraint.activate([
-            productStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            productStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            productStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
+            productStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            productStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40),
+            productStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40)
         ])
 
         productImage.translatesAutoresizingMaskIntoConstraints = false
-
-        // 3. Констрейнты для изображения
         NSLayoutConstraint.activate([
-            productImage.widthAnchor.constraint(equalToConstant: 100),
-            productImage.heightAnchor.constraint(equalToConstant: 200)
+            productImage.widthAnchor.constraint(equalTo: productStackView.widthAnchor),
+            productImage.heightAnchor.constraint(equalTo: productStackView.widthAnchor, multiplier: 2/3)
+        ])
+
+        setConstraintsForProductTextField(for: productNameTextField)
+        setConstraintsForProductTextField(for: productBrandTextField)
+        setConstraintsForProductTextField(for: productionDatePicker)
+    }
+
+    private func setConstraintsForProductTextField(for item: ProductTextField) {
+        item.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            item.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 

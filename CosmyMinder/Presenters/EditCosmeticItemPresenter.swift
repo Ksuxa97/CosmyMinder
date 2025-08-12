@@ -6,6 +6,7 @@
 //
 
 final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
+
     weak var view: EditCosmeticItemViewProtocol?
     var productName: String {
         cosmeticItem.name
