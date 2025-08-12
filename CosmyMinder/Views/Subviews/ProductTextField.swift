@@ -12,8 +12,6 @@ enum InputMode {
     case date
 }
 
-ProductTextField.ini
-
 class ProductTextField: UITextField {
 
     static var dateFormatter: DateFormatter = {
@@ -74,7 +72,6 @@ class ProductTextField: UITextField {
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
         toolBar.setItems([flexibleSpace, doneButton], animated: true)
-        toolBar.sizeToFit()
         inputAccessoryView = toolBar
     }
 
