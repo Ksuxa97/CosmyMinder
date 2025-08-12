@@ -39,9 +39,9 @@ final class AddNewProductManuallyViewController: UIViewController {
         view.addSubview(productStackView)
 
         NSLayoutConstraint.activate([
-            productStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            productStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            productStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
+            productStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            productStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40),
+            productStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40)
         ])
 
         productImage.translatesAutoresizingMaskIntoConstraints = false
