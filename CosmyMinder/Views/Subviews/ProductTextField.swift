@@ -12,6 +12,8 @@ enum InputMode {
     case date
 }
 
+ProductTextField.ini
+
 class ProductTextField: UITextField {
 
     static var dateFormatter: DateFormatter = {
@@ -36,9 +38,10 @@ class ProductTextField: UITextField {
         return toolBar
     }()
 
-    convenience init(mode: InputMode, placeholder: String? = nil) {
-        self.init(frame: .zero)
+    init(mode: InputMode, placeholder: String? = nil) {
+        super.init(frame: .zero)
         keyboardType = .numberPad
+        translatesAutoresizingMaskIntoConstraints = false
 
         switch mode {
         case .text:
@@ -53,11 +56,6 @@ class ProductTextField: UITextField {
             break
         }
         setupStyle()
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
     }
 
     required init?(coder: NSCoder) {
