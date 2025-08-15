@@ -73,9 +73,9 @@ class ImageParser {
         return CosmeticItem(
             name: productName,
             brand: brand,
-            productionDate: dates.first,
+            productionDate: dates.first!,
             openDate: nil,
-            expiryDate: dates.last,
+            expiryDate: dates.last!,
             imageURL: nil
         )
     }
