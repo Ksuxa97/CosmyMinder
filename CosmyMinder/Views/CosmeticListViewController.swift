@@ -96,7 +96,11 @@ extension CosmeticListViewController {
     }
 
     private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
-        let addNewProductManuallyVC = AddNewProductManuallyViewController()
+        let dataManager = DataManager()
+        let validator = CosmeticItemValidator()
+        let addNewProductManuallyPresenter = AddNewProductManuallyPresenter(with: dataManager, and: validator)
+        let addNewProductManuallyVC = AddNewProductManuallyViewController(presenter: addNewProductManuallyPresenter)
+        addNewProductManuallyPresenter.view = addNewProductManuallyVC
         navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
     }
 }
