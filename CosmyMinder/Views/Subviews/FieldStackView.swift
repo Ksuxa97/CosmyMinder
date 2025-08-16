@@ -16,7 +16,7 @@ class FieldStackView: UIStackView {
         return label
     }()
 
-    private let textField: ProductTextField
+    let textField: ProductTextField
 
     init (with title: String, placeholder: String = "", dataType: InputMode, isRequired: Bool = false) {
 

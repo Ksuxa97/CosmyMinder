@@ -29,7 +29,7 @@ class ProductTextField: UITextField {
         return datePicker
     }()
     private lazy var toolBar = {
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40))
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
         toolBar.translatesAutoresizingMaskIntoConstraints = false
@@ -38,15 +38,15 @@ class ProductTextField: UITextField {
 
     init(mode: InputMode, placeholder: String? = nil) {
         super.init(frame: .zero)
-        keyboardType = .numberPad
         translatesAutoresizingMaskIntoConstraints = false
 
         switch mode {
         case .text:
             self.placeholder = placeholder
+            keyboardType = .default
         case .date:
             self.placeholder = "DD.MM.YY"
-            inputView = datePicker
+            keyboardType = .numberPad
             setupInputAccessory()
             addTarget(self, action: #selector(dateFieldDidBeginEditing), for: .editingDidBegin)
             addTarget(self, action: #selector(dateFieldDidChange), for: .editingChanged)
@@ -70,22 +70,51 @@ class ProductTextField: UITextField {
 
     private func setupInputAccessory() {
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let toggleButton = UIBarButtonItem(
+                    title: "Выбрать дату",
+                    style: .plain,
+                    target: self,
+                    action: #selector(toggleDatePicker)
+                )
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
-        toolBar.setItems([flexibleSpace, doneButton], animated: true)
+        toolBar.setItems([toggleButton, flexibleSpace, doneButton], animated: true)
         inputAccessoryView = toolBar
     }
 
+    @objc private func toggleDatePicker() {
+        if self.inputView == nil {
+            self.inputView = datePicker
+            self.toolBar.items?.first?.title = "Ввести текст"
+        } else {
+            self.inputView = nil
+            toolBar.items?.first?.title = "Выбрать дату"
+        }
+        self.reloadInputViews()
+    }
+
     @objc private func dateChanged() {
-        updateTextFromPicker()
+        if self.inputView == nil {
+            updatePickerFromText()
+        } else {
+            updateTextFromPicker()
+        }
     }
 
     @objc private func doneTapped() {
-        updateTextFromPicker()
+        if self.inputView == nil {
+            updatePickerFromText()
+        } else {
+            updateTextFromPicker()
+        }
         resignFirstResponder()
     }
 
     @objc private func dateFieldDidBeginEditing() {
-        updateTextFromPicker()
+        if self.inputView == nil {
+            updatePickerFromText()
+        } else {
+            updateTextFromPicker()
+        }
     }
 
     @objc func dateFieldDidChange() {
@@ -94,6 +123,13 @@ class ProductTextField: UITextField {
 
     private func updateTextFromPicker() {
         text = ProductTextField.dateFormatter.string(from: datePicker.date)
+    }
+
+    private func updatePickerFromText() {
+        guard let text = self.text else { return }
+        if let date = ProductTextField.dateFormatter.date(from: text) {
+            datePicker.date = date
+        }
     }
 
     private func formatDateTextInput() {

@@ -10,6 +10,7 @@ import UIKit
 final class AddNewProductManuallyViewController: UIViewController, AddNewProductManuallyViewProtocol {
 
     private let presenter: AddNewProductManuallyPresenterProtocol
+    private weak var activeTextField: ProductTextField?
 
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
@@ -41,7 +42,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         button.layer.cornerRadius = 8
         button.setTitle("Сохранить", for: .normal)
         button.isEnabled = false
-        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        button.addTarget(AddNewProductManuallyViewController.self, action: #selector(saveButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -59,6 +60,8 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         super.viewDidLoad()
 
         setupUI()
+        setupTextFieldDelegates()
+        setupKeyboardObservers()
 
         productNameInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         productionDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
@@ -84,16 +87,16 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, imageURL: nil)
     }
 
-    @objc func textFieldDidChange() {
+    func enableSaveButton() {
+        saveButton.isEnabled = true
+    }
+
+    @objc private func textFieldDidChange() {
         let name = productNameInput.getTextFieldValue()
         let productionDate = productionDateInput.getTextFieldValue()
         let expiryDate = productionDateInput.getTextFieldValue()
 
         presenter.validateInput(name: name, productionDate: productionDate, expiryDate: expiryDate)
-    }
-
-    func enableSaveButton() {
-        saveButton.isEnabled = true
     }
 
     private func setupUI() {
@@ -134,4 +137,44 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         productStackView.addArrangedSubview(openDateInput)
         productStackView.addArrangedSubview(expiryDateInput)
     }
+}
+
+// MARK: keyboard observing
+extension AddNewProductManuallyViewController: UITextFieldDelegate {
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeTextField = textField as? ProductTextField
+    }
+
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+              let activeTextField = activeTextField else { return }
+
+        let convertedKeyboardFrame = scrollView.convert(keyboardFrame, from: nil)
+        let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: scrollView)
+        let overlapHeight = textFieldFrame.maxY - convertedKeyboardFrame.minY
+        if overlapHeight > 0 {
+            let newOffsetY = scrollView.contentOffset.y + overlapHeight + 20
+            scrollView.setContentOffset(CGPoint(x: 0, y: newOffsetY), animated: true)
+        }
+    }
+
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+    }
+
+    private func setupTextFieldDelegates() {
+        productNameInput.textField.delegate = self
+        productBrandInput.textField.delegate = self
+        productionDateInput.textField.delegate = self
+        openDateInput.textField.delegate = self
+        expiryDateInput.textField.delegate = self
+    }
+
 }
