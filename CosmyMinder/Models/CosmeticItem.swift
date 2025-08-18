@@ -5,8 +5,10 @@
 //  Created by Kseniya Semenova on 23.07.2025.
 //
 import Foundation
+import UIKit
 
 struct CosmeticItem: Codable {
+    let id: UUID
     let name: String
     let brand: String?
     let productionDate: Date
@@ -15,14 +17,17 @@ struct CosmeticItem: Codable {
     let imageURL: URL?
 
     func with(
+        id: UUID? = nil,
         name: String? = nil,
         brand: String? = nil,
         productionDate: Date? = nil,
         openDate: Date? = nil,
         expiryDate: Date? = nil,
-        imageURL: URL? = nil
+        imageURL: URL? = nil,
+
     ) -> CosmeticItem {
         CosmeticItem(
+            id: id ?? self.id,
             name: name ?? self.name,
             brand: brand ?? self.brand,
             productionDate: productionDate ?? self.productionDate,
@@ -30,14 +35,5 @@ struct CosmeticItem: Codable {
             expiryDate: expiryDate ?? self.expiryDate,
             imageURL: imageURL ?? self.imageURL
         )
-    }
-}
-
-struct CosmeticItemValidator {
-    static func validate(name: String?, productionDate: String?, expiryDate: String?) -> Bool {
-        guard let name, !name.isEmpty,
-              let productionDate, !productionDate.isEmpty,
-              let expiryDate, !expiryDate.isEmpty else { return false }
-        return true
     }
 }

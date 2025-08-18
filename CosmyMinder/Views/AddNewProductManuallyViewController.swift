@@ -42,7 +42,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         button.layer.cornerRadius = 8
         button.setTitle("Сохранить", for: .normal)
         button.isEnabled = false
-        button.addTarget(AddNewProductManuallyViewController.self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -68,23 +68,17 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         expiryDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
     }
 
-    @objc func saveButtonPressed() {
+    @objc private func saveButtonPressed() {
+
         let name = productNameInput.getTextFieldValue()
         let brand = productBrandInput.getTextFieldValue()
-        guard let productionDate = ProductTextField.dateFormatter.date(from: productionDateInput.getTextFieldValue()) else {
-            print("Invalid date format")
-            return
-        }
-        guard let openDate = ProductTextField.dateFormatter.date(from: openDateInput.getTextFieldValue()) else {
-            print("Invalid date format")
-            return
-        }
-        guard let expiryDate = ProductTextField.dateFormatter.date(from: expiryDateInput.getTextFieldValue()) else {
-            print("Invalid date format")
-            return
-        }
+        let productionDate = productionDateInput.getTextFieldValue()
+        let openDate = openDateInput.getTextFieldValue()
+        let expiryDate = expiryDateInput.getTextFieldValue()
+        let image = productImage.getImage()
 
-        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, imageURL: nil)
+        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, image: image)
+        navigationController?.popViewController(animated: true)
     }
 
     func enableSaveButton() {
@@ -94,7 +88,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     @objc private func textFieldDidChange() {
         let name = productNameInput.getTextFieldValue()
         let productionDate = productionDateInput.getTextFieldValue()
-        let expiryDate = productionDateInput.getTextFieldValue()
+        let expiryDate = expiryDateInput.getTextFieldValue()
 
         presenter.validateInput(name: name, productionDate: productionDate, expiryDate: expiryDate)
     }
@@ -160,11 +154,23 @@ extension AddNewProductManuallyViewController: UITextFieldDelegate {
         }
     }
 
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+
     private func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
             name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide(_:)),
+            name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
     }

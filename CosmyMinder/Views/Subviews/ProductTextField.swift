@@ -50,8 +50,6 @@ class ProductTextField: UITextField {
             setupInputAccessory()
             addTarget(self, action: #selector(dateFieldDidBeginEditing), for: .editingDidBegin)
             addTarget(self, action: #selector(dateFieldDidChange), for: .editingChanged)
-
-            break
         }
         setupStyle()
     }

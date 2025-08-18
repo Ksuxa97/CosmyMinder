@@ -6,35 +6,53 @@
 //
 
 import Foundation
+import UIKit
 
 class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtocol {
 
     weak var view: AddNewProductManuallyViewProtocol?
+    weak var delegate: ProductAddedDelegate?
 
     private let dataManager: DataManagerProtocol
-    private let fieldsValidator: CosmeticItemValidator
 
-    init(with dataManager: DataManagerProtocol, and fieldsValidator: CosmeticItemValidator) {
+    init(with dataManager: DataManagerProtocol) {
         self.dataManager = dataManager
-        self.fieldsValidator = fieldsValidator
     }
 
-    func addNewProduct(name: String, brand: String = "", productionDate: Date, openDate: Date? = nil, expiryDate: Date, imageURL: URL? = nil) {
-        let cosmeticItem = CosmeticItem(
-            name: name,
-            brand: brand,
-            productionDate: productionDate,
-            openDate: openDate,
-            expiryDate: expiryDate,
-            imageURL: imageURL
-        )
-        dataManager.addCosmeticItem(cosmeticItem)
+    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: CachingImage?) {
+
+        let id = UUID()
+        guard let productionDate = ProductTextField.dateFormatter.date(from: productionDate) else {
+            print("Invalid production date")
+            return
+        }
+        let openDate = ProductTextField.dateFormatter.date(from: openDate) ?? nil
+        guard let expiryDate = ProductTextField.dateFormatter.date(from: expiryDate) else {
+            print("Invalid expiry date")
+            return
+        }
+
+        image?.saveLocalImage(fileName: "image_\(id)") { url in
+            let imageLocalPath = url ?? nil
+
+            let cosmeticItem = CosmeticItem(
+                id: id,
+                name: name,
+                brand: brand,
+                productionDate: productionDate,
+                openDate: openDate,
+                expiryDate: expiryDate,
+                imageURL: imageLocalPath
+            )
+            self.dataManager.addCosmeticItem(cosmeticItem)
+            self.delegate?.newProductDidAdded()
+        }
     }
 
     func validateInput(name: String?, productionDate: String?, expiryDate: String?) {
-        let isRequiredFilled = CosmeticItemValidator.validate(name: name, productionDate: productionDate, expiryDate: expiryDate)
-
-        if isRequiredFilled {
+        if let name, !name.isEmpty,
+           let productionDate, !productionDate.isEmpty,
+           let expiryDate, !expiryDate.isEmpty {
             view?.enableSaveButton()
         }
     }

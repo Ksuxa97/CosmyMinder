@@ -16,7 +16,9 @@ class DataManager: DataManagerProtocol {
     }
 
     func addCosmeticItem(_ item: CosmeticItem) {
-        if let encodedData = try? JSONEncoder().encode(item) {
+        var savedCosmeticList = getCosmeticsList()
+        savedCosmeticList.append(item)
+        if let encodedData = try? JSONEncoder().encode(savedCosmeticList) {
             UserDefaults.standard.set(encodedData, forKey: "savedCosmetics")
         }
     }

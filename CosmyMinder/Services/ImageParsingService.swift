@@ -71,6 +71,7 @@ class ImageParser {
         let productName = extractProductName(from: text, brand: brand, dates: dates)
 
         return CosmeticItem(
+            id: UUID(),
             name: productName,
             brand: brand,
             productionDate: dates.first!,
