@@ -89,42 +89,31 @@ class ProductTextField: UITextField {
     }
 
     @objc private func dateChanged() {
-        if self.inputView == nil {
-            updatePickerFromText()
-        } else {
-            updateTextFromPicker()
-        }
+        syncDatePickerWithText()
     }
 
     @objc private func doneTapped() {
-        if self.inputView == nil {
-            updatePickerFromText()
-        } else {
-            updateTextFromPicker()
-        }
+        syncDatePickerWithText()
         resignFirstResponder()
     }
 
     @objc private func dateFieldDidBeginEditing() {
-        if self.inputView == nil {
-            updatePickerFromText()
-        } else {
-            updateTextFromPicker()
-        }
+        syncDatePickerWithText()
     }
 
     @objc func dateFieldDidChange() {
         formatDateTextInput()
+        syncDatePickerWithText()
     }
 
-    private func updateTextFromPicker() {
-        text = ProductTextField.dateFormatter.string(from: datePicker.date)
-    }
-
-    private func updatePickerFromText() {
-        guard let text = self.text else { return }
-        if let date = ProductTextField.dateFormatter.date(from: text) {
-            datePicker.date = date
+    private func syncDatePickerWithText() {
+        if self.inputView == nil {
+            guard let text = self.text else { return }
+            if let date = ProductTextField.dateFormatter.date(from: text) {
+                datePicker.date = date
+            }
+        } else {
+            text = ProductTextField.dateFormatter.string(from: datePicker.date)
         }
     }
 
@@ -143,5 +132,40 @@ class ProductTextField: UITextField {
             formattedText.append(character)
         }
         self.text = formattedText
+
+        validatePartialDate()
+    }
+
+    private func validatePartialDate() {
+        guard let text = self.text else { return }
+        let digits = text.filter { $0.isNumber }
+
+        if digits.count >= 2 {
+            let day = Int(digits.prefix(2)) ?? 0
+            if day == 0 || day > 31 {
+                self.text = String(digits.prefix(1)) // удаляем неправильный символ
+                return
+            }
+        }
+
+        if digits.count >= 4 {
+            let month = Int(digits.dropFirst(2).prefix(2)) ?? 0
+            if month == 0 || month > 12 {
+                self.text = text.prefix(3) + ""
+                return
+            }
+        }
+
+        if digits.count == 6 {
+            let day = Int(digits.prefix(2)) ?? 0
+            let month = Int(digits.dropFirst(2).prefix(2)) ?? 0
+            let year = Int(digits.dropFirst(4)) ?? 0
+
+            let str = String(format: "%02d.%02d.%02d", day, month, year)
+            if ProductTextField.dateFormatter.date(from: str) == nil {
+                self.text = String(digits.dropLast())
+                formatDateTextInput()
+            }
+        }
     }
 }
