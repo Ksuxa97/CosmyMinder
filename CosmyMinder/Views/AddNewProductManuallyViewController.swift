@@ -11,6 +11,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: ProductTextField?
+    private var originalContentOffset: CGPoint?
 
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
@@ -140,26 +141,50 @@ extension AddNewProductManuallyViewController: UITextFieldDelegate {
         activeTextField = textField as? ProductTextField
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        activeTextField?.resignFirstResponder()
+        return true
+    }
+
     @objc private func keyboardWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
-              let activeTextField = activeTextField else { return }
+              let activeTextField = activeTextField else {
+            print("⚠️ Keyboard frame or active text field is nil")
+            return
+        }
 
+        originalContentOffset = scrollView.contentOffset
         let convertedKeyboardFrame = scrollView.convert(keyboardFrame, from: nil)
         let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: scrollView)
-        let overlapHeight = textFieldFrame.maxY - convertedKeyboardFrame.minY
-        if overlapHeight > 0 {
-            let newOffsetY = scrollView.contentOffset.y + overlapHeight + 20
-            scrollView.setContentOffset(CGPoint(x: 0, y: newOffsetY), animated: true)
+        guard !convertedKeyboardFrame.isNull, !textFieldFrame.isNull,
+              !convertedKeyboardFrame.minY.isNaN, !textFieldFrame.maxY.isNaN else {
+            print("⚠️ Invalid frames in keyboardWillShow!")
+            return
         }
+        let overlapHeight = textFieldFrame.maxY - convertedKeyboardFrame.minY
+        guard overlapHeight > 0 else { return }
+
+        let newOffsetY = scrollView.contentOffset.y + overlapHeight + 20
+        guard newOffsetY.isFinite else { return }
+        guard !overlapHeight.isNaN, !newOffsetY.isNaN else {
+            print("⚠️ Invalid geometry calculation!")
+            return
+        }
+        scrollView.setContentOffset(CGPoint(x: 0, y: newOffsetY), animated: true)
     }
 
     @objc private func keyboardWillHide(_ notification: Notification) {
+        if let originalOffset = originalContentOffset {
+            scrollView.setContentOffset(originalOffset, animated: true)
+        }
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
+        originalContentOffset = nil
     }
 
     private func setupKeyboardObservers() {
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
@@ -182,5 +207,4 @@ extension AddNewProductManuallyViewController: UITextFieldDelegate {
         openDateInput.textField.delegate = self
         expiryDateInput.textField.delegate = self
     }
-
 }

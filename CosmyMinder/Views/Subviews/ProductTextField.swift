@@ -44,26 +44,24 @@ class ProductTextField: UITextField {
         case .text:
             self.placeholder = placeholder
             keyboardType = .default
+            returnKeyType = .done
+
         case .date:
             self.placeholder = "DD.MM.YY"
             keyboardType = .numberPad
-            setupInputAccessory()
-            addTarget(self, action: #selector(dateFieldDidBeginEditing), for: .editingDidBegin)
             addTarget(self, action: #selector(dateFieldDidChange), for: .editingChanged)
+            setupInputAccessory()
         }
-        setupStyle()
+
+        borderStyle = .roundedRect
+        autocorrectionType = .no
+        smartDashesType = .no
+        smartQuotesType = .no
+        smartInsertDeleteType = .no
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupStyle() {
-        borderStyle = .roundedRect
-    }
-
-    private func setupDatePicker() {
-        inputView = datePicker
     }
 
     private func setupInputAccessory() {
@@ -87,7 +85,7 @@ class ProductTextField: UITextField {
             self.inputView = nil
             toolBar.items?.first?.title = "Выбрать дату"
         }
-        self.reloadInputViews()
+        reloadInputViews()
     }
 
     @objc private func dateChanged() {

@@ -53,5 +53,4 @@ class FieldStackView: UIStackView {
             textField.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
-
 }
