@@ -69,6 +69,10 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         expiryDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
     }
 
+    func enableSaveButton() {
+        saveButton.isEnabled = true
+    }
+
     @objc private func saveButtonPressed() {
 
         let name = productNameInput.getTextFieldValue()
@@ -80,10 +84,6 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
         presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, image: image)
         navigationController?.popViewController(animated: true)
-    }
-
-    func enableSaveButton() {
-        saveButton.isEnabled = true
     }
 
     @objc private func textFieldDidChange() {

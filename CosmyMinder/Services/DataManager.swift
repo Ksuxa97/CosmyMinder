@@ -15,7 +15,7 @@ class DataManager: DataManagerProtocol {
         return savedCosmeticsList
     }
 
-    func addCosmeticItem(_ item: CosmeticItem) {
+    func addCosmeticItem(_ item: CosmeticItem) -> Void {
         var savedCosmeticList = getCosmeticsList()
         savedCosmeticList.append(item)
         if let encodedData = try? JSONEncoder().encode(savedCosmeticList) {

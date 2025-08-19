@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 
-final class CachingImage: UIImageView {
+final class CachingImageView: UIImageView {
 
     private static let imageCache = NSCache<NSUUID, UIImage>()
     private let fileManagerQueue = DispatchQueue(label: "fileManagerQueue", qos: .userInitiated)
-
     private var currentURL: URL?
 
     func laodImage(_ itemID: UUID, url: URL? = nil) {
@@ -51,15 +50,15 @@ final class CachingImage: UIImageView {
         }
     }
 
-    func cacheImage(id: UUID) {
-        CachingImage.imageCache.setObject(self.image!, forKey: id as NSUUID)
+    private func cacheImage(id: UUID) {
+        CachingImageView.imageCache.setObject(self.image!, forKey: id as NSUUID)
     }
 
-    func loadImageFromCache(id: UUID) -> UIImage? {
-        return CachingImage.imageCache.object(forKey: id as NSUUID)
+    private func loadImageFromCache(id: UUID) -> UIImage? {
+        return CachingImageView.imageCache.object(forKey: id as NSUUID)
     }
 
-    func loadImageByURL(_ url: URL, placeholder: UIImage? = nil) {
+    private func loadImageByURL(_ url: URL, placeholder: UIImage? = nil) {
         currentURL = url
         self.image = UIImage(systemName: "photo")
 
@@ -82,4 +81,3 @@ final class CachingImage: UIImageView {
         }
     }
 }
-

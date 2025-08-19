@@ -17,7 +17,7 @@ protocol AddNewCosmeticItemViewProtocol: AnyObject {
 }
 
 protocol AddNewProductManuallyPresenterProtocol {
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: CachingImage?)
+    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: CachingImageView?)
     func validateInput(name: String?, productionDate: String?, expiryDate: String?) -> Void
 }
 

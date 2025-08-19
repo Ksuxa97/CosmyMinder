@@ -11,8 +11,8 @@ final class CosmeticItemCell: UITableViewCell {
 
     static let identifier = "CosmeticItemCell"
 
-    private let productImageView: CachingImage = {
-        let imageView = CachingImage()
+    private let productImageView: CachingImageView = {
+        let imageView = CachingImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "photo")
@@ -83,17 +83,3 @@ final class CosmeticItemCell: UITableViewCell {
         ])
     }
 }
-
-//extension UIImageView {
-//    func load(url: URL, placeholder: UIImage? = nil) {
-//        self.image = placeholder
-//
-//        DispatchQueue.global().async { [weak self] in
-//            guard let data = try? Data(contentsOf: url) else {return}
-//            guard let image = UIImage(data: data) else { return }
-//            DispatchQueue.main.async {
-//                self?.image = image
-//            }
-//        }
-//    }
-//}

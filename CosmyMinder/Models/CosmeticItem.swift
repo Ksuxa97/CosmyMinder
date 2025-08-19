@@ -23,8 +23,7 @@ struct CosmeticItem: Codable {
         productionDate: Date? = nil,
         openDate: Date? = nil,
         expiryDate: Date? = nil,
-        imageURL: URL? = nil,
-
+        imageURL: URL? = nil
     ) -> CosmeticItem {
         CosmeticItem(
             id: id ?? self.id,

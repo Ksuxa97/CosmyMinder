@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtocol {
+final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtocol {
 
     weak var view: AddNewProductManuallyViewProtocol?
     weak var delegate: ProductAddedDelegate?
@@ -19,7 +19,7 @@ class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtocol {
         self.dataManager = dataManager
     }
 
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: CachingImage?) {
+    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: CachingImageView?) {
 
         let id = UUID()
         guard let productionDate = ProductTextField.dateFormatter.date(from: productionDate) else {
