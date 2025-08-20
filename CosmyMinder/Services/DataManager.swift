@@ -9,8 +9,11 @@ import Foundation
 
 class DataManager: DataManagerProtocol {
 
+    private let cosmeticsListKey = "savedCosmetics"
+    private let userDefaults: UserDefaults = .standard
+
     func getCosmeticsList() -> [CosmeticItem] {
-        guard let data = UserDefaults.standard.data(forKey: "savedCosmetics") else { return [] }
+        guard let data = userDefaults.data(forKey: cosmeticsListKey) else { return [] }
         guard let savedCosmeticsList = try? JSONDecoder().decode([CosmeticItem].self, from: data) else { return [] }
         return savedCosmeticsList
     }
@@ -19,7 +22,7 @@ class DataManager: DataManagerProtocol {
         var savedCosmeticList = getCosmeticsList()
         savedCosmeticList.append(item)
         if let encodedData = try? JSONEncoder().encode(savedCosmeticList) {
-            UserDefaults.standard.set(encodedData, forKey: "savedCosmetics")
+            userDefaults.set(encodedData, forKey: cosmeticsListKey)
         }
     }
 
