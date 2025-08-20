@@ -17,7 +17,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
     private var cosmeticItems: [CosmeticItem] = []
     private let dataManager: DataManagerProtocol
 
-    init(with dataManager: DataManagerProtocol) {
+    init(dataManager: DataManagerProtocol) {
         self.dataManager = dataManager
         cosmeticItems = dataManager.getCosmeticsList()
     }

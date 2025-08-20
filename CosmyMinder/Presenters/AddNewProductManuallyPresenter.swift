@@ -15,7 +15,7 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
 
     private let dataManager: DataManagerProtocol
 
-    init(with dataManager: DataManagerProtocol) {
+    init(dataManager: DataManagerProtocol) {
         self.dataManager = dataManager
     }
 

@@ -101,7 +101,7 @@ extension CosmeticListViewController {
 
     private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
         let dataManager = DataManager()
-        let addNewProductManuallyPresenter = AddNewProductManuallyPresenter(with: dataManager)
+        let addNewProductManuallyPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
         let addNewProductManuallyVC = AddNewProductManuallyViewController(presenter: addNewProductManuallyPresenter)
         addNewProductManuallyPresenter.view = addNewProductManuallyVC
         addNewProductManuallyPresenter.delegate = self

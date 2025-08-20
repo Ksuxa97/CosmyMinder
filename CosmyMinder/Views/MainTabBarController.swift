@@ -16,7 +16,7 @@ final class MainTabBarController: UITabBarController {
 
     private func setupTabs() {
         let dataManager = DataManager()
-        let cosmeticListPresenter = CosmeticListPresenter(with: dataManager)
+        let cosmeticListPresenter = CosmeticListPresenter(dataManager: dataManager)
         let cosmeticListVC = CosmeticListViewController(presenter: cosmeticListPresenter)
         cosmeticListPresenter.view = cosmeticListVC
         let navigationController = UINavigationController(rootViewController: cosmeticListVC)
