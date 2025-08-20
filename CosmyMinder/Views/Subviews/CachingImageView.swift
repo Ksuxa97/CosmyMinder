@@ -51,7 +51,11 @@ final class CachingImageView: UIImageView {
     }
 
     private func cacheImage(id: UUID) {
-        CachingImageView.imageCache.setObject(self.image!, forKey: id as NSUUID)
+        guard let image = self.image else {
+            print("Не вышло закешировать изображение")
+            return
+        }
+        CachingImageView.imageCache.setObject(image, forKey: id as NSUUID)
     }
 
     private func loadImageFromCache(id: UUID) -> UIImage? {

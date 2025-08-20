@@ -18,7 +18,7 @@ class FieldStackView: UIStackView {
 
     let textField: ProductTextField
 
-    init (with title: String, placeholder: String = "", dataType: InputMode, isRequired: Bool = false) {
+    init (title: String, placeholder: String = "", dataType: InputMode) {
 
         self.inputLabel.text = title
         self.textField = ProductTextField(mode: dataType, placeholder: placeholder)

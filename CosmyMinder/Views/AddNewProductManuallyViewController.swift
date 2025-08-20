@@ -30,11 +30,28 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     }()
 
     private lazy var productImage = ImagePickerView(at: self)
-    private let productNameInput = FieldStackView(with: "Название: *", placeholder: "Введите название продукта", dataType: .text, isRequired: true)
-    private let productBrandInput = FieldStackView(with: "Бренд:", placeholder: "Введите бренд продукта", dataType: .text)
-    private let productionDateInput = FieldStackView(with: "Дата изготовления: *", dataType: .date, isRequired: true)
-    private let openDateInput = FieldStackView(with: "Дата открытия упаковки:", dataType: .date)
-    private let expiryDateInput = FieldStackView(with: "Дата истечения годности: *", dataType: .date, isRequired: true)
+    private let productNameInput = FieldStackView(
+        title: "Название: *",
+        placeholder: "Введите название продукта",
+        dataType: .text
+    )
+    private let productBrandInput = FieldStackView(
+        title: "Бренд:",
+        placeholder: "Введите бренд продукта",
+        dataType: .text
+    )
+    private let productionDateInput = FieldStackView(
+        title: "Дата изготовления: *",
+        dataType: .date
+    )
+    private let openDateInput = FieldStackView(
+        title: "Дата открытия упаковки:",
+        dataType: .date
+    )
+    private let expiryDateInput = FieldStackView(
+        title: "Дата истечения годности: *",
+        dataType: .date
+    )
 
     private let saveButton: UIButton = {
         let button = UIButton(type: .roundedRect)
@@ -74,7 +91,6 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     }
 
     @objc private func saveButtonPressed() {
-
         let name = productNameInput.getTextFieldValue()
         let brand = productBrandInput.getTextFieldValue()
         let productionDate = productionDateInput.getTextFieldValue()
