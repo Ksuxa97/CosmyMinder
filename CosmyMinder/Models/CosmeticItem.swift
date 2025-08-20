@@ -5,7 +5,6 @@
 //  Created by Kseniya Semenova on 23.07.2025.
 //
 import Foundation
-import UIKit
 
 struct CosmeticItem: Codable {
     let id: UUID
