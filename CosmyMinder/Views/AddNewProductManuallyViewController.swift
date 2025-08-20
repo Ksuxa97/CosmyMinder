@@ -69,8 +69,8 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         expiryDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
     }
 
-    func enableSaveButton() {
-        saveButton.isEnabled = true
+    func updateSaveButtonState(isEnabled: Bool) {
+        saveButton.isEnabled = isEnabled
     }
 
     @objc private func saveButtonPressed() {

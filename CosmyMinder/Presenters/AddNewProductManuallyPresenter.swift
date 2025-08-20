@@ -53,7 +53,10 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
         if let name, !name.isEmpty,
            let productionDate, !productionDate.isEmpty,
            let expiryDate, !expiryDate.isEmpty {
-            view?.enableSaveButton()
+            view?.updateSaveButtonState(isEnabled: true)
+        }
+        else {
+            view?.updateSaveButtonState(isEnabled: false)
         }
     }
 }

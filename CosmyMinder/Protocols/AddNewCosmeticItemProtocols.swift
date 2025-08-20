@@ -22,7 +22,7 @@ protocol AddNewProductManuallyPresenterProtocol {
 }
 
 protocol AddNewProductManuallyViewProtocol: AnyObject {
-    func enableSaveButton()
+    func updateSaveButtonState(isEnabled: Bool)
 }
 
 protocol ProductAddedDelegate: AnyObject {
