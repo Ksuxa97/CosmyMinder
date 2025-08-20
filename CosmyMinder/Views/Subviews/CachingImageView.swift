@@ -10,18 +10,16 @@ import UIKit
 
 final class CachingImageView: UIImageView {
 
-    private static let imageCache = NSCache<NSUUID, UIImage>()
+    private static let imageCache = NSCache<NSURL, UIImage>()
     private let fileManagerQueue = DispatchQueue(label: "fileManagerQueue", qos: .userInitiated)
     private var currentURL: URL?
 
-    func laodImage(_ itemID: UUID, url: URL? = nil) {
-        if let image = loadImageFromCache(id: itemID) {
+    func laodImage(url: URL) {
+        if let image = loadImageFromCache(url: url) {
             self.image = image
-        }
-
-        if let url = url {
+        } else {
             loadImageByURL(url)
-            cacheImage(id: itemID)
+            cacheImage(url: url)
         }
         return
     }
@@ -50,16 +48,16 @@ final class CachingImageView: UIImageView {
         }
     }
 
-    private func cacheImage(id: UUID) {
+    private func cacheImage(url: URL) {
         guard let image = self.image else {
             print("Не вышло закешировать изображение")
             return
         }
-        CachingImageView.imageCache.setObject(image, forKey: id as NSUUID)
+        CachingImageView.imageCache.setObject(image, forKey: url as NSURL)
     }
 
-    private func loadImageFromCache(id: UUID) -> UIImage? {
-        return CachingImageView.imageCache.object(forKey: id as NSUUID)
+    private func loadImageFromCache(url: URL) -> UIImage? {
+        return CachingImageView.imageCache.object(forKey: url as NSURL)
     }
 
     private func loadImageByURL(_ url: URL, placeholder: UIImage? = nil) {

@@ -54,7 +54,8 @@ final class CosmeticItemCell: UITableViewCell {
     func configure(with item: CosmeticItem) -> Void {
         productNameLabel.text = item.name
         brandNameLabel.text = item.brand
-        productImageView.laodImage(item.id, url: item.imageURL)
+        guard let url = item.imageURL else { return }
+        productImageView.laodImage(url: url)
     }
 
     private func setupCellUI() {
