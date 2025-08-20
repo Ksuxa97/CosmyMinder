@@ -14,11 +14,11 @@ final class CachingImageView: UIImageView {
     private let fileManagerQueue = DispatchQueue(label: "fileManagerQueue", qos: .userInitiated)
     private var currentURL: URL?
 
-    func laodImage(url: URL) {
+    func laodImage(url: URL, placeholder: UIImage? = UIImage(systemName: "photo")) {
         if let image = loadImageFromCache(url: url) {
             self.image = image
         } else {
-            loadImageByURL(url)
+            loadImageByURL(url, placeholder: placeholder)
             cacheImage(url: url)
         }
         return
@@ -60,25 +60,25 @@ final class CachingImageView: UIImageView {
         return CachingImageView.imageCache.object(forKey: url as NSURL)
     }
 
-    private func loadImageByURL(_ url: URL, placeholder: UIImage? = nil) {
+    private func loadImageByURL(_ url: URL, placeholder: UIImage?) {
         currentURL = url
-        self.image = UIImage(systemName: "photo")
+        self.image = placeholder
 
         DispatchQueue.global().async { [weak self] in
-
             guard let data = try? Data(contentsOf: url) else {return}
-            guard self?.currentURL == url else {
+            guard let self else { return }
+            guard self.currentURL == url else {
                 print("URL changed during download, ignoring result")
                 return
             }
 
             guard let image = UIImage(data: data) else { return }
             DispatchQueue.main.async {
-                guard self?.currentURL == url else {
+                guard self.currentURL == url else {
                     print("URL changed before setting image, ignoring result")
                     return
                 }
-                self?.image = image
+                self.image = image
             }
         }
     }
