@@ -14,12 +14,6 @@ enum InputMode {
 
 class ProductTextField: UITextField {
 
-    static var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yy"
-        return formatter
-    }()
-
     private lazy var datePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -109,63 +103,69 @@ class ProductTextField: UITextField {
     private func syncDatePickerWithText() {
         if inputView == nil {
             guard let text = self.text else { return }
-            if let date = ProductTextField.dateFormatter.date(from: text) {
+            if let date = DateFormatterManager.shared.ddMMyyFormatter.date(from: text) {
                 datePicker.date = date
             }
         } else {
-            text = ProductTextField.dateFormatter.string(from: datePicker.date)
+            text = DateFormatterManager.shared.ddMMyyFormatter.string(from: datePicker.date)
         }
     }
+}
 
+// MARK: DateField formatting
+extension ProductTextField {
     private func formatDateTextInput() {
-        guard var text = self.text else { return }
-        text = text.filter{ $0.isNumber }
-        if text.count > 6 {
-            text = String(text.prefix(6))
-        }
+        guard let inputText = text else { return }
+        let digits = inputText.filter { $0.isNumber }.prefix(6)
+        let validatedDigits = validateDigits(String(digits))
+        let formattedText = formatWithDots(validatedDigits)
 
-        var formattedText = ""
-        for (index, character) in text.enumerated() {
-            if index == 2 || index == 4 {
-                formattedText.append(".")
-            }
-            formattedText.append(character)
-        }
-        self.text = formattedText
-
-        validatePartialDate()
+        text = formattedText
     }
 
-    private func validatePartialDate() {
-        guard let text = self.text else { return }
-        let digits = text.filter { $0.isNumber }
+    private func validateDigits(_ digits: String) -> String {
+        var result = digits
 
+        // Валидация дня
         if digits.count >= 2 {
             let day = Int(digits.prefix(2)) ?? 0
             if day == 0 || day > 31 {
-                self.text = String(digits.prefix(1)) // удаляем неправильный символ
-                return
+                result = String(digits.prefix(1))
+                return result
             }
         }
 
+        // Валидация месяца
         if digits.count >= 4 {
             let month = Int(digits.dropFirst(2).prefix(2)) ?? 0
             if month == 0 || month > 12 {
-                self.text = text.prefix(3) + ""
-                return
+                result = String(digits.prefix(3))
+                return result
             }
         }
 
+        // Валидация полной даты
         if digits.count == 6 {
             let day = Int(digits.prefix(2)) ?? 0
             let month = Int(digits.dropFirst(2).prefix(2)) ?? 0
             let year = Int(digits.dropFirst(4)) ?? 0
 
-            let str = String(format: "%02d.%02d.%02d", day, month, year)
-            if ProductTextField.dateFormatter.date(from: str) == nil {
-                self.text = String(digits.dropLast())
-                formatDateTextInput()
+            let dateString = String(format: "%02d.%02d.%02d", day, month, year)
+            if DateFormatterManager.shared.ddMMyyFormatter.date(from: dateString) == nil {
+                result = String(digits.prefix(5))
             }
         }
+        return result
+    }
+
+    private func formatWithDots(_ digits: String) -> String {
+        var formattedText = ""
+        for (index, character) in digits.enumerated() {
+            if index == 2 || index == 4 {
+                formattedText.append(".")
+            }
+            formattedText.append(character)
+        }
+        return formattedText
     }
 }

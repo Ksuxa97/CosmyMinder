@@ -39,8 +39,7 @@ class FieldStackView: UIStackView {
     }
 
     func getTextFieldValue() -> String {
-        guard let text = textField.text else { return "" }
-        return text
+        return textField.text ?? ""
     }
 
     private func setupUI() {
