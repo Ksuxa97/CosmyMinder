@@ -78,11 +78,11 @@ class ProductTextField: UITextField {
     }
 
     @objc private func toggleDatePicker() {
-        if self.inputView == nil {
+        if inputView == nil {
             self.inputView = datePicker
             self.toolBar.items?.first?.title = "Ввести текст"
         } else {
-            self.inputView = nil
+            inputView = nil
             toolBar.items?.first?.title = "Выбрать дату"
         }
         reloadInputViews()
@@ -107,7 +107,7 @@ class ProductTextField: UITextField {
     }
 
     private func syncDatePickerWithText() {
-        if self.inputView == nil {
+        if inputView == nil {
             guard let text = self.text else { return }
             if let date = ProductTextField.dateFormatter.date(from: text) {
                 datePicker.date = date
