@@ -11,40 +11,13 @@ import UIKit
 final class CachingImageView: UIImageView {
 
     private static let imageCache = NSCache<NSURL, UIImage>()
-    private let fileManagerQueue = DispatchQueue(label: "fileManagerQueue", qos: .userInitiated)
     private var currentURL: URL?
 
-    func laodImage(url: URL, placeholder: UIImage? = UIImage(systemName: "photo")) {
+    func laodImage(url: URL, placeholder: UIImage? = UIImage(systemName: "picture")) {
         if let image = loadImageFromCache(url: url) {
             self.image = image
         } else {
             loadImageByURL(url, placeholder: placeholder)
-            cacheImage(url: url)
-        }
-        return
-    }
-
-    func saveLocalImage(fileName: String, completion: @escaping (URL?) -> Void) {
-        let filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName, conformingTo: .jpeg)
-
-        guard let imageData = self.image?.jpegData(compressionQuality: 0.7) else {
-            print("Ошибка при сохранении изображения")
-            completion(nil)
-            return
-        }
-
-        fileManagerQueue.async {
-            do {
-                try imageData.write(to: filePath)
-                DispatchQueue.main.async {
-                    completion(filePath)
-                }
-            } catch {
-                print("Ошибка при сохранении изображения")
-                DispatchQueue.main.async {
-                    completion(nil)
-                }
-            }
         }
     }
 
@@ -79,6 +52,7 @@ final class CachingImageView: UIImageView {
                     return
                 }
                 self.image = image
+                self.cacheImage(url: url)
             }
         }
     }

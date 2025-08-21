@@ -10,7 +10,7 @@ import UIKit
 final class AddNewProductManuallyViewController: UIViewController, AddNewProductManuallyViewProtocol {
 
     private let presenter: AddNewProductManuallyPresenterProtocol
-    private weak var activeTextField: ProductTextField?
+    private weak var activeTextField: UITextField?
     private var originalContentOffset: CGPoint?
 
     private let productStackView: UIStackView = {
@@ -154,53 +154,37 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 extension AddNewProductManuallyViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        activeTextField = textField as? ProductTextField
+        activeTextField = textField
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        activeTextField?.resignFirstResponder()
+        textField.resignFirstResponder()
         return true
     }
 
     @objc private func keyboardWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
-              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
-              let activeTextField = activeTextField else {
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             print("⚠️ Keyboard frame or active text field is nil")
             return
         }
 
-        originalContentOffset = scrollView.contentOffset
-        let convertedKeyboardFrame = scrollView.convert(keyboardFrame, from: nil)
-        let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: scrollView)
-        guard !convertedKeyboardFrame.isNull, !textFieldFrame.isNull,
-              !convertedKeyboardFrame.minY.isNaN, !textFieldFrame.maxY.isNaN else {
-            print("⚠️ Invalid frames in keyboardWillShow!")
-            return
+        if let activeTextField = activeTextField {
+            let activeFieldHeight = keyboardFrame.height - activeTextField.frame.maxY
+            scrollView.contentInset.bottom = activeFieldHeight
+            scrollView.verticalScrollIndicatorInsets.bottom = activeFieldHeight
+            
+            let textFieldRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
+            scrollView.scrollRectToVisible(textFieldRect, animated: true)
         }
-        let overlapHeight = textFieldFrame.maxY - convertedKeyboardFrame.minY
-        guard overlapHeight > 0 else { return }
-
-        let newOffsetY = scrollView.contentOffset.y + overlapHeight + 20
-        guard newOffsetY.isFinite else { return }
-        guard !overlapHeight.isNaN, !newOffsetY.isNaN else {
-            print("⚠️ Invalid geometry calculation!")
-            return
-        }
-        scrollView.setContentOffset(CGPoint(x: 0, y: newOffsetY), animated: true)
     }
 
     @objc private func keyboardWillHide(_ notification: Notification) {
-        if let originalOffset = originalContentOffset {
-            scrollView.setContentOffset(originalOffset, animated: true)
-        }
-        scrollView.contentInset = .zero
-        scrollView.scrollIndicatorInsets = .zero
-        originalContentOffset = nil
+        scrollView.contentInset.bottom = .zero
+        scrollView.verticalScrollIndicatorInsets.bottom = .zero
     }
 
     private func setupKeyboardObservers() {
-
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),

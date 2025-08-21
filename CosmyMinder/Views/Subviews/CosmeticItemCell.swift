@@ -15,7 +15,7 @@ final class CosmeticItemCell: UITableViewCell {
         let imageView = CachingImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "photo")
+        imageView.image = UIImage(systemName: "picture")
         imageView.tintColor = .gray
         return imageView
     }()
@@ -54,8 +54,13 @@ final class CosmeticItemCell: UITableViewCell {
     func configure(with item: CosmeticItem) -> Void {
         productNameLabel.text = item.name
         brandNameLabel.text = item.brand
-        guard let url = item.imageURL else { return }
-        productImageView.laodImage(url: url)
+        if let url = item.imageURL {
+            productImageView.laodImage(url: url)
+            return
+        }
+        if let data = item.imageData {
+            productImageView.image = UIImage(data: data)
+        }
     }
 
     private func setupCellUI() {

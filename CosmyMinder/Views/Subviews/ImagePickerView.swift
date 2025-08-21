@@ -70,7 +70,7 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         picker.dismiss(animated: true)
     }
 
-    func getImage() -> CachingImageView? {
-        return imageView
+    func getImage() -> UIImage? {
+        return imageView.image
     }
 }

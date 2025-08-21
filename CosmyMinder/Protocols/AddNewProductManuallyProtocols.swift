@@ -8,16 +8,8 @@
 import Foundation
 import UIKit
 
-protocol AddNewCosmeticItemPresenterProtocol {
-    
-}
-
-protocol AddNewCosmeticItemViewProtocol: AnyObject {
-
-}
-
 protocol AddNewProductManuallyPresenterProtocol {
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: CachingImageView?)
+    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: UIImage?)
     func validateInput(name: String?, productionDate: String?, expiryDate: String?) -> Void
 }
 

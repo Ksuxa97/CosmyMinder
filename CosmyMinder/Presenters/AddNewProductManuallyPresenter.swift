@@ -19,7 +19,7 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
         self.dataManager = dataManager
     }
 
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: CachingImageView?) {
+    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: UIImage?) {
 
         let id = UUID()
         guard let productionDate = DateFormatterManager.shared.ddMMyyFormatter.date(from: productionDate) else {
@@ -31,32 +31,31 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
             print("Invalid expiry date")
             return
         }
+        let localImageData = image?.jpegData(compressionQuality: 0.5)
 
-        image?.saveLocalImage(fileName: "image_\(id)") { url in
-            let imageLocalPath = url ?? nil
-
-            let cosmeticItem = CosmeticItem(
-                id: id,
-                name: name,
-                brand: brand,
-                productionDate: productionDate,
-                openDate: openDate,
-                expiryDate: expiryDate,
-                imageURL: imageLocalPath
-            )
-            self.dataManager.addCosmeticItem(cosmeticItem)
-            self.delegate?.newProductDidAdded()
-        }
+        let cosmeticItem = CosmeticItem(
+            id: id,
+            name: name,
+            brand: brand,
+            productionDate: productionDate,
+            openDate: openDate,
+            expiryDate: expiryDate,
+            imageURL: nil,
+            imageData: localImageData
+        )
+        self.dataManager.addCosmeticItem(cosmeticItem)
+        self.delegate?.newProductDidAdded()
     }
 
     func validateInput(name: String?, productionDate: String?, expiryDate: String?) {
-        if let name, !name.isEmpty,
-           let productionDate, !productionDate.isEmpty,
-           let expiryDate, !expiryDate.isEmpty {
-            view?.updateSaveButtonState(isEnabled: true)
+        let trimmedName = name?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedProductionDate = productionDate?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedExpiryDate = expiryDate?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let isValid = [trimmedName, trimmedProductionDate, trimmedExpiryDate]
+            .allSatisfy { str in
+            guard let str = str else { return false }
+            return !str.isEmpty
         }
-        else {
-            view?.updateSaveButtonState(isEnabled: false)
-        }
+        view?.updateSaveButtonState(isEnabled: isValid)
     }
 }
