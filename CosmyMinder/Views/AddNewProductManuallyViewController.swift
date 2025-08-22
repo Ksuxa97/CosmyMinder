@@ -164,19 +164,17 @@ extension AddNewProductManuallyViewController: UITextFieldDelegate {
 
     @objc private func keyboardWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
-              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+              let activeTextField = activeTextField else {
             print("⚠️ Keyboard frame or active text field is nil")
             return
         }
+        let activeFieldHeight = keyboardFrame.height - activeTextField.frame.maxY
+        scrollView.contentInset.bottom = activeFieldHeight
+        scrollView.verticalScrollIndicatorInsets.bottom = activeFieldHeight
 
-        if let activeTextField = activeTextField {
-            let activeFieldHeight = keyboardFrame.height - activeTextField.frame.maxY
-            scrollView.contentInset.bottom = activeFieldHeight
-            scrollView.verticalScrollIndicatorInsets.bottom = activeFieldHeight
-            
-            let textFieldRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
-            scrollView.scrollRectToVisible(textFieldRect, animated: true)
-        }
+        let textFieldRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
+        scrollView.scrollRectToVisible(textFieldRect, animated: true)
     }
 
     @objc private func keyboardWillHide(_ notification: Notification) {

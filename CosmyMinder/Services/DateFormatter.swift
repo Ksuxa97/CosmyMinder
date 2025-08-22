@@ -6,14 +6,10 @@
 //
 import Foundation
 
-class DateFormatterManager {
-    static let shared = DateFormatterManager()
-
-    let ddMMyyFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "dd.MM.yy"
-            return formatter
-        }()
-
-    private init() {}
+extension DateFormatter {
+    static let ddMMYY: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yy"
+        return formatter
+    }()
 }

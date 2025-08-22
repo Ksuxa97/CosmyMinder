@@ -48,14 +48,9 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
     }
 
     func validateInput(name: String?, productionDate: String?, expiryDate: String?) {
-        let trimmedName = name?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedProductionDate = productionDate?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedExpiryDate = expiryDate?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let isValid = [trimmedName, trimmedProductionDate, trimmedExpiryDate]
-            .allSatisfy { str in
-            guard let str = str else { return false }
-            return !str.isEmpty
-        }
+        let isValid = [name, productionDate, expiryDate]
+            .map { $0?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "" }
+            .allSatisfy { !$0.isEmpty }
         view?.updateSaveButtonState(isEnabled: isValid)
     }
 }
