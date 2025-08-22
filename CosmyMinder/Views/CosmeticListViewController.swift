@@ -7,8 +7,7 @@
 
 import UIKit
 
-final class CosmeticListViewController: UIViewController, CosmeticListViewProtocol {
-
+final class CosmeticListViewController: UIViewController, CosmeticListViewProtocol, ProductAddedDelegate {
     private let presenter: CosmeticListPresenterProtocol
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -32,6 +31,12 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
         setupUI()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.updateCosmeticList()
+        tableView.reloadData()
+    }
+
     // MARK: building List
     private func setupUI() {
         title = "Моя косметика"
@@ -53,7 +58,6 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
     }
 
     private func setupNavigationBar() {
-        // Кнопка добавления в навбаре
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
@@ -96,8 +100,17 @@ extension CosmeticListViewController {
     }
 
     private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
-        let addNewProductManuallyVC = AddNewProductManuallyViewController()
+        let dataManager = DataManager()
+        let addNewProductManuallyPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
+        let addNewProductManuallyVC = AddNewProductManuallyViewController(presenter: addNewProductManuallyPresenter)
+        addNewProductManuallyPresenter.view = addNewProductManuallyVC
+        addNewProductManuallyPresenter.delegate = self
         navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
+    }
+
+    func newProductDidAdded() {
+        presenter.updateCosmeticList()
+        tableView.reloadData()
     }
 }
 

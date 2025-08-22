@@ -9,8 +9,8 @@ import UIKit
 
 final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    private lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
+    private lazy var imageView: CachingImageView = {
+        let imageView = CachingImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
         imageView.clipsToBounds = true
@@ -68,5 +68,9 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         }
         imageView.image = selectedImage
         picker.dismiss(animated: true)
+    }
+
+    func getImage() -> UIImage? {
+        return imageView.image
     }
 }

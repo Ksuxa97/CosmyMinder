@@ -14,8 +14,18 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
         cosmeticItems.count
     }
     
-    private var cosmeticItems = fakeCosmeticItems
-    
+    private var cosmeticItems: [CosmeticItem] = []
+    private let dataManager: DataManagerProtocol
+
+    init(dataManager: DataManagerProtocol) {
+        self.dataManager = dataManager
+        cosmeticItems = dataManager.getCosmeticsList()
+    }
+
+    func updateCosmeticList() {
+        cosmeticItems = dataManager.getCosmeticsList()
+    }
+
     func getCosmeticItem(at index: Int) -> CosmeticItem? {
         guard index >= 0 && index < cosmeticItems.count else {
             return nil

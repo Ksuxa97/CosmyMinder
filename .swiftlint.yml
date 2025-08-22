@@ -1,0 +1,23 @@
+# Включенные правила (можно отключать конкретные правила)
+disabled_rules:
+  - line_length
+  - function_body_length
+  - file_length
+  - type_body_length
+
+# Настройки правил
+opt_in_rules:
+  - empty_count
+  - closure_spacing
+
+# Исключения
+excluded:
+  - Pods
+  - DerivedData
+  - fastlane
+  - Build
+  - Carthage
+  - .build
+
+# Дополнительные настройки
+reporter: "xcode" # Формат отчетов

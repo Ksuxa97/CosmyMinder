@@ -15,14 +15,13 @@ final class MainTabBarController: UITabBarController {
     }
 
     private func setupTabs() {
-        // Вкладка с косметикой
-        let cosmeticListPresenter = CosmeticListPresenter()
+        let dataManager = DataManager()
+        let cosmeticListPresenter = CosmeticListPresenter(dataManager: dataManager)
         let cosmeticListVC = CosmeticListViewController(presenter: cosmeticListPresenter)
         cosmeticListPresenter.view = cosmeticListVC
         let navigationController = UINavigationController(rootViewController: cosmeticListVC)
         navigationController.tabBarItem = UITabBarItem(title: "Косметика", image: UIImage(systemName: "sparkles"), tag: 0)
 
-        // Заглушки для будущих экранов
         let placeholderVC = UIViewController()
         placeholderVC.view.backgroundColor = .systemBackground
         placeholderVC.tabBarItem = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person.crop.circle"), tag: 1)

@@ -12,15 +12,7 @@ enum InputMode {
     case date
 }
 
-ProductTextField.ini
-
 class ProductTextField: UITextField {
-
-    static var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yy"
-        return formatter
-    }()
 
     private lazy var datePicker = {
         let datePicker = UIDatePicker()
@@ -31,7 +23,7 @@ class ProductTextField: UITextField {
         return datePicker
     }()
     private lazy var toolBar = {
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40))
         toolBar.barStyle = .default
         toolBar.isTranslucent = true
         toolBar.translatesAutoresizingMaskIntoConstraints = false
@@ -40,79 +32,140 @@ class ProductTextField: UITextField {
 
     init(mode: InputMode, placeholder: String? = nil) {
         super.init(frame: .zero)
-        keyboardType = .numberPad
         translatesAutoresizingMaskIntoConstraints = false
 
         switch mode {
         case .text:
             self.placeholder = placeholder
+            keyboardType = .default
+            returnKeyType = .done
+
         case .date:
             self.placeholder = "DD.MM.YY"
-            inputView = datePicker
-            setupInputAccessory()
-            addTarget(self, action: #selector(dateFieldDidBeginEditing), for: .editingDidBegin)
+            keyboardType = .numberPad
             addTarget(self, action: #selector(dateFieldDidChange), for: .editingChanged)
-
-            break
+            setupInputAccessory()
         }
-        setupStyle()
+
+        borderStyle = .roundedRect
+        autocorrectionType = .no
+        smartDashesType = .no
+        smartQuotesType = .no
+        smartInsertDeleteType = .no
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupStyle() {
-        borderStyle = .roundedRect
-    }
-
-    private func setupDatePicker() {
-        inputView = datePicker
-    }
-
     private func setupInputAccessory() {
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let toggleButton = UIBarButtonItem(
+                    title: "Выбрать дату",
+                    style: .plain,
+                    target: self,
+                    action: #selector(toggleDatePicker)
+                )
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneTapped))
-        toolBar.setItems([flexibleSpace, doneButton], animated: true)
-        toolBar.sizeToFit()
+        toolBar.setItems([toggleButton, flexibleSpace, doneButton], animated: true)
         inputAccessoryView = toolBar
     }
 
+    @objc private func toggleDatePicker() {
+        if inputView == nil {
+            self.inputView = datePicker
+            self.toolBar.items?.first?.title = "Ввести текст"
+        } else {
+            inputView = nil
+            toolBar.items?.first?.title = "Выбрать дату"
+        }
+        reloadInputViews()
+    }
+
     @objc private func dateChanged() {
-        updateTextFromPicker()
+        syncDatePickerWithText()
     }
 
     @objc private func doneTapped() {
-        updateTextFromPicker()
+        syncDatePickerWithText()
         resignFirstResponder()
     }
 
     @objc private func dateFieldDidBeginEditing() {
-        updateTextFromPicker()
+        syncDatePickerWithText()
     }
 
     @objc func dateFieldDidChange() {
         formatDateTextInput()
+        syncDatePickerWithText()
     }
 
-    private func updateTextFromPicker() {
-        text = ProductTextField.dateFormatter.string(from: datePicker.date)
+    private func syncDatePickerWithText() {
+        if inputView == nil {
+            guard let text = self.text else { return }
+            if let date = DateFormatterManager.shared.ddMMyyFormatter.date(from: text) {
+                datePicker.date = date
+            }
+        } else {
+            text = DateFormatterManager.shared.ddMMyyFormatter.string(from: datePicker.date)
+        }
     }
+}
 
+// MARK: DateField formatting
+extension ProductTextField {
     private func formatDateTextInput() {
-        guard var text = self.text else { return }
-        text = text.filter{ $0.isNumber }
-        if text.count > 6 {
-            text = String(text.prefix(6))
+        guard let inputText = text else { return }
+        let digits = inputText.filter { $0.isNumber }.prefix(6)
+        let validatedDigits = validateDigits(String(digits))
+        let formattedText = formatWithDots(validatedDigits)
+
+        text = formattedText
+    }
+
+    private func validateDigits(_ digits: String) -> String {
+        var result = digits
+
+        // Валидация дня
+        if digits.count >= 2 {
+            let day = Int(digits.prefix(2)) ?? 0
+            if day == 0 || day > 31 {
+                result = String(digits.prefix(1))
+                return result
+            }
         }
 
+        // Валидация месяца
+        if digits.count >= 4 {
+            let month = Int(digits.dropFirst(2).prefix(2)) ?? 0
+            if month == 0 || month > 12 {
+                result = String(digits.prefix(3))
+                return result
+            }
+        }
+
+        // Валидация полной даты
+        if digits.count == 6 {
+            let day = Int(digits.prefix(2)) ?? 0
+            let month = Int(digits.dropFirst(2).prefix(2)) ?? 0
+            let year = Int(digits.dropFirst(4)) ?? 0
+
+            let dateString = String(format: "%02d.%02d.%02d", day, month, year)
+            if DateFormatterManager.shared.ddMMyyFormatter.date(from: dateString) == nil {
+                result = String(digits.prefix(5))
+            }
+        }
+        return result
+    }
+
+    private func formatWithDots(_ digits: String) -> String {
         var formattedText = ""
-        for (index, character) in text.enumerated() {
+        for (index, character) in digits.enumerated() {
             if index == 2 || index == 4 {
                 formattedText.append(".")
             }
             formattedText.append(character)
         }
-        self.text = formattedText
+        return formattedText
     }
 }
