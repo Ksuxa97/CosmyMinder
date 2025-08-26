@@ -22,12 +22,12 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
     func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: UIImage?) {
 
         let id = UUID()
-        guard let productionDate = DateFormatterManager.shared.ddMMyyFormatter.date(from: productionDate) else {
+        guard let productionDate = DateFormatter.ddMMYY.date(from: productionDate) else {
             print("Invalid production date")
             return
         }
-        let openDate = DateFormatterManager.shared.ddMMyyFormatter.date(from: openDate) ?? nil
-        guard let expiryDate = DateFormatterManager.shared.ddMMyyFormatter.date(from: expiryDate) else {
+        let openDate = DateFormatter.ddMMYY.date(from: openDate) ?? nil
+        guard let expiryDate = DateFormatter.ddMMYY.date(from: expiryDate) else {
             print("Invalid expiry date")
             return
         }

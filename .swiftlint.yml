@@ -10,6 +10,9 @@ opt_in_rules:
   - empty_count
   - closure_spacing
 
+line_length: 120
+file_length: 500
+
 # Исключения
 excluded:
   - Pods

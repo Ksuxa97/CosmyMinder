@@ -103,11 +103,11 @@ class ProductTextField: UITextField {
     private func syncDatePickerWithText() {
         if inputView == nil {
             guard let text = self.text else { return }
-            if let date = DateFormatterManager.shared.ddMMyyFormatter.date(from: text) {
+            if let date = DateFormatter.ddMMYY.date(from: text) {
                 datePicker.date = date
             }
         } else {
-            text = DateFormatterManager.shared.ddMMyyFormatter.string(from: datePicker.date)
+            text = DateFormatter.ddMMYY.string(from: datePicker.date)
         }
     }
 }
@@ -151,7 +151,7 @@ extension ProductTextField {
             let year = Int(digits.dropFirst(4)) ?? 0
 
             let dateString = String(format: "%02d.%02d.%02d", day, month, year)
-            if DateFormatterManager.shared.ddMMyyFormatter.date(from: dateString) == nil {
+            if DateFormatter.ddMMYY.date(from: dateString) == nil {
                 result = String(digits.prefix(5))
             }
         }

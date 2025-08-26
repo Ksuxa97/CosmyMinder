@@ -11,7 +11,6 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: UITextField?
-    private var originalContentOffset: CGPoint?
 
     private let productStackView: UIStackView = {
         let stackView = UIStackView()

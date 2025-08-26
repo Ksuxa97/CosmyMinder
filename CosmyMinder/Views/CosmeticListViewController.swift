@@ -92,7 +92,7 @@ extension CosmeticListViewController {
 
         actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
         actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default, handler: showAddNewProductByQueryView))
         actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default, handler: showAddNewProductManuallyView))
         actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
 
@@ -108,9 +108,14 @@ extension CosmeticListViewController {
         navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
     }
 
-    func newProductDidAdded() {
-        presenter.updateCosmeticList()
-        tableView.reloadData()
+    private func showAddNewProductByQueryView(_ action: UIAlertAction) -> Void {
+        let networkService = NetworkService()
+        let beautyService = BeautyFactsService(networkService: networkService)
+        let addAddNewProductByQueryPresenter = AddNewProductByQueryPresenter(service: beautyService)
+        let addAddNewProductByQueryVC = AddNewProductByQueryViewController(presenter: addAddNewProductByQueryPresenter)
+        addAddNewProductByQueryPresenter.view = addAddNewProductByQueryVC
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.pushViewController(addAddNewProductByQueryVC, animated: true)
     }
 }
 
@@ -144,5 +149,10 @@ extension CosmeticListViewController: UITableViewDataSource {
 
         cell.configure(with: item)
         return cell
+    }
+
+    func newProductDidAdded() {
+        presenter.updateCosmeticList()
+        tableView.reloadData()
     }
 }
