@@ -44,6 +44,10 @@ class FieldStackView: UIView {
         return textField.text ?? ""
     }
 
+    func setTextFieldValue(_ value: String) {
+        textField.text = value
+    }
+
     private func setupUI() {
         self.addSubview(fieldStack)
         fieldStack.addArrangedSubview(inputLabel)

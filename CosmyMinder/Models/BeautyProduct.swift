@@ -14,7 +14,6 @@ struct BeautyProduct: Codable {
     let genericName: String?
     let brand: String?
     let expiryDate: String?
-    //let quantity: Any?
     let imageURL: String?
 
     enum CodingKeys: String, CodingKey {
@@ -22,7 +21,6 @@ struct BeautyProduct: Codable {
         case genericName = "generic_name"
         case brand = "brands"
         case expiryDate = "expiration_date"
-        //case quantity = "product_quantity"
         case imageURL = "image_url"
     }
 }

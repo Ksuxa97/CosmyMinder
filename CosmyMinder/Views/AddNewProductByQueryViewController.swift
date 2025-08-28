@@ -42,6 +42,31 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
         fatalError("init(coder:) has not been implemented")
     }
 
+    func showAlert() -> Void {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Не вышло загрузить данные",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+        present(alert, animated: true)
+    }
+
+    func navigateToProductDetails(for product: BeautyProduct, with image: UIImage?) {
+        let dataManager = DataManager()
+        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
+        let productDetailsVC = AddNewProductManuallyViewController(presenter: productDetailsPresenter)
+        productDetailsPresenter.view = productDetailsVC
+
+        productDetailsVC.fieldsPrefill(
+            image,
+            product.productName ?? "",
+            product.brand ?? "", "", "",
+            product.expiryDate ?? "")
+        navigationController?.pushViewController(productDetailsVC, animated: true)
+    }
+
     private func setupUI() {
         view.backgroundColor = .systemBackground
         
@@ -49,6 +74,7 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
         searchBar.delegate = self
         view.addSubview(searchBar)
 
+        cosmeticTableView.delegate = self
         cosmeticTableView.dataSource = self
         cosmeticTableView.register(CosmeticItemCell.self, forCellReuseIdentifier: CosmeticItemCell.identifier)
         view.addSubview(cosmeticTableView)
@@ -63,7 +89,6 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
             cosmeticTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             cosmeticTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-
     }
 }
 
@@ -89,8 +114,18 @@ extension AddNewProductByQueryViewController: UITableViewDataSource {
         return cell
     }
 
-    func updateList() {
+    func updateSearchResults() {
         cosmeticTableView.reloadData()
+    }
+}
+
+extension AddNewProductByQueryViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let cell = tableView.cellForRow(at: indexPath) as? CosmeticItemCell
+        let image = cell?.getCellImage()
+        presenter.didSelectCosmeticItem(at: indexPath.row, and: image)
     }
 }
 

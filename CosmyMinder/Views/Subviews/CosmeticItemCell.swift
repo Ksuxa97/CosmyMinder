@@ -63,6 +63,10 @@ final class CosmeticItemCell: UITableViewCell {
         }
     }
 
+    func getCellImage() -> UIImage? {
+        return productImageView.image
+    }
+
     private func setupCellUI() {
         contentView.addSubview(productImageView)
         contentView.addSubview(productNameLabel)

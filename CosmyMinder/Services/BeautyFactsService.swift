@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol BeautyFactsServiceProtocol {
-    func searchProducts(query: String, completion: @escaping (Result<[BeautyProduct], Error>) -> Void)
-}
-
 final class BeautyFactsService: BeautyFactsServiceProtocol {
 
     private let networkService: NetworkService
@@ -33,5 +29,28 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
                     completion(.failure(error))
             }
         }
+    }
+
+    func convertToCosmeticItem(product: BeautyProduct) -> CosmeticItem {
+        var expiryDate: Date? = nil
+        var url: URL? = nil
+        if let date = product.expiryDate {
+            expiryDate = DateFormatter.ddMMYY.date(from: date)
+        }
+        if let urlString = product.imageURL {
+            url = URL(string: urlString)
+        }
+
+        let cosmeticItem = CosmeticItem (
+            id: nil,
+            name: product.productName ?? product.genericName ?? "Unknown Product",
+            brand: product.brand,
+            productionDate: nil,
+            openDate: nil,
+            expiryDate: expiryDate,
+            imageURL: url,
+            imageData: nil
+        )
+        return cosmeticItem
     }
 }

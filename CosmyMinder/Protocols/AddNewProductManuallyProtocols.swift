@@ -15,6 +15,7 @@ protocol AddNewProductManuallyPresenterProtocol {
 
 protocol AddNewProductManuallyViewProtocol: AnyObject {
     func updateSaveButtonState(isEnabled: Bool)
+    func fieldsPrefill(_ image: UIImage?, _ name: String, _ brand: String, _ productionDate: String, _ openDate: String, _ expiryDate: String)
 }
 
 protocol ProductAddedDelegate: AnyObject {

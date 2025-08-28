@@ -89,6 +89,17 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.isEnabled = isEnabled
     }
 
+    func fieldsPrefill(_ image: UIImage?, _ name: String, _ brand: String, _ productionDate: String, _ openDate: String, _ expiryDate: String) {
+        if let image = image {
+            productImage.setImage(image: image)
+        }
+        productNameInput.setTextFieldValue(name)
+        productBrandInput.setTextFieldValue(brand)
+        productionDateInput.setTextFieldValue(productionDate)
+        openDateInput.setTextFieldValue(openDate)
+        expiryDateInput.setTextFieldValue(expiryDate)
+    }
+
     @objc private func saveButtonPressed() {
         let name = productNameInput.getTextFieldValue()
         let brand = productBrandInput.getTextFieldValue()

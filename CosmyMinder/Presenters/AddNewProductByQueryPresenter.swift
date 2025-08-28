@@ -5,8 +5,9 @@
 //  Created by Kseniya Semenova on 22.08.2025.
 //
 import Foundation
+import UIKit
 
-class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol {
+final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol {
 
     var numberOfItems: Int {
         cosmeticItems.count
@@ -15,7 +16,7 @@ class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol {
     weak var view: AddNewProductByQueryViewProtocol?
     private let beautyService: BeautyFactsServiceProtocol
     private var cosmeticItems: [CosmeticItem] = []
-
+    private var productList: [BeautyProduct] = []
 
     init(service: BeautyFactsServiceProtocol) {
         self.beautyService = service
@@ -25,10 +26,10 @@ class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol {
         beautyService.searchProducts(query: query) { (result: Result<[BeautyProduct], Error>) in
             switch result {
             case .success(let products):
-                self.cosmeticItems.removeAll()
-                self.cosmeticItems = self.convertResponseToCosmeticItemList(products: products)
                 DispatchQueue.main.async {
-                    self.view?.updateList()
+                    self.productList = products
+                    self.prepareCosmeticItemList()
+                    self.view?.updateSearchResults()
                 }
             case .failure(let error):
                 print("Error: \(error)")
@@ -43,28 +44,19 @@ class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol {
         return cosmeticItems[index]
     }
 
-    private func convertResponseToCosmeticItemList(products: [BeautyProduct]) -> [CosmeticItem] {
-        for product in products {
-            var expiryDate: Date? = nil
-            var url: URL? = nil
-            if let date = product.expiryDate {
-                expiryDate = DateFormatter.ddMMYY.date(from: date)
-            }
-            if let urlString = product.imageURL {
-                url = URL(string: urlString)
-            }
-            let cosmeticItem = CosmeticItem (
-                id: nil,
-                name: product.productName,
-                brand: product.brand,
-                productionDate: nil,
-                openDate: nil,
-                expiryDate: expiryDate,
-                imageURL: url,
-                imageData: nil
-            )
-            cosmeticItems.append(cosmeticItem)
+    func didSelectCosmeticItem(at index: Int, and image: UIImage?) -> Void {
+        guard index >= 0 && index < cosmeticItems.count else {
+            view?.showAlert()
+            return
         }
-        return cosmeticItems
+        view?.navigateToProductDetails(for: productList[index], with: image)
+    }
+
+    private func prepareCosmeticItemList() {
+        cosmeticItems.removeAll()
+        for product in productList {
+            let item = beautyService.convertToCosmeticItem(product: product)
+            cosmeticItems.append(item)
+        }
     }
 }

@@ -33,6 +33,22 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         fatalError("init(coder:) has not been implemented")
     }
 
+    func getImage() -> UIImage? {
+        return imageView.image
+    }
+
+    func setImage(image: UIImage?) {
+        imageView.image = image
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            return
+        }
+        imageView.image = selectedImage
+        picker.dismiss(animated: true)
+    }
+
     private func setupUI() {
         self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 12
@@ -60,17 +76,5 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         picker.delegate = self
         picker.sourceType = .photoLibrary
         parentVC?.present(picker, animated: true)
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            return
-        }
-        imageView.image = selectedImage
-        picker.dismiss(animated: true)
-    }
-
-    func getImage() -> UIImage? {
-        return imageView.image
     }
 }
