@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum ImageSource {
+    case image(UIImage?)
+    case url(URL)
+}
+
 final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private lazy var imageView: CachingImageView = {
@@ -33,12 +38,18 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         fatalError("init(coder:) has not been implemented")
     }
 
-    func getImage() -> UIImage? {
-        return imageView.image
+    func getImage() -> ImageSource {
+        if let url = imageView.getImageURL() {
+            return .url(url)
+        } else {
+            return .image(imageView.image)
+        }
     }
 
-    func setImage(image: UIImage?) {
-        imageView.image = image
+    func setImage(imageURL: URL?) {
+        if let url = imageURL {
+            imageView.laodImage(url: url)
+        }
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -46,6 +57,7 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
             return
         }
         imageView.image = selectedImage
+        imageView.clearImageURL()
         picker.dismiss(animated: true)
     }
 

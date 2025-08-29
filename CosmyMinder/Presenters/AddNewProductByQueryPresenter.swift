@@ -10,7 +10,7 @@ import UIKit
 final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol {
 
     var numberOfItems: Int {
-        cosmeticItems.count
+        productList.count
     }
 
     weak var view: AddNewProductByQueryViewProtocol?
@@ -28,7 +28,6 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
             case .success(let products):
                 DispatchQueue.main.async {
                     self.productList = products
-                    self.prepareCosmeticItemList()
                     self.view?.updateSearchResults()
                 }
             case .failure(let error):
@@ -37,19 +36,19 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
         }
     }
 
-    func getCosmeticItem(at index: Int) -> CosmeticItem? {
-        guard index >= 0 && index < cosmeticItems.count else {
+    func getCosmeticItem(at index: Int) -> BeautyProduct? {
+        guard index >= 0 && index < productList.count else {
             return nil
         }
-        return cosmeticItems[index]
+        return productList[index]
     }
 
     func didSelectCosmeticItem(at index: Int, and image: UIImage?) -> Void {
-        guard index >= 0 && index < cosmeticItems.count else {
+        guard index >= 0 && index < productList.count else {
             view?.showAlert()
             return
         }
-        view?.navigateToProductDetails(for: productList[index], with: image)
+        view?.navigateToProductDetails(for: productList[index])
     }
 
     private func prepareCosmeticItemList() {

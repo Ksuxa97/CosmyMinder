@@ -21,6 +21,14 @@ final class CachingImageView: UIImageView {
         }
     }
 
+    func getImageURL() -> URL? {
+        return currentURL
+    }
+
+    func clearImageURL() {
+        currentURL = nil
+    }
+
     private func cacheImage(url: URL) {
         guard let image = self.image else {
             print("Не вышло закешировать изображение")

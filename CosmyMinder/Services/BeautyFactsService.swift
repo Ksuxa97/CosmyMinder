@@ -43,7 +43,7 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
 
         let cosmeticItem = CosmeticItem (
             id: nil,
-            name: product.productName ?? product.genericName ?? "Unknown Product",
+            name: product.name ?? product.genericName ?? "Unknown Product",
             brand: product.brand,
             productionDate: nil,
             openDate: nil,

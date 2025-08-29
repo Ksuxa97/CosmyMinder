@@ -147,7 +147,7 @@ extension CosmeticListViewController: UITableViewDataSource {
             return cell
         }
 
-        cell.configure(with: item)
+        cell.configure(name: item.name, brand: item.brand, imageURL: item.imageURL, imageData: item.imageData)
         return cell
     }
 

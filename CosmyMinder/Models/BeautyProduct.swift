@@ -10,14 +10,14 @@ struct BeautyProductSearchResponse: Codable {
 }
 
 struct BeautyProduct: Codable {
-    let productName: String?
+    let name: String?
     let genericName: String?
     let brand: String?
     let expiryDate: String?
     let imageURL: String?
 
     enum CodingKeys: String, CodingKey {
-        case productName = "product_name"
+        case name = "product_name"
         case genericName = "generic_name"
         case brand = "brands"
         case expiryDate = "expiration_date"

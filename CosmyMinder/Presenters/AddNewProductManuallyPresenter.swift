@@ -19,7 +19,7 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
         self.dataManager = dataManager
     }
 
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: UIImage?) {
+    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, imageSource: ImageSource) {
 
         let id = UUID()
         guard let productionDate = DateFormatter.ddMMYY.date(from: productionDate) else {
@@ -31,7 +31,14 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
             print("Invalid expiry date")
             return
         }
-        let localImageData = image?.jpegData(compressionQuality: 0.5)
+        var imageURL: URL? = nil
+        var imageData: Data? = nil
+        switch imageSource {
+            case .url(let url):
+                imageURL = url
+            case .image(let image):
+                imageData = image?.jpegData(compressionQuality: 0.5)
+        }
 
         let cosmeticItem = CosmeticItem(
             id: id,
@@ -40,8 +47,8 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
             productionDate: productionDate,
             openDate: openDate,
             expiryDate: expiryDate,
-            imageURL: nil,
-            imageData: localImageData
+            imageURL: imageURL,
+            imageData: imageData
         )
         self.dataManager.addCosmeticItem(cosmeticItem)
         self.delegate?.newProductDidAdded()

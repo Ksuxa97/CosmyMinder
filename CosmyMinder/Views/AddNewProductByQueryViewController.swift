@@ -53,15 +53,17 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
         present(alert, animated: true)
     }
 
-    func navigateToProductDetails(for product: BeautyProduct, with image: UIImage?) {
+    func navigateToProductDetails(for product: BeautyProduct) {
         let dataManager = DataManager()
         let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
         let productDetailsVC = AddNewProductManuallyViewController(presenter: productDetailsPresenter)
         productDetailsPresenter.view = productDetailsVC
 
+        let imageURL = URL(string: product.imageURL ?? "") ?? nil
+
         productDetailsVC.fieldsPrefill(
-            image,
-            product.productName ?? "",
+            imageURL,
+            product.name ?? "",
             product.brand ?? "", "", "",
             product.expiryDate ?? "")
         navigationController?.pushViewController(productDetailsVC, animated: true)
@@ -110,7 +112,9 @@ extension AddNewProductByQueryViewController: UITableViewDataSource {
             return cell
         }
 
-        cell.configure(with: item)
+        let imageURL = URL(string: item.imageURL ?? "") ?? nil
+
+        cell.configure(name: item.name, brand: item.brand, imageURL: imageURL, imageData: nil)
         return cell
     }
 

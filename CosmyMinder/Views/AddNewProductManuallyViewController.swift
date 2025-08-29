@@ -89,9 +89,9 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.isEnabled = isEnabled
     }
 
-    func fieldsPrefill(_ image: UIImage?, _ name: String, _ brand: String, _ productionDate: String, _ openDate: String, _ expiryDate: String) {
-        if let image = image {
-            productImage.setImage(image: image)
+    func fieldsPrefill(_ imageURL: URL?, _ name: String, _ brand: String, _ productionDate: String, _ openDate: String, _ expiryDate: String) {
+        if let url = imageURL {
+            productImage.setImage(imageURL: url)
         }
         productNameInput.setTextFieldValue(name)
         productBrandInput.setTextFieldValue(brand)
@@ -108,8 +108,10 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         let expiryDate = expiryDateInput.getTextFieldValue()
         let image = productImage.getImage()
 
-        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, image: image)
-        navigationController?.popViewController(animated: true)
+        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, imageSource: image)
+
+        guard let navigationController = navigationController else { return }
+        navigationController.popToRootViewController(animated: true)
     }
 
     @objc private func textFieldDidChange() {
