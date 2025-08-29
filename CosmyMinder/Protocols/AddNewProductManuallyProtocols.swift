@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 protocol AddNewProductManuallyPresenterProtocol {
     func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, imageSource: ImageSource)

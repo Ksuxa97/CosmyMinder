@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FieldStackView: UIView {
+final class FieldStackView: UIView {
 
     private let fieldStack: UIStackView = {
         let stack = UIStackView()

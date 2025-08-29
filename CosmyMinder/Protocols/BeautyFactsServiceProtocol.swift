@@ -7,5 +7,4 @@
 
 protocol BeautyFactsServiceProtocol {
     func searchProducts(query: String, completion: @escaping (Result<[BeautyProduct], Error>) -> Void)
-    func convertToCosmeticItem(product: BeautyProduct) -> CosmeticItem
 }

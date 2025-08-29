@@ -12,7 +12,7 @@ enum InputMode {
     case date
 }
 
-class ProductTextField: UITextField {
+final class ProductTextField: UITextField {
 
     private lazy var datePicker = {
         let datePicker = UIDatePicker()

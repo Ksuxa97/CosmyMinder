@@ -30,27 +30,4 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
             }
         }
     }
-
-    func convertToCosmeticItem(product: BeautyProduct) -> CosmeticItem {
-        var expiryDate: Date? = nil
-        var url: URL? = nil
-        if let date = product.expiryDate {
-            expiryDate = DateFormatter.ddMMYY.date(from: date)
-        }
-        if let urlString = product.imageURL {
-            url = URL(string: urlString)
-        }
-
-        let cosmeticItem = CosmeticItem (
-            id: nil,
-            name: product.name ?? product.genericName ?? "Unknown Product",
-            brand: product.brand,
-            productionDate: nil,
-            openDate: nil,
-            expiryDate: expiryDate,
-            imageURL: url,
-            imageData: nil
-        )
-        return cosmeticItem
-    }
 }
