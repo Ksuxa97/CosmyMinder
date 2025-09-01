@@ -114,7 +114,6 @@ extension CosmeticListViewController {
         let addAddNewProductByQueryPresenter = AddNewProductByQueryPresenter(service: beautyService)
         let addAddNewProductByQueryVC = AddNewProductByQueryViewController(presenter: addAddNewProductByQueryPresenter)
         addAddNewProductByQueryPresenter.view = addAddNewProductByQueryVC
-        navigationItem.backButtonDisplayMode = .minimal
         navigationController?.pushViewController(addAddNewProductByQueryVC, animated: true)
     }
 }

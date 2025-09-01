@@ -36,6 +36,8 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
     init(presenter: AddNewProductByQueryPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.backButtonTitle = ""
     }
 
     required init?(coder: NSCoder) {
@@ -61,11 +63,13 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
 
         let imageURL = URL(string: product.imageURL ?? "") ?? nil
 
-        productDetailsVC.fieldsPrefill(
-            imageURL,
-            product.name ?? "",
-            product.brand ?? "", "", "",
-            product.expiryDate ?? "")
+        productDetailsVC.prefillFields(
+            imageURL: imageURL,
+            name: product.name ?? "",
+            brand: product.brand ?? "",
+            productionDate: "",
+            openDate: "",
+            expiryDate: product.expiryDate ?? "")
         navigationController?.pushViewController(productDetailsVC, animated: true)
     }
 

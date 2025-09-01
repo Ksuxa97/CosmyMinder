@@ -89,7 +89,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.isEnabled = isEnabled
     }
 
-    func fieldsPrefill(_ imageURL: URL?, _ name: String, _ brand: String, _ productionDate: String, _ openDate: String, _ expiryDate: String) {
+    func prefillFields(imageURL: URL?, name: String, brand: String, productionDate: String, openDate: String, expiryDate: String) {
         if let url = imageURL {
             productImage.setImage(imageURL: url)
         }

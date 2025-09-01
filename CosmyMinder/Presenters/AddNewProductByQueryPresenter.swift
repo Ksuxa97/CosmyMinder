@@ -23,7 +23,7 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
     }
 
     func searchProduct(by query: String) {
-        beautyService.searchProducts(query: query) { (result: Result<[BeautyProduct], Error>) in
+        beautyService.searchProducts(query: query) { result in
             switch result {
             case .success(let products):
                 DispatchQueue.main.async {
@@ -40,7 +40,7 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
         guard index >= 0 && index < productList.count else {
             return nil
         }
-        return productList[index]
+        return productList.getSafe(at: index)
     }
 
     func didSelectCosmeticItem(at index: Int, and image: UIImage?) -> Void {
@@ -49,13 +49,5 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
             return
         }
         view?.navigateToProductDetails(for: productList[index])
-    }
-
-    private func prepareCosmeticItemList() {
-        cosmeticItems.removeAll()
-        for product in productList {
-            let item = beautyService.convertToCosmeticItem(product: product)
-            cosmeticItems.append(item)
-        }
     }
 }
