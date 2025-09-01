@@ -50,12 +50,4 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
         }
         view?.navigateToProductDetails(for: productList[index])
     }
-
-    private func prepareCosmeticItemList() {
-        cosmeticItems.removeAll()
-        for product in productList {
-            let item = beautyService.convertToCosmeticItem(product: product)
-            cosmeticItems.append(item)
-        }
-    }
 }

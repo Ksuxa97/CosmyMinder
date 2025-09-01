@@ -91,7 +91,7 @@ extension CosmeticListViewController {
         let actionSheet = UIAlertController(title: "Добавить новый продукт", message: nil, preferredStyle: .actionSheet)
 
         actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default, handler: showScanProductBarCodeView))
         actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default, handler: showAddNewProductByQueryView))
         actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default, handler: showAddNewProductManuallyView))
         actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
@@ -116,6 +116,15 @@ extension CosmeticListViewController {
         addAddNewProductByQueryPresenter.view = addAddNewProductByQueryVC
         navigationItem.backButtonDisplayMode = .minimal
         navigationController?.pushViewController(addAddNewProductByQueryVC, animated: true)
+    }
+
+    private func showScanProductBarCodeView(_ action: UIAlertAction) -> Void {
+        let networkService = NetworkService()
+        let beautyService = BeautyFactsService(networkService: networkService)
+        let scanProductBarCodePresenter = ScanProductBarcodePresenter(service: beautyService)
+        let scanProductBarCodeVC = ScanProductBarcodeViewController(presenter: scanProductBarCodePresenter)
+        scanProductBarCodePresenter.view = scanProductBarCodeVC
+        navigationController?.pushViewController(scanProductBarCodeVC, animated: true)
     }
 }
 

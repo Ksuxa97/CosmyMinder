@@ -26,8 +26,9 @@ enum Endpoint {
                 URLQueryItem(name: "json", value: "1")
             ]
             return urlComponents?.url
-        case .barcode:
-            return nil
+        case .barcode(let barcode):
+            var urlComponents = URLComponents(string: APIConstants.baseURL + "/api/v2/product/\(barcode).json")
+            return urlComponents?.url
         }
     }
 }

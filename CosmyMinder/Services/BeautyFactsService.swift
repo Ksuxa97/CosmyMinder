@@ -24,7 +24,23 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
         networkService.request(url: url) { (result: Result<BeautyProductSearchResponse, Error>) in
             switch result {
                 case .success(let response):
-                completion(.success(response.products))
+                    completion(.success(response.products))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+
+    func scanProduct(barcode: String, completion: @escaping (Result<BeautyProduct, Error>) -> Void) {
+        guard let url = Endpoint.barcode(code: barcode).url else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+            return
+        }
+
+        networkService.request(url: url) { (result: Result<BeautyProductBarResponse, Error>) in
+            switch result {
+                case .success(let response):
+                    completion(.success(response.product))
                 case .failure(let error):
                     completion(.failure(error))
             }
