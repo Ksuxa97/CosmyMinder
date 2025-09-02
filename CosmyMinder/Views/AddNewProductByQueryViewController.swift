@@ -57,19 +57,10 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
 
     func navigateToProductDetails(for product: BeautyProduct) {
         let dataManager = DataManager()
-        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
+        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager, data: product)
         let productDetailsVC = AddNewProductManuallyViewController(presenter: productDetailsPresenter)
         productDetailsPresenter.view = productDetailsVC
 
-        let imageURL = URL(string: product.imageURL ?? "") ?? nil
-
-        productDetailsVC.prefillFields(
-            imageURL: imageURL,
-            name: product.name ?? "",
-            brand: product.brand ?? "",
-            productionDate: "",
-            openDate: "",
-            expiryDate: product.expiryDate ?? "")
         navigationController?.pushViewController(productDetailsVC, animated: true)
     }
 

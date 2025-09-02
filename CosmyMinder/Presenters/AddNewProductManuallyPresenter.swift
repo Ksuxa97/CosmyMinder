@@ -14,9 +14,11 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
     weak var delegate: ProductAddedDelegate?
 
     private let dataManager: DataManagerProtocol
+    private let prefilledData: BeautyProduct?
 
-    init(dataManager: DataManagerProtocol) {
+    init(dataManager: DataManagerProtocol, data: BeautyProduct? = nil) {
         self.dataManager = dataManager
+        self.prefilledData = data
     }
 
     func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, imageSource: ImageSource) {
@@ -59,5 +61,10 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
             .map { $0?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "" }
             .allSatisfy { !$0.isEmpty }
         view?.updateSaveButtonState(isEnabled: isValid)
+    }
+
+    func prefillFields() {
+        guard let data = prefilledData else { return }
+        view?.fillInputs(with: data)
     }
 }
