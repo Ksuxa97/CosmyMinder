@@ -26,10 +26,8 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
         beautyService.searchProducts(query: query) { result in
             switch result {
             case .success(let products):
-                DispatchQueue.main.async {
-                    self.productList = products
-                    self.view?.updateSearchResults()
-                }
+                self.productList = products
+                self.view?.updateSearchResults()
             case .failure(let error):
                 print("Error: \(error)")
             }

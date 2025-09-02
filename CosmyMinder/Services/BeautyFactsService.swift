@@ -21,12 +21,16 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
             return
         }
 
-        networkService.request(url: url) { (result: Result<BeautyProductSearchResponse, Error>) in
-            switch result {
-                case .success(let response):
-                    completion(.success(response.products))
-                case .failure(let error):
-                    completion(.failure(error))
+        DispatchQueue.global().async {
+            self.networkService.request(url: url) { (result: Result<BeautyProductSearchResponse, Error>) in
+                DispatchQueue.main.async {
+                    switch result {
+                        case .success(let response):
+                            completion(.success(response.products))
+                        case .failure(let error):
+                            completion(.failure(error))
+                    }
+                }
             }
         }
     }
