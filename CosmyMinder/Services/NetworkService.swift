@@ -32,6 +32,12 @@ enum Endpoint {
     }
 }
 
+enum NetworkError: Error {
+    case invalidURL
+    case invalidResponse
+    case noDataFound
+}
+
 final class NetworkService {
     func request<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> Void) {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -42,12 +48,12 @@ final class NetworkService {
 
             guard let response = response as? HTTPURLResponse,
                   (200..<300).contains(response.statusCode) else {
-                completion(.failure(NSError(domain: "Invalid response", code: 0, userInfo: nil)))
+                completion(.failure(NetworkError.invalidResponse))
                 return
             }
 
             guard let data = data else {
-                completion(.failure(NSError(domain: "No data", code: 0, userInfo: nil)))
+                completion(.failure(NetworkError.noDataFound))
                 return
             }
             

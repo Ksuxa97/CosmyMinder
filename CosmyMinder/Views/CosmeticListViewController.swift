@@ -69,14 +69,14 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
 // MARK: Navigation to other views
 extension CosmeticListViewController {
     
-    func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
+    func navigateToEditCosmeticItemScreen(for item: CosmeticItem) {
         let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
         let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
         editCosmeticItemPresenter.view = editCosmeticItemVC
         navigationController?.pushViewController(editCosmeticItemVC, animated: true)
     }
 
-    func showAlert() -> Void {
+    func showAlert() {
         let alert = UIAlertController(
             title: "Ошибка",
             message: "Не вышло загрузить данные",
@@ -99,7 +99,7 @@ extension CosmeticListViewController {
         present(actionSheet, animated: true)
     }
 
-    private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
+    private func showAddNewProductManuallyView(_ action: UIAlertAction) {
         let dataManager = DataManager()
         let addNewProductManuallyPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
         let addNewProductManuallyVC = AddNewProductManuallyViewController(presenter: addNewProductManuallyPresenter)
@@ -108,7 +108,7 @@ extension CosmeticListViewController {
         navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
     }
 
-    private func showAddNewProductByQueryView(_ action: UIAlertAction) -> Void {
+    private func showAddNewProductByQueryView(_ action: UIAlertAction) {
         let networkService = NetworkService()
         let beautyService = BeautyFactsService(networkService: networkService)
         let addAddNewProductByQueryPresenter = AddNewProductByQueryPresenter(service: beautyService)
