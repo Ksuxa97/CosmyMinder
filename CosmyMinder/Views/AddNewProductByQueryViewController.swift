@@ -55,9 +55,9 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
         present(alert, animated: true)
     }
 
-    func navigateToProductDetails(for product: BeautyProduct) {
+    func navigateToProductDetails(with info: CosmeticInfo) {
         let dataManager = DataManager()
-        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager, data: product)
+        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager, info: info)
         let productDetailsVC = AddNewProductManuallyViewController(presenter: productDetailsPresenter)
         productDetailsPresenter.view = productDetailsVC
 

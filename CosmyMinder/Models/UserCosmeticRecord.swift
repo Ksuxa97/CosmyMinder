@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct CosmeticItem: Codable {
+struct UserCosmeticRecord: Codable {
     let id: UUID
     let name: String
     let brand: String?
@@ -25,8 +25,8 @@ struct CosmeticItem: Codable {
         expiryDate: Date? = nil,
         imageURL: URL? = nil,
         imageData: Data? = nil
-    ) -> CosmeticItem {
-        CosmeticItem(
+    ) -> UserCosmeticRecord {
+        UserCosmeticRecord(
             id: id ?? self.id,
             name: name ?? self.name,
             brand: brand ?? self.brand,

@@ -21,17 +21,27 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
             return
         }
 
-        DispatchQueue.global().async {
-            self.networkService.request(url: url) { (result: Result<BeautyProductSearchResponse, Error>) in
-                DispatchQueue.main.async {
-                    switch result {
-                        case .success(let response):
-                            completion(.success(response.products))
-                        case .failure(let error):
-                            completion(.failure(error))
-                    }
+        self.networkService.request(url: url) { (result: Result<BeautyProductSearchResponse, Error>) in
+            DispatchQueue.main.async {
+                switch result {
+                    case .success(let response):
+                        completion(.success(response.products))
+                    case .failure(let error):
+                        completion(.failure(error))
                 }
             }
         }
+    }
+
+    func productToCosmeticInfo(product: BeautyProduct) -> CosmeticInfo {
+        return CosmeticInfo(
+            name: product.name ?? product.genericName ?? "",
+            brand: product.brand ?? "",
+            productionDate: "",
+            openDate: "",
+            expiryDate: product.expiryDate ?? "",
+            imageURL: URL(string: product.imageURL ?? ""),
+            imageData: nil
+        )
     }
 }

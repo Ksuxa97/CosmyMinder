@@ -15,7 +15,7 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
 
     weak var view: AddNewProductByQueryViewProtocol?
     private let beautyService: BeautyFactsServiceProtocol
-    private var cosmeticItems: [CosmeticItem] = []
+    private var cosmeticItems: [UserCosmeticRecord] = []
     private var productList: [BeautyProduct] = []
 
     init(service: BeautyFactsServiceProtocol) {
@@ -46,6 +46,7 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
             view?.showAlert()
             return
         }
-        view?.navigateToProductDetails(for: productList[index])
+        let info = beautyService.productToCosmeticInfo(product: productList[index])
+        view?.navigateToProductDetails(with: info)
     }
 }

@@ -17,5 +17,5 @@ protocol AddNewProductByQueryPresenterProtocol {
 protocol AddNewProductByQueryViewProtocol: AnyObject {
     func updateSearchResults()
     func showAlert()
-    func navigateToProductDetails(for product: BeautyProduct)
+    func navigateToProductDetails(with info: CosmeticInfo)
 }

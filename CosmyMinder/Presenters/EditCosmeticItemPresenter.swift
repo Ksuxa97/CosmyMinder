@@ -11,9 +11,9 @@ final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
     var productName: String {
         cosmeticItem.name ?? "Name"
     }
-    private var cosmeticItem: CosmeticItem
+    private var cosmeticItem: UserCosmeticRecord
 
-    init(cosmeticItem: CosmeticItem) {
+    init(cosmeticItem: UserCosmeticRecord) {
         self.cosmeticItem = cosmeticItem
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DataManagerProtocol {
-    func getCosmeticsList() -> [CosmeticItem]
-    func addCosmeticItem(_ item: CosmeticItem)
+    func getCosmeticsList() -> [UserCosmeticRecord]
+    func addCosmeticItem(_ item: UserCosmeticRecord)
     func deleteCosmeticItem(with id: UUID)
 }

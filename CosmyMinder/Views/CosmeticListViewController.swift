@@ -69,7 +69,7 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
 // MARK: Navigation to other views
 extension CosmeticListViewController {
     
-    func navigateToEditCosmeticItemScreen(for item: CosmeticItem) {
+    func navigateToEditCosmeticItemScreen(for item: UserCosmeticRecord) {
         let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
         let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
         editCosmeticItemPresenter.view = editCosmeticItemVC

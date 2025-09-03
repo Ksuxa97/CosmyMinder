@@ -76,7 +76,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter.prefillFields()
+        presenter.didLoad()
         setupUI()
         setupTextFieldDelegates()
         setupKeyboardObservers()
@@ -90,13 +90,15 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.isEnabled = isEnabled
     }
 
-    func fillInputs(with data: BeautyProduct) {
-        if let url = URL(string: data.imageURL ?? "") {
+    func prefillFields(with info: CosmeticInfo) {
+        if let url = info.imageURL {
             productImage.setImage(imageURL: url)
         }
-        productNameInput.setTextFieldValue(data.name ?? "")
-        productBrandInput.setTextFieldValue(data.brand ?? "")
-        expiryDateInput.setTextFieldValue(data.expiryDate ?? "")
+        productNameInput.setTextFieldValue(info.name)
+        productBrandInput.setTextFieldValue(info.brand)
+        productionDateInput.setTextFieldValue(info.productionDate)
+        openDateInput.setTextFieldValue(info.openDate)
+        expiryDateInput.setTextFieldValue(info.expiryDate)
     }
 
     @objc private func saveButtonPressed() {
