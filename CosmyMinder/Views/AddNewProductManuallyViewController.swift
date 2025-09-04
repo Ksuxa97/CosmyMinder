@@ -11,6 +11,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: UITextField?
+    private let       fooo   =    "ksdjhfkjsdhfkhsdkfhkshfkhskdhfkshdkfjhksjhfkjshkjdfhkjsdhfkjhskjdhfkjshdkjfhsdkjhfkjsdhfkjhsdkjfhkshdkjfhdskjhfkjsdhfkjsdhkfhskdhfksuhfkhksjhdkjhkhkjhkjhkj"
 
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
@@ -59,7 +60,6 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         button.layer.cornerRadius = 8
         button.setTitle("Сохранить", for: .normal)
         button.isEnabled = false
-        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -76,9 +76,11 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        presenter.didLoad()
         setupUI()
         setupTextFieldDelegates()
         setupKeyboardObservers()
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
 
         productNameInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         productionDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
@@ -89,15 +91,15 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.isEnabled = isEnabled
     }
 
-    func fieldsPrefill(_ imageURL: URL?, _ name: String, _ brand: String, _ productionDate: String, _ openDate: String, _ expiryDate: String) {
-        if let url = imageURL {
+    func prefillFields(with info: CosmeticInfo) {
+        if let url = info.imageURL {
             productImage.setImage(imageURL: url)
         }
-        productNameInput.setTextFieldValue(name)
-        productBrandInput.setTextFieldValue(brand)
-        productionDateInput.setTextFieldValue(productionDate)
-        openDateInput.setTextFieldValue(openDate)
-        expiryDateInput.setTextFieldValue(expiryDate)
+        productNameInput.setTextFieldValue(info.name)
+        productBrandInput.setTextFieldValue(info.brand)
+        productionDateInput.setTextFieldValue(info.productionDate)
+        openDateInput.setTextFieldValue(info.openDate)
+        expiryDateInput.setTextFieldValue(info.expiryDate)
     }
 
     @objc private func saveButtonPressed() {

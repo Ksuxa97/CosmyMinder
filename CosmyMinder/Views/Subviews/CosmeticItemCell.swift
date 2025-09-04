@@ -51,7 +51,7 @@ final class CosmeticItemCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(name: String?, brand: String?, imageURL: URL?, imageData: Data?) -> Void {
+    func configure(name: String?, brand: String?, imageURL: URL?, imageData: Data?) {
         productNameLabel.text = name
         brandNameLabel.text = brand
         if let url = imageURL {

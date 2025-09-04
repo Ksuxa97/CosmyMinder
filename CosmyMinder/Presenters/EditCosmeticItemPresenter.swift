@@ -9,11 +9,11 @@ final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
 
     weak var view: EditCosmeticItemViewProtocol?
     var productName: String {
-        cosmeticItem.name ?? "Name"
+        cosmeticItem.name
     }
-    private var cosmeticItem: CosmeticItem
+    private var cosmeticItem: UserCosmeticRecord
 
-    init(cosmeticItem: CosmeticItem) {
+    init(cosmeticItem: UserCosmeticRecord) {
         self.cosmeticItem = cosmeticItem
     }
 }

@@ -17,7 +17,7 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
 
     func searchProducts(query: String, completion: @escaping (Result<[BeautyProduct], Error>) -> Void) {
         guard let url = Endpoint.search(query: query).url else {
-            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+            completion(.failure(NetworkError.invalidURL))
             return
         }
 
@@ -43,7 +43,18 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
                     completion(.success(response.product))
                 case .failure(let error):
                     completion(.failure(error))
-            }
         }
+    }
+
+    func productToCosmeticInfo(product: BeautyProduct) -> CosmeticInfo {
+        return CosmeticInfo(
+            name: product.name ?? product.genericName ?? "",
+            brand: product.brand ?? "",
+            productionDate: "",
+            openDate: "",
+            expiryDate: product.expiryDate ?? "",
+            imageURL: URL(string: product.imageURL ?? ""),
+            imageData: nil
+        )
     }
 }

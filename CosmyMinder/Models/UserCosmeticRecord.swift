@@ -6,13 +6,13 @@
 //
 import Foundation
 
-struct CosmeticItem: Codable {
-    let id: UUID?
-    let name: String?
+struct UserCosmeticRecord: Codable {
+    let id: UUID
+    let name: String
     let brand: String?
-    let productionDate: Date?
+    let productionDate: Date
     let openDate: Date?
-    let expiryDate: Date?
+    let expiryDate: Date
     let imageURL: URL?
     let imageData: Data?
 
@@ -25,8 +25,8 @@ struct CosmeticItem: Codable {
         expiryDate: Date? = nil,
         imageURL: URL? = nil,
         imageData: Data? = nil
-    ) -> CosmeticItem {
-        CosmeticItem(
+    ) -> UserCosmeticRecord {
+        UserCosmeticRecord(
             id: id ?? self.id,
             name: name ?? self.name,
             brand: brand ?? self.brand,
@@ -36,12 +36,5 @@ struct CosmeticItem: Codable {
             imageURL: imageURL ?? self.imageURL,
             imageData: imageData ?? self.imageData
         )
-    }
-}
-
-extension Array {
-    func getSafe(at index: Int) -> Element? {
-        guard index >= 0 && index < count else { return nil }
-        return self[index]
     }
 }

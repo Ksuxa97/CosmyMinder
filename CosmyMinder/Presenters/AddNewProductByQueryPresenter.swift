@@ -15,7 +15,6 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
 
     weak var view: AddNewProductByQueryViewProtocol?
     private let beautyService: BeautyFactsServiceProtocol
-    private var cosmeticItems: [CosmeticItem] = []
     private var productList: [BeautyProduct] = []
 
     init(service: BeautyFactsServiceProtocol) {
@@ -23,13 +22,11 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
     }
 
     func searchProduct(by query: String) {
-        beautyService.searchProducts(query: query) { (result: Result<[BeautyProduct], Error>) in
+        beautyService.searchProducts(query: query) { result in
             switch result {
             case .success(let products):
-                DispatchQueue.main.async {
-                    self.productList = products
-                    self.view?.updateSearchResults()
-                }
+                self.productList = products
+                self.view?.updateSearchResults()
             case .failure(let error):
                 print("Error: \(error)")
             }
@@ -40,7 +37,7 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
         guard index >= 0 && index < productList.count else {
             return nil
         }
-        return productList[index]
+        return productList.getSafe(at: index)
     }
 
     func didSelectCosmeticItem(at index: Int, and image: UIImage?) -> Void {
@@ -48,6 +45,7 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
             view?.showAlert()
             return
         }
-        view?.navigateToProductDetails(for: productList[index])
+        let info = beautyService.productToCosmeticInfo(product: productList[index])
+        view?.navigateToProductDetails(with: info)
     }
 }

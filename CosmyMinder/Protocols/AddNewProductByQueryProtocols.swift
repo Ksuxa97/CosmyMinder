@@ -11,11 +11,11 @@ protocol AddNewProductByQueryPresenterProtocol {
     var numberOfItems: Int { get }
     func searchProduct(by query: String)
     func getCosmeticItem(at index: Int) -> BeautyProduct?
-    func didSelectCosmeticItem(at index: Int, and image: UIImage?) -> Void
+    func didSelectCosmeticItem(at index: Int, and image: UIImage?)
 }
 
 protocol AddNewProductByQueryViewProtocol: AnyObject {
     func updateSearchResults()
-    func showAlert() -> Void
-    func navigateToProductDetails(for product: BeautyProduct)
+    func showAlert()
+    func navigateToProductDetails(with info: CosmeticInfo)
 }

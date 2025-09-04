@@ -8,4 +8,5 @@
 protocol BeautyFactsServiceProtocol {
     func searchProducts(query: String, completion: @escaping (Result<[BeautyProduct], Error>) -> Void)
     func scanProduct(barcode: String, completion: @escaping (Result<BeautyProduct, Error>) -> Void)
+    func productToCosmeticInfo(product: BeautyProduct) -> CosmeticInfo
 }
