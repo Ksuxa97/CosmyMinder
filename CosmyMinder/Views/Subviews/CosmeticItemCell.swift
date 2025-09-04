@@ -51,16 +51,20 @@ final class CosmeticItemCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with item: CosmeticItem) -> Void {
-        productNameLabel.text = item.name
-        brandNameLabel.text = item.brand
-        if let url = item.imageURL {
+    func configure(name: String?, brand: String?, imageURL: URL?, imageData: Data?) {
+        productNameLabel.text = name
+        brandNameLabel.text = brand
+        if let url = imageURL {
             productImageView.laodImage(url: url)
             return
         }
-        if let data = item.imageData {
+        if let data = imageData {
             productImageView.image = UIImage(data: data)
         }
+    }
+
+    func getCellImage() -> UIImage? {
+        return productImageView.image
     }
 
     private func setupCellUI() {

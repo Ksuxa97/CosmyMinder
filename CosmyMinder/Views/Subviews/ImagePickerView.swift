@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum ImageSource {
+    case image(UIImage?)
+    case url(URL)
+}
+
 final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private lazy var imageView: CachingImageView = {
@@ -31,6 +36,29 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func getImage() -> ImageSource {
+        if let url = imageView.getImageURL() {
+            return .url(url)
+        } else {
+            return .image(imageView.image)
+        }
+    }
+
+    func setImage(imageURL: URL?) {
+        if let url = imageURL {
+            imageView.laodImage(url: url)
+        }
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            return
+        }
+        imageView.image = selectedImage
+        imageView.clearImageURL()
+        picker.dismiss(animated: true)
     }
 
     private func setupUI() {
@@ -60,17 +88,5 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         picker.delegate = self
         picker.sourceType = .photoLibrary
         parentVC?.present(picker, animated: true)
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            return
-        }
-        imageView.image = selectedImage
-        picker.dismiss(animated: true)
-    }
-
-    func getImage() -> UIImage? {
-        return imageView.image
     }
 }

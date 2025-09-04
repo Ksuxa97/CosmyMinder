@@ -14,34 +14,43 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
     weak var delegate: ProductAddedDelegate?
 
     private let dataManager: DataManagerProtocol
+    private let prefilledData: CosmeticInfo?
 
-    init(dataManager: DataManagerProtocol) {
+    init(dataManager: DataManagerProtocol, info: CosmeticInfo? = nil) {
         self.dataManager = dataManager
+        self.prefilledData = info
     }
 
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, image: UIImage?) {
+    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, imageSource: ImageSource) {
 
         let id = UUID()
-        guard let productionDate = DateFormatterManager.shared.ddMMyyFormatter.date(from: productionDate) else {
+        guard let productionDate = DateFormatter.ddMMYY.date(from: productionDate) else {
             print("Invalid production date")
             return
         }
-        let openDate = DateFormatterManager.shared.ddMMyyFormatter.date(from: openDate) ?? nil
-        guard let expiryDate = DateFormatterManager.shared.ddMMyyFormatter.date(from: expiryDate) else {
+        let openDate = DateFormatter.ddMMYY.date(from: openDate) ?? nil
+        guard let expiryDate = DateFormatter.ddMMYY.date(from: expiryDate) else {
             print("Invalid expiry date")
             return
         }
-        let localImageData = image?.jpegData(compressionQuality: 0.5)
+        var imageURL: URL? = nil
+        var imageData: Data? = nil
+        switch imageSource {
+            case .url(let url):
+                imageURL = url
+            case .image(let image):
+                imageData = image?.jpegData(compressionQuality: 0.5)
+        }
 
-        let cosmeticItem = CosmeticItem(
+        let cosmeticItem = UserCosmeticRecord(
             id: id,
             name: name,
             brand: brand,
             productionDate: productionDate,
             openDate: openDate,
             expiryDate: expiryDate,
-            imageURL: nil,
-            imageData: localImageData
+            imageURL: imageURL,
+            imageData: imageData
         )
         self.dataManager.addCosmeticItem(cosmeticItem)
         self.delegate?.newProductDidAdded()
@@ -52,5 +61,10 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
             .map { $0?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "" }
             .allSatisfy { !$0.isEmpty }
         view?.updateSaveButtonState(isEnabled: isValid)
+    }
+
+    func didLoad() {
+        guard let data = prefilledData else { return }
+        view?.prefillFields(with: data)
     }
 }

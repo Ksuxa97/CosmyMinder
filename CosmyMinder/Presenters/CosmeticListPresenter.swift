@@ -14,7 +14,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
         cosmeticItems.count
     }
     
-    private var cosmeticItems: [CosmeticItem] = []
+    private var cosmeticItems: [UserCosmeticRecord] = []
     private let dataManager: DataManagerProtocol
 
     init(dataManager: DataManagerProtocol) {
@@ -26,7 +26,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
         cosmeticItems = dataManager.getCosmeticsList()
     }
 
-    func getCosmeticItem(at index: Int) -> CosmeticItem? {
+    func getCosmeticItem(at index: Int) -> UserCosmeticRecord? {
         guard index >= 0 && index < cosmeticItems.count else {
             return nil
         }

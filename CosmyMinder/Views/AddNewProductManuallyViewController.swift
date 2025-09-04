@@ -11,7 +11,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: UITextField?
-    private var originalContentOffset: CGPoint?
+    private let       fooo   =    "ksdjhfkjsdhfkhsdkfhkshfkhskdhfkshdkfjhksjhfkjshkjdfhkjsdhfkjhskjdhfkjshdkjfhsdkjhfkjsdhfkjhsdkjfhkshdkjfhdskjhfkjsdhfkjsdhkfhskdhfksuhfkhksjhdkjhkhkjhkjhkj"
 
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
@@ -60,7 +60,6 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         button.layer.cornerRadius = 8
         button.setTitle("Сохранить", for: .normal)
         button.isEnabled = false
-        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -77,9 +76,11 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        presenter.didLoad()
         setupUI()
         setupTextFieldDelegates()
         setupKeyboardObservers()
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
 
         productNameInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         productionDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
@@ -90,6 +91,17 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.isEnabled = isEnabled
     }
 
+    func prefillFields(with info: CosmeticInfo) {
+        if let url = info.imageURL {
+            productImage.setImage(imageURL: url)
+        }
+        productNameInput.setTextFieldValue(info.name)
+        productBrandInput.setTextFieldValue(info.brand)
+        productionDateInput.setTextFieldValue(info.productionDate)
+        openDateInput.setTextFieldValue(info.openDate)
+        expiryDateInput.setTextFieldValue(info.expiryDate)
+    }
+
     @objc private func saveButtonPressed() {
         let name = productNameInput.getTextFieldValue()
         let brand = productBrandInput.getTextFieldValue()
@@ -98,8 +110,10 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         let expiryDate = expiryDateInput.getTextFieldValue()
         let image = productImage.getImage()
 
-        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, image: image)
-        navigationController?.popViewController(animated: true)
+        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, imageSource: image)
+
+        guard let navigationController = navigationController else { return }
+        navigationController.popToRootViewController(animated: true)
     }
 
     @objc private func textFieldDidChange() {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FieldStackView: UIView {
+final class FieldStackView: UIView {
 
     private let fieldStack: UIStackView = {
         let stack = UIStackView()
@@ -42,6 +42,10 @@ class FieldStackView: UIView {
 
     func getTextFieldValue() -> String {
         return textField.text ?? ""
+    }
+
+    func setTextFieldValue(_ value: String) {
+        textField.text = value
     }
 
     private func setupUI() {

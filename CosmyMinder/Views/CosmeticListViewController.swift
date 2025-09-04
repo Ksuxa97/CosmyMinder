@@ -69,14 +69,14 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
 // MARK: Navigation to other views
 extension CosmeticListViewController {
     
-    func navigateToEditCosmeticItemScreen(for item: CosmeticItem) -> Void {
+    func navigateToEditCosmeticItemScreen(for item: UserCosmeticRecord) {
         let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
         let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
         editCosmeticItemPresenter.view = editCosmeticItemVC
         navigationController?.pushViewController(editCosmeticItemVC, animated: true)
     }
 
-    func showAlert() -> Void {
+    func showAlert() {
         let alert = UIAlertController(
             title: "Ошибка",
             message: "Не вышло загрузить данные",
@@ -92,14 +92,14 @@ extension CosmeticListViewController {
 
         actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
         actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default, handler: showAddNewProductByQueryView))
         actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default, handler: showAddNewProductManuallyView))
         actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
 
         present(actionSheet, animated: true)
     }
 
-    private func showAddNewProductManuallyView(_ action: UIAlertAction) -> Void {
+    private func showAddNewProductManuallyView(_ action: UIAlertAction) {
         let dataManager = DataManager()
         let addNewProductManuallyPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
         let addNewProductManuallyVC = AddNewProductManuallyViewController(presenter: addNewProductManuallyPresenter)
@@ -108,9 +108,13 @@ extension CosmeticListViewController {
         navigationController?.pushViewController(addNewProductManuallyVC, animated: true)
     }
 
-    func newProductDidAdded() {
-        presenter.updateCosmeticList()
-        tableView.reloadData()
+    private func showAddNewProductByQueryView(_ action: UIAlertAction) {
+        let networkService = NetworkService()
+        let beautyService = BeautyFactsService(networkService: networkService)
+        let addAddNewProductByQueryPresenter = AddNewProductByQueryPresenter(service: beautyService)
+        let addAddNewProductByQueryVC = AddNewProductByQueryViewController(presenter: addAddNewProductByQueryPresenter)
+        addAddNewProductByQueryPresenter.view = addAddNewProductByQueryVC
+        navigationController?.pushViewController(addAddNewProductByQueryVC, animated: true)
     }
 }
 
@@ -142,7 +146,12 @@ extension CosmeticListViewController: UITableViewDataSource {
             return cell
         }
 
-        cell.configure(with: item)
+        cell.configure(name: item.name, brand: item.brand, imageURL: item.imageURL, imageData: item.imageData)
         return cell
+    }
+
+    func newProductDidAdded() {
+        presenter.updateCosmeticList()
+        tableView.reloadData()
     }
 }
