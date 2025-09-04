@@ -11,8 +11,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: UITextField?
-    private let       fooo   =    "ksdjhfkjsdhfkhsdkfhkshfkhskdhfkshdkfjhksjhfkjshkjdfhkjsdhfkjhskjdhfkjshdkjfhsdkjhfkjsdhfkjhsdkjfhkshdkjfhdskjhfkjsdhfkjsdhkfhskdhfksuhfkhksjhdkjhkhkjhkjhkj"
-
+  
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
