@@ -15,7 +15,6 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
 
     weak var view: AddNewProductByQueryViewProtocol?
     private let beautyService: BeautyFactsServiceProtocol
-    private var cosmeticItems: [UserCosmeticRecord] = []
     private var productList: [BeautyProduct] = []
 
     init(service: BeautyFactsServiceProtocol) {

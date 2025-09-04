@@ -11,6 +11,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: UITextField?
+    private let       fooo   =    "ksdjhfkjsdhfkhsdkfhkshfkhskdhfkshdkfjhksjhfkjshkjdfhkjsdhfkjhskjdhfkjshdkjfhsdkjhfkjsdhfkjhsdkjfhkshdkjfhdskjhfkjsdhfkjsdhkfhskdhfksuhfkhksjhdkjhkhkjhkjhkj"
 
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
@@ -59,7 +60,6 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         button.layer.cornerRadius = 8
         button.setTitle("Сохранить", for: .normal)
         button.isEnabled = false
-        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -80,6 +80,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         setupUI()
         setupTextFieldDelegates()
         setupKeyboardObservers()
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
 
         productNameInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         productionDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))

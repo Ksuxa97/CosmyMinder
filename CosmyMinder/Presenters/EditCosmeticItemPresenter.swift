@@ -9,7 +9,7 @@ final class EditCosmeticItemPresenter: EditCosmeticItemPresenterProtocol {
 
     weak var view: EditCosmeticItemViewProtocol?
     var productName: String {
-        cosmeticItem.name ?? "Name"
+        cosmeticItem.name
     }
     private var cosmeticItem: UserCosmeticRecord
 
