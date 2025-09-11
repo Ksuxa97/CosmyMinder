@@ -36,13 +36,14 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
             completion(.failure(NSError(domain: "Invalid URL", code: 0)))
             return
         }
-
+        
         networkService.request(url: url) { (result: Result<BeautyProductBarResponse, Error>) in
             switch result {
-                case .success(let response):
-                    completion(.success(response.product))
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(let response):
+                completion(.success(response.product))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 

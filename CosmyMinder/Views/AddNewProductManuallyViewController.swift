@@ -11,7 +11,6 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: UITextField?
-    private let       fooo   =    "ksdjhfkjsdhfkhsdkfhkshfkhskdhfkshdkfjhksjhfkjshkjdfhkjsdhfkjhskjdhfkjshdkjfhsdkjhfkjsdhfkjhsdkjfhkshdkjfhdskjhfkjsdhfkjsdhkfhskdhfksuhfkhksjhdkjhkhkjhkjhkj"
 
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
@@ -85,6 +84,12 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         productNameInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         productionDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         expiryDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
+
+        print("""
+        scrollView info:
+        - Frame: \(scrollView.frame)
+        - Bounds: \(scrollView.bounds)
+        """)
     }
 
     func updateSaveButtonState(isEnabled: Bool) {
@@ -161,6 +166,12 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         productStackView.addArrangedSubview(productionDateInput)
         productStackView.addArrangedSubview(openDateInput)
         productStackView.addArrangedSubview(expiryDateInput)
+
+        print("""
+        scrollView info:
+        - Frame: \(scrollView.frame)
+        - Bounds: \(scrollView.bounds)
+        """)
     }
 }
 
@@ -187,8 +198,32 @@ extension AddNewProductManuallyViewController: UITextFieldDelegate {
         scrollView.contentInset.bottom = activeFieldHeight
         scrollView.verticalScrollIndicatorInsets.bottom = activeFieldHeight
 
+        if let superview = activeTextField.superview {
+            print("""
+            Superview info:
+            - Address: \(Unmanaged.passUnretained(superview).toOpaque())
+            - Class: \(type(of: superview))
+            - Frame: \(superview.frame)
+            - Bounds: \(superview.bounds)
+            """)
+        } else {
+            print("No superview - this view is not in hierarchy")
+        }
+
+        print("""
+        scrollView info:
+        - Frame: \(scrollView.frame)
+        - Bounds: \(scrollView.bounds)
+        """)
+
         let textFieldRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
         scrollView.scrollRectToVisible(textFieldRect, animated: true)
+
+        print("""
+        scrollView info:
+        - Frame: \(scrollView.frame)
+        - Bounds: \(scrollView.bounds)
+        """)
     }
 
     @objc private func keyboardWillHide(_ notification: Notification) {

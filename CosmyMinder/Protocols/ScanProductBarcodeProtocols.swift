@@ -11,5 +11,5 @@ protocol ScanProductBarcodePresenterProtocol {
 
 protocol ScanProductBarcodeViewControllerProtocol: AnyObject {
     func showAlert()
-    func navigateToProductDetails(for product: BeautyProduct?)
+    func navigateToProductDetails(with product: CosmeticInfo?)
 }

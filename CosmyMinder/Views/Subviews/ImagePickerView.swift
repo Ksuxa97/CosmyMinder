@@ -67,7 +67,6 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         self.layer.borderColor = UIColor.systemGray.cgColor
         self.layer.borderWidth = 1
         self.backgroundColor = UIColor.systemGray6
-        self.imageView.frame = self.bounds
         self.addSubview(imageView)
 
         imageView.translatesAutoresizingMaskIntoConstraints = false

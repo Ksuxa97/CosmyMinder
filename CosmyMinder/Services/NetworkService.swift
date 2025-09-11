@@ -27,7 +27,7 @@ enum Endpoint {
             ]
             return urlComponents?.url
         case .barcode(let barcode):
-            var urlComponents = URLComponents(string: APIConstants.baseURL + "/api/v2/product/\(barcode).json")
+            let urlComponents = URLComponents(string: APIConstants.baseURL + "/api/v2/product/\(barcode).json")
             return urlComponents?.url
         }
     }
@@ -42,27 +42,29 @@ enum NetworkError: Error {
 final class NetworkService {
     func request<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> Void) {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
+            DispatchQueue.main.async {
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
 
-            guard let response = response as? HTTPURLResponse,
-                  (200..<300).contains(response.statusCode) else {
-                completion(.failure(NetworkError.invalidResponse))
-                return
-            }
+                guard let response = response as? HTTPURLResponse,
+                      (200..<300).contains(response.statusCode) else {
+                    completion(.failure(NetworkError.invalidResponse))
+                    return
+                }
 
-            guard let data = data else {
-                completion(.failure(NetworkError.noDataFound))
-                return
-            }
-            
-            do {
-                let decoded = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(decoded))
-            } catch {
-                completion(.failure(error))
+                guard let data = data else {
+                    completion(.failure(NetworkError.noDataFound))
+                    return
+                }
+
+                do {
+                    let decoded = try JSONDecoder().decode(T.self, from: data)
+                    completion(.success(decoded))
+                } catch {
+                    completion(.failure(error))
+                }
             }
         }
         task.resume()

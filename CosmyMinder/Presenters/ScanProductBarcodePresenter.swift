@@ -19,14 +19,11 @@ final class ScanProductBarcodePresenter: ScanProductBarcodePresenterProtocol {
         beautyService.scanProduct(barcode: barcode) { (result: Result<BeautyProduct, Error>) in
             switch result {
             case .success(let product):
-                DispatchQueue.main.async {
-                    self.view?.navigateToProductDetails(for: product)
-                }
+                let info = self.beautyService.productToCosmeticInfo(product: product)
+                self.view?.navigateToProductDetails(with: info)
             case .failure(let error):
-                DispatchQueue.main.async {
-                    print("Error: \(error)")
-                    self.view?.showAlert()
-                }
+                print("Error: \(error)")
+                self.view?.showAlert()
             }
         }
     }

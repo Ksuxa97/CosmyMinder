@@ -27,6 +27,10 @@ class DataManager: DataManagerProtocol {
     }
 
     func deleteCosmeticItem(with id: UUID) {
-
+        var savedCosmeticList = getCosmeticsList()
+        savedCosmeticList.removeAll { $0.id == id }
+        if let encodedData = try? JSONEncoder().encode(savedCosmeticList) {
+            userDefaults.set(encodedData, forKey: cosmeticsListKey)
+        }
     }
 }

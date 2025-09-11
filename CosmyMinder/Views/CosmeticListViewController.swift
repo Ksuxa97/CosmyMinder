@@ -44,6 +44,7 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CosmeticItemCell.self, forCellReuseIdentifier: CosmeticItemCell.identifier)
+        tableView.isUserInteractionEnabled = true
 
         view.addSubview(tableView)
 
@@ -68,12 +69,14 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
 
 // MARK: Navigation to other views
 extension CosmeticListViewController {
-    
-    func navigateToEditCosmeticItemScreen(for item: UserCosmeticRecord) {
-        let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
-        let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
-        editCosmeticItemPresenter.view = editCosmeticItemVC
-        navigationController?.pushViewController(editCosmeticItemVC, animated: true)
+
+    func navigateToProductDetails(with info: CosmeticInfo?) {
+        let dataManager = DataManager()
+        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager, info: info)
+        let productDetailsVC = AddNewProductManuallyViewController(presenter: productDetailsPresenter)
+        productDetailsPresenter.view = productDetailsVC
+
+        navigationController?.pushViewController(productDetailsVC, animated: true)
     }
 
     func showAlert() {
@@ -134,6 +137,20 @@ extension CosmeticListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         presenter.didSelectCosmeticItem(at: indexPath.row)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] _, _, completion in
+            guard let self else { return }
+            self.presenter.deleteUserRecord(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            completion(true)
+        }
+
+        deleteAction.backgroundColor = .systemRed
+        deleteAction.image = UIImage(systemName: "trash")
+
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 

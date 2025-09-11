@@ -10,9 +10,10 @@ protocol CosmeticListPresenterProtocol {
     func updateCosmeticList() -> Void
     func getCosmeticItem(at index: Int) -> UserCosmeticRecord?
     func didSelectCosmeticItem(at index: Int)
+    func deleteUserRecord(at index: Int)
 }
 
 protocol CosmeticListViewProtocol: AnyObject {
-    func navigateToEditCosmeticItemScreen(for item: UserCosmeticRecord)
+    func navigateToProductDetails(with info: CosmeticInfo?)
     func showAlert()
 }

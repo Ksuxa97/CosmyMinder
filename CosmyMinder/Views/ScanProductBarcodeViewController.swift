@@ -10,8 +10,6 @@ import AVFoundation
 
 final class ScanProductBarcodeViewController: UIViewController, ScanProductBarcodeViewControllerProtocol {
 
-    //weak var delegate: ScanProductBarcodeDelegate?
-
     private let presenter: ScanProductBarcodePresenterProtocol
     private lazy var captureSession = AVCaptureSession()
     private lazy var previewLayer: AVCaptureVideoPreviewLayer = {
@@ -44,29 +42,33 @@ final class ScanProductBarcodeViewController: UIViewController, ScanProductBarco
         setupCamera()
     }
 
+//    func showAlert() {
+//        let alert = UIAlertController.barcodeNotFound(cancelAction: navigateToCosmeticListView, addAction: navigateToAddNewProductManually)
+//        present(alert, animated: true)
+//    }
+
     func showAlert() {
-        let alert = UIAlertController()
-        alert.showAlert(.barcodeNotFound(cancelAction: navigateToCosmeticListView, addAction: navigateToAddNewProductManually))
+        let alert = UIAlertController.barcodeNotFound { action in
+            guard let navigationController = self.navigationController else { return }
+            navigationController.popToRootViewController(animated: true)
+        } addAction: { action in
+            self.navigateToProductDetails(with: nil)
+        }
+        present(alert, animated: true)
     }
 
-    func navigateToProductDetails(for product: BeautyProduct?) {
+
+    func navigateToProductDetails(with info: CosmeticInfo?) {
         let dataManager = DataManager()
-        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager)
+        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager, info: info)
         let productDetailsVC = AddNewProductManuallyViewController(presenter: productDetailsPresenter)
         productDetailsPresenter.view = productDetailsVC
 
-        let imageURL = URL(string: product?.imageURL ?? "") ?? nil
-
-        productDetailsVC.fieldsPrefill(
-            imageURL,
-            product?.name ?? "",
-            product?.brand ?? "", "", "",
-            product?.expiryDate ?? "")
         navigationController?.pushViewController(productDetailsVC, animated: true)
     }
 
     private func navigateToAddNewProductManually(_ action: UIAlertAction) -> Void {
-        navigateToProductDetails(for: nil)
+        navigateToProductDetails(with: nil)
     }
 
     private func navigateToCosmeticListView(_ action: UIAlertAction) -> Void {
