@@ -8,8 +8,8 @@
 import Foundation
 
 protocol AddNewProductManuallyPresenterProtocol {
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, imageSource: ImageSource)
-    func validateInput(name: String?, productionDate: String?, expiryDate: String?)
+    func addNewProduct(inputData: CosmeticInfo)
+    func validateInput(inputData: CosmeticInfo)
     func didLoad()
 }
 

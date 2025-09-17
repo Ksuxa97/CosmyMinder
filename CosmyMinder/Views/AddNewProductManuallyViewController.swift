@@ -82,14 +82,10 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
 
         productNameInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
+        productBrandInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         productionDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
+        openDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         expiryDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
-
-        print("""
-        scrollView info:
-        - Frame: \(scrollView.frame)
-        - Bounds: \(scrollView.bounds)
-        """)
     }
 
     func updateSaveButtonState(isEnabled: Bool) {
@@ -97,9 +93,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     }
 
     func prefillFields(with info: CosmeticInfo) {
-        if let url = info.imageURL {
-            productImage.setImage(imageURL: url)
-        }
+        productImage.setImage(imageSource: info.image)
         productNameInput.setTextFieldValue(info.name)
         productBrandInput.setTextFieldValue(info.brand)
         productionDateInput.setTextFieldValue(info.productionDate)
@@ -108,25 +102,16 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     }
 
     @objc private func saveButtonPressed() {
-        let name = productNameInput.getTextFieldValue()
-        let brand = productBrandInput.getTextFieldValue()
-        let productionDate = productionDateInput.getTextFieldValue()
-        let openDate = openDateInput.getTextFieldValue()
-        let expiryDate = expiryDateInput.getTextFieldValue()
-        let image = productImage.getImage()
-
-        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, imageSource: image)
+        let fieldsData = getFieldsData()
+        presenter.addNewProduct(inputData: fieldsData)
 
         guard let navigationController = navigationController else { return }
         navigationController.popToRootViewController(animated: true)
     }
 
     @objc private func textFieldDidChange() {
-        let name = productNameInput.getTextFieldValue()
-        let productionDate = productionDateInput.getTextFieldValue()
-        let expiryDate = expiryDateInput.getTextFieldValue()
-
-        presenter.validateInput(name: name, productionDate: productionDate, expiryDate: expiryDate)
+        let fieldsData = getFieldsData()
+        presenter.validateInput(inputData: fieldsData)
     }
 
     private func setupUI() {
@@ -166,12 +151,23 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         productStackView.addArrangedSubview(productionDateInput)
         productStackView.addArrangedSubview(openDateInput)
         productStackView.addArrangedSubview(expiryDateInput)
+    }
 
-        print("""
-        scrollView info:
-        - Frame: \(scrollView.frame)
-        - Bounds: \(scrollView.bounds)
-        """)
+    private func getFieldsData() -> CosmeticInfo {
+        let name = productNameInput.getTextFieldValue()
+        let brand = productBrandInput.getTextFieldValue()
+        let productionDate = productionDateInput.getTextFieldValue()
+        let openDate = openDateInput.getTextFieldValue()
+        let expiryDate = expiryDateInput.getTextFieldValue()
+        let image = productImage.getImage()
+
+        return CosmeticInfo(
+            name: name,
+            brand: brand,
+            productionDate: productionDate,
+            openDate: openDate,
+            expiryDate: expiryDate,
+            image: image)
     }
 }
 
@@ -210,20 +206,8 @@ extension AddNewProductManuallyViewController: UITextFieldDelegate {
             print("No superview - this view is not in hierarchy")
         }
 
-        print("""
-        scrollView info:
-        - Frame: \(scrollView.frame)
-        - Bounds: \(scrollView.bounds)
-        """)
-
         let textFieldRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
         scrollView.scrollRectToVisible(textFieldRect, animated: true)
-
-        print("""
-        scrollView info:
-        - Frame: \(scrollView.frame)
-        - Bounds: \(scrollView.bounds)
-        """)
     }
 
     @objc private func keyboardWillHide(_ notification: Notification) {

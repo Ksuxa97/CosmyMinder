@@ -7,9 +7,20 @@
 
 import UIKit
 
-enum ImageSource {
-    case image(UIImage?)
+enum ImageSource: Equatable {
+    case imageData(Data?)
     case url(URL)
+
+    static func == (lhs: ImageSource, rhs: ImageSource) -> Bool {
+        switch (lhs, rhs) {
+        case let (.imageData(data1), .imageData(data2)):
+            return data1 == data2
+        case let (.url(url1), .url(url2)):
+            return url1 == url2
+        default:
+            return false
+        }
+    }
 }
 
 final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -42,12 +53,16 @@ final class ImagePickerView: UIView, UIImagePickerControllerDelegate, UINavigati
         if let url = imageView.getImageURL() {
             return .url(url)
         } else {
-            return .image(imageView.image)
+            return .imageData(imageView.image?.jpegData(compressionQuality: 0.5))
         }
     }
 
-    func setImage(imageURL: URL?) {
-        if let url = imageURL {
+    func setImage(imageSource: ImageSource) {
+        switch imageSource {
+        case .imageData(let data):
+            guard let data = data else { return }
+            imageView.image = UIImage(data: data)
+        case .url(let url):
             imageView.laodImage(url: url)
         }
     }

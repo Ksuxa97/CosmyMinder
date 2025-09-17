@@ -21,31 +21,31 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
         self.prefilledData = info
     }
 
-    func addNewProduct(name: String, brand: String, productionDate: String, openDate: String, expiryDate: String, imageSource: ImageSource) {
+    func addNewProduct(inputData: CosmeticInfo) {
 
         let id = UUID()
-        guard let productionDate = DateFormatter.ddMMYY.date(from: productionDate) else {
+        guard let productionDate = DateFormatter.ddMMYY.date(from: inputData.productionDate) else {
             print("Invalid production date")
             return
         }
-        let openDate = DateFormatter.ddMMYY.date(from: openDate) ?? nil
-        guard let expiryDate = DateFormatter.ddMMYY.date(from: expiryDate) else {
+        let openDate = DateFormatter.ddMMYY.date(from: inputData.openDate) ?? nil
+        guard let expiryDate = DateFormatter.ddMMYY.date(from: inputData.expiryDate) else {
             print("Invalid expiry date")
             return
         }
         var imageURL: URL? = nil
         var imageData: Data? = nil
-        switch imageSource {
+        switch inputData.image {
             case .url(let url):
                 imageURL = url
-            case .image(let image):
-                imageData = image?.jpegData(compressionQuality: 0.5)
+            case .imageData(let image):
+                imageData = image
         }
 
         let cosmeticItem = UserCosmeticRecord(
             id: id,
-            name: name,
-            brand: brand,
+            name: inputData.name,
+            brand: inputData.brand,
             productionDate: productionDate,
             openDate: openDate,
             expiryDate: expiryDate,
@@ -56,11 +56,22 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
         self.delegate?.newProductDidAdded()
     }
 
-    func validateInput(name: String?, productionDate: String?, expiryDate: String?) {
-        let isValid = [name, productionDate, expiryDate]
+    func validateInput(inputData: CosmeticInfo) {
+        let isInputDataChanged = isInputDataChanged()
+
+        let isValid = [inputData.name, inputData.productionDate, inputData.expiryDate]
             .map { $0?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "" }
             .allSatisfy { !$0.isEmpty }
-        view?.updateSaveButtonState(isEnabled: isValid)
+        view?.updateSaveButtonState(isEnabled: isValid && isInputDataChanged)
+
+        func isInputDataChanged() -> Bool {
+            if prefilledData?.name != inputData.name ||
+                prefilledData?.brand != inputData.brand ||
+                prefilledData?.productionDate != inputData.productionDate ||
+                prefilledData?.openDate != inputData.openDate ||
+                prefilledData?.expiryDate != inputData.expiryDate { return true }
+            else { return false }
+        }
     }
 
     func didLoad() {

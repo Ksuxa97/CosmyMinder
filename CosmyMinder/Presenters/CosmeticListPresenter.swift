@@ -38,7 +38,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
             view?.showAlert()
             return
         }
-        let info = recordToCosmeticInfo(item: cosmeticItems[index])
+        let info = userRecordToCosmeticInfo(item: cosmeticItems[index])
         view?.navigateToProductDetails(with: info)
     }
 
@@ -47,20 +47,26 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
         cosmeticItems.remove(at: index)
     }
 
-    private func recordToCosmeticInfo(item: UserCosmeticRecord) -> CosmeticInfo {
+    private func userRecordToCosmeticInfo(item: UserCosmeticRecord) -> CosmeticInfo {
         var openDateString: String = ""
         if let openDate = item.openDate {
-            openDateString = DateFormatter().string(from: openDate)
+            openDateString = DateFormatter.ddMMYY.string(from: openDate)
+        }
+
+        var imageSource: ImageSource = .imageData(nil)
+        if let url = item.imageURL {
+            imageSource = .url(url)
+        } else if let image = item.imageData {
+            imageSource = .imageData(image)
         }
 
         return CosmeticInfo(
             name: item.name,
             brand: item.brand ?? "",
-            productionDate: DateFormatter().string(from: item.productionDate),
+            productionDate: DateFormatter.ddMMYY.string(from: item.productionDate),
             openDate: openDateString,
-            expiryDate: DateFormatter().string(from: item.expiryDate),
-            imageURL: item.imageURL,
-            imageData: item.imageData
+            expiryDate: DateFormatter.ddMMYY.string(from: item.expiryDate),
+            image: imageSource
         )
     }
 }

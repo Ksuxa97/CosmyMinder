@@ -48,14 +48,20 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
     }
 
     func productToCosmeticInfo(product: BeautyProduct) -> CosmeticInfo {
+
+        var imageSource: ImageSource = .imageData(nil)
+        if let urlString = product.imageURL, let url = URL(string: urlString) {
+            imageSource = .url(url)
+        } else {
+            imageSource = .imageData(nil)
+        }
         return CosmeticInfo(
             name: product.name ?? product.genericName ?? "",
             brand: product.brand ?? "",
             productionDate: "",
             openDate: "",
             expiryDate: product.expiryDate ?? "",
-            imageURL: URL(string: product.imageURL ?? ""),
-            imageData: nil
+            image: imageSource
         )
     }
 }
