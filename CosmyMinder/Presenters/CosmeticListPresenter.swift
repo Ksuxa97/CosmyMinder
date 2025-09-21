@@ -61,6 +61,7 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
         }
 
         return CosmeticInfo(
+            recordID: item.id,
             name: item.name,
             brand: item.brand ?? "",
             productionDate: DateFormatter.ddMMYY.string(from: item.productionDate),

@@ -8,6 +8,7 @@
 import Foundation
 
 struct CosmeticInfo: Equatable {
+    let recordID: UUID?
     let name: String
     let brand: String
     let productionDate: String

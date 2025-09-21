@@ -23,7 +23,7 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
 
     func addNewProduct(inputData: CosmeticInfo) {
 
-        let id = UUID()
+        let id = prefilledData?.recordID ?? UUID()
         guard let productionDate = DateFormatter.ddMMYY.date(from: inputData.productionDate) else {
             print("Invalid production date")
             return
@@ -52,7 +52,13 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
             imageURL: imageURL,
             imageData: imageData
         )
-        self.dataManager.addCosmeticItem(cosmeticItem)
+
+        if prefilledData?.recordID != nil {
+            self.dataManager.editCosmeticItem(cosmeticItem)
+        } else {
+            self.dataManager.addCosmeticItem(cosmeticItem)
+        }
+
         self.delegate?.newProductDidAdded()
     }
 

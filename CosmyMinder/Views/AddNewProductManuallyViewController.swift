@@ -162,6 +162,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         let image = productImage.getImage()
 
         return CosmeticInfo(
+            recordID: nil,
             name: name,
             brand: brand,
             productionDate: productionDate,

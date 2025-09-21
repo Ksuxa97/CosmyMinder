@@ -56,6 +56,7 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
             imageSource = .imageData(nil)
         }
         return CosmeticInfo(
+            recordID: nil,
             name: product.name ?? product.genericName ?? "",
             brand: product.brand ?? "",
             productionDate: "",

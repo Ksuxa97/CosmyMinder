@@ -18,19 +18,27 @@ class DataManager: DataManagerProtocol {
         return savedCosmeticsList
     }
 
-    func addCosmeticItem(_ item: UserCosmeticRecord) -> Void {
+    func addCosmeticItem(_ item: UserCosmeticRecord) {
         var savedCosmeticList = getCosmeticsList()
         savedCosmeticList.append(item)
-        if let encodedData = try? JSONEncoder().encode(savedCosmeticList) {
-            userDefaults.set(encodedData, forKey: cosmeticsListKey)
-        }
+        guard let encodedData = try? JSONEncoder().encode(savedCosmeticList) else {return}
+        userDefaults.set(encodedData, forKey: cosmeticsListKey)
+    }
+
+    func editCosmeticItem(_ item: UserCosmeticRecord) {
+        var savedCosmeticList = getCosmeticsList()
+
+        guard let index = savedCosmeticList.firstIndex(where: { $0.id == item.id }) else { return }
+        savedCosmeticList[index] = item
+
+        guard let encodedData = try? JSONEncoder().encode(savedCosmeticList) else {return}
+        userDefaults.set(encodedData, forKey: cosmeticsListKey)
     }
 
     func deleteCosmeticItem(with id: UUID) {
         var savedCosmeticList = getCosmeticsList()
         savedCosmeticList.removeAll { $0.id == id }
-        if let encodedData = try? JSONEncoder().encode(savedCosmeticList) {
-            userDefaults.set(encodedData, forKey: cosmeticsListKey)
-        }
+        guard let encodedData = try? JSONEncoder().encode(savedCosmeticList) else {return}
+        userDefaults.set(encodedData, forKey: cosmeticsListKey)
     }
 }
