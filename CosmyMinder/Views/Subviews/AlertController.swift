@@ -9,11 +9,6 @@ import UIKit
 
 extension UIAlertController {
 
-    enum AlertTypes {
-        case failure
-        case barcodeNotFound(cancelAction: (UIAlertAction) -> Void, addAction: (UIAlertAction) -> Void)
-    }
-
     static func failure(_ message: String) -> UIAlertController {
         let alert = UIAlertController(
             title: "Ошибка",

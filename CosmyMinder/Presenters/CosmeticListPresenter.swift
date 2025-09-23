@@ -38,35 +38,35 @@ final class CosmeticListPresenter: CosmeticListPresenterProtocol {
             view?.showAlert()
             return
         }
-        let info = userRecordToCosmeticInfo(item: cosmeticItems[index])
+        let info = сosmeticInfo(from: cosmeticItems[index])
         view?.navigateToProductDetails(with: info)
     }
 
-    func deleteUserRecord(at index: Int) {
+    func deleteCosmeticRecord(at index: Int) {
         dataManager.deleteCosmeticItem(with: cosmeticItems[index].id)
         cosmeticItems.remove(at: index)
     }
 
-    private func userRecordToCosmeticInfo(item: UserCosmeticRecord) -> CosmeticInfo {
+    private func сosmeticInfo(from cosmeticRecord: UserCosmeticRecord) -> CosmeticInfo {
         var openDateString: String = ""
-        if let openDate = item.openDate {
+        if let openDate = cosmeticRecord.openDate {
             openDateString = DateFormatter.ddMMYY.string(from: openDate)
         }
 
         var imageSource: ImageSource = .imageData(nil)
-        if let url = item.imageURL {
+        if let url = cosmeticRecord.imageURL {
             imageSource = .url(url)
-        } else if let image = item.imageData {
+        } else if let image = cosmeticRecord.imageData {
             imageSource = .imageData(image)
         }
 
         return CosmeticInfo(
-            recordID: item.id,
-            name: item.name,
-            brand: item.brand ?? "",
-            productionDate: DateFormatter.ddMMYY.string(from: item.productionDate),
+            id: cosmeticRecord.id,
+            name: cosmeticRecord.name,
+            brand: cosmeticRecord.brand ?? "",
+            productionDate: DateFormatter.ddMMYY.string(from: cosmeticRecord.productionDate),
             openDate: openDateString,
-            expiryDate: DateFormatter.ddMMYY.string(from: item.expiryDate),
+            expiryDate: DateFormatter.ddMMYY.string(from: cosmeticRecord.expiryDate),
             image: imageSource
         )
     }

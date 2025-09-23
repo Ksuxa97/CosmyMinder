@@ -136,8 +136,9 @@ extension CosmeticListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] _, _, completion in
             guard let self else { return }
-            self.presenter.deleteUserRecord(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.presenter.deleteCosmeticRecord(at: indexPath.row)
+            self.presenter.updateCosmeticList()
+            tableView.reloadData()
             completion(true)
         }
 

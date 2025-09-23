@@ -42,21 +42,17 @@ final class ScanProductBarcodeViewController: UIViewController, ScanProductBarco
         setupCamera()
     }
 
-//    func showAlert() {
-//        let alert = UIAlertController.barcodeNotFound(cancelAction: navigateToCosmeticListView, addAction: navigateToAddNewProductManually)
-//        present(alert, animated: true)
-//    }
-
     func showAlert() {
-        let alert = UIAlertController.barcodeNotFound { action in
+        let alert = UIAlertController.barcodeNotFound(
+            cancelAction: { action in
             guard let navigationController = self.navigationController else { return }
             navigationController.popToRootViewController(animated: true)
-        } addAction: { action in
+        },
+            addAction: { action in
             self.navigateToProductDetails(with: nil)
-        }
+        })
         present(alert, animated: true)
     }
-
 
     func navigateToProductDetails(with info: CosmeticInfo?) {
         let dataManager = DataManager()

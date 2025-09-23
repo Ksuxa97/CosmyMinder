@@ -16,10 +16,11 @@ final class ScanProductBarcodePresenter: ScanProductBarcodePresenterProtocol {
     }
 
     func searchProductByBarcode(_ barcode: String) {
-        beautyService.scanProduct(barcode: barcode) { (result: Result<BeautyProduct, Error>) in
+        beautyService.searchProduct(by: barcode) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let product):
-                let info = self.beautyService.productToCosmeticInfo(product: product)
+                let info = self.beautyService.cosmeticInfo(from: product)
                 self.view?.navigateToProductDetails(with: info)
             case .failure(let error):
                 print("Error: \(error)")

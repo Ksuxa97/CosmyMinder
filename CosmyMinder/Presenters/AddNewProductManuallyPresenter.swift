@@ -21,14 +21,14 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
         self.prefilledData = info
     }
 
-    func addNewProduct(inputData: CosmeticInfo) {
+    func saveProduct(inputData: CosmeticInfo) {
 
-        let id = prefilledData?.recordID ?? UUID()
+        let id = prefilledData?.id ?? UUID()
         guard let productionDate = DateFormatter.ddMMYY.date(from: inputData.productionDate) else {
             print("Invalid production date")
             return
         }
-        let openDate = DateFormatter.ddMMYY.date(from: inputData.openDate) ?? nil
+        let openDate = DateFormatter.ddMMYY.date(from: inputData.openDate)
         guard let expiryDate = DateFormatter.ddMMYY.date(from: inputData.expiryDate) else {
             print("Invalid expiry date")
             return
@@ -53,7 +53,7 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
             imageData: imageData
         )
 
-        if prefilledData?.recordID != nil {
+        if prefilledData?.id != nil {
             self.dataManager.editCosmeticItem(cosmeticItem)
         } else {
             self.dataManager.addCosmeticItem(cosmeticItem)
@@ -63,21 +63,17 @@ final class AddNewProductManuallyPresenter: AddNewProductManuallyPresenterProtoc
     }
 
     func validateInput(inputData: CosmeticInfo) {
-        let isInputDataChanged = isInputDataChanged()
+        let isInputDataChanged =
+            prefilledData?.name != inputData.name ||
+            prefilledData?.brand != inputData.brand ||
+            prefilledData?.productionDate != inputData.productionDate ||
+            prefilledData?.openDate != inputData.openDate ||
+            prefilledData?.expiryDate != inputData.expiryDate
 
         let isValid = [inputData.name, inputData.productionDate, inputData.expiryDate]
             .map { $0?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "" }
             .allSatisfy { !$0.isEmpty }
         view?.updateSaveButtonState(isEnabled: isValid && isInputDataChanged)
-
-        func isInputDataChanged() -> Bool {
-            if prefilledData?.name != inputData.name ||
-                prefilledData?.brand != inputData.brand ||
-                prefilledData?.productionDate != inputData.productionDate ||
-                prefilledData?.openDate != inputData.openDate ||
-                prefilledData?.expiryDate != inputData.expiryDate { return true }
-            else { return false }
-        }
     }
 
     func didLoad() {

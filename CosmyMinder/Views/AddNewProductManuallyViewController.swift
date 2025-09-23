@@ -103,7 +103,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     @objc private func saveButtonPressed() {
         let fieldsData = getFieldsData()
-        presenter.addNewProduct(inputData: fieldsData)
+        presenter.saveProduct(inputData: fieldsData)
 
         guard let navigationController = navigationController else { return }
         navigationController.popToRootViewController(animated: true)
@@ -162,7 +162,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         let image = productImage.getImage()
 
         return CosmeticInfo(
-            recordID: nil,
+            id: nil,
             name: name,
             brand: brand,
             productionDate: productionDate,
@@ -194,18 +194,6 @@ extension AddNewProductManuallyViewController: UITextFieldDelegate {
         let activeFieldHeight = keyboardFrame.height - activeTextField.frame.maxY
         scrollView.contentInset.bottom = activeFieldHeight
         scrollView.verticalScrollIndicatorInsets.bottom = activeFieldHeight
-
-        if let superview = activeTextField.superview {
-            print("""
-            Superview info:
-            - Address: \(Unmanaged.passUnretained(superview).toOpaque())
-            - Class: \(type(of: superview))
-            - Frame: \(superview.frame)
-            - Bounds: \(superview.bounds)
-            """)
-        } else {
-            print("No superview - this view is not in hierarchy")
-        }
 
         let textFieldRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
         scrollView.scrollRectToVisible(textFieldRect, animated: true)

@@ -45,7 +45,7 @@ final class AddNewProductByQueryPresenter: AddNewProductByQueryPresenterProtocol
             view?.showAlert()
             return
         }
-        let info = beautyService.productToCosmeticInfo(product: productList[index])
+        let info = beautyService.cosmeticInfo(from: productList[index])
         view?.navigateToProductDetails(with: info)
     }
 }

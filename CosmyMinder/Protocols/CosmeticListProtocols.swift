@@ -10,7 +10,7 @@ protocol CosmeticListPresenterProtocol {
     func updateCosmeticList() -> Void
     func getCosmeticItem(at index: Int) -> UserCosmeticRecord?
     func didSelectCosmeticItem(at index: Int)
-    func deleteUserRecord(at index: Int)
+    func deleteCosmeticRecord(at index: Int)
 }
 
 protocol CosmeticListViewProtocol: AnyObject {

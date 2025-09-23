@@ -31,9 +31,9 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
         }
     }
 
-    func scanProduct(barcode: String, completion: @escaping (Result<BeautyProduct, Error>) -> Void) {
+    func searchProduct(by barcode: String, completion: @escaping (Result<BeautyProduct, Error>) -> Void) {
         guard let url = Endpoint.barcode(code: barcode).url else {
-            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+            completion(.failure(NetworkError.invalidURL))
             return
         }
         
@@ -47,8 +47,7 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
         }
     }
 
-    func productToCosmeticInfo(product: BeautyProduct) -> CosmeticInfo {
-
+    func cosmeticInfo(from product: BeautyProduct) -> CosmeticInfo {
         var imageSource: ImageSource = .imageData(nil)
         if let urlString = product.imageURL, let url = URL(string: urlString) {
             imageSource = .url(url)
@@ -56,7 +55,7 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
             imageSource = .imageData(nil)
         }
         return CosmeticInfo(
-            recordID: nil,
+            id: nil,
             name: product.name ?? product.genericName ?? "",
             brand: product.brand ?? "",
             productionDate: "",
