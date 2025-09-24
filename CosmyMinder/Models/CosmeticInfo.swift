@@ -7,12 +7,21 @@
 
 import Foundation
 
-struct CosmeticInfo {
+struct CosmeticInfo: Equatable {
+    let id: UUID?
     let name: String
     let brand: String
     let productionDate: String
     let openDate: String
     let expiryDate: String
-    let imageURL: URL?
-    let imageData: Data?
+    let image: ImageSource
+
+    static func == (lhs: CosmeticInfo, rhs: CosmeticInfo) -> Bool {
+        lhs.name == rhs.name
+        && lhs.brand == rhs.brand
+        && lhs.productionDate == rhs.productionDate
+        && lhs.openDate == rhs.openDate
+        && lhs.expiryDate == rhs.expiryDate
+        && lhs.image == rhs.image
+    }
 }

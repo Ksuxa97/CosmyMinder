@@ -21,27 +21,47 @@ final class BeautyFactsService: BeautyFactsServiceProtocol {
             return
         }
 
-        self.networkService.request(url: url) { (result: Result<BeautyProductSearchResponse, Error>) in
-            DispatchQueue.main.async {
-                switch result {
-                    case .success(let response):
-                        completion(.success(response.products))
-                    case .failure(let error):
-                        completion(.failure(error))
-                }
+        networkService.request(url: url) { (result: Result<BeautyProductSearchResponse, Error>) in
+            switch result {
+                case .success(let response):
+                    completion(.success(response.products))
+                case .failure(let error):
+                    completion(.failure(error))
             }
         }
     }
 
-    func productToCosmeticInfo(product: BeautyProduct) -> CosmeticInfo {
+    func searchProduct(by barcode: String, completion: @escaping (Result<BeautyProduct, Error>) -> Void) {
+        guard let url = Endpoint.barcode(code: barcode).url else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        networkService.request(url: url) { (result: Result<BeautyProductBarResponse, Error>) in
+            switch result {
+            case .success(let response):
+                completion(.success(response.product))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    func cosmeticInfo(from product: BeautyProduct) -> CosmeticInfo {
+        var imageSource: ImageSource = .imageData(nil)
+        if let urlString = product.imageURL, let url = URL(string: urlString) {
+            imageSource = .url(url)
+        } else {
+            imageSource = .imageData(nil)
+        }
         return CosmeticInfo(
+            id: nil,
             name: product.name ?? product.genericName ?? "",
             brand: product.brand ?? "",
             productionDate: "",
             openDate: "",
             expiryDate: product.expiryDate ?? "",
-            imageURL: URL(string: product.imageURL ?? ""),
-            imageData: nil
+            image: imageSource
         )
     }
 }

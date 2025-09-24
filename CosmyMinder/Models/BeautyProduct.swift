@@ -9,6 +9,10 @@ struct BeautyProductSearchResponse: Codable {
     let products: [BeautyProduct]
 }
 
+struct BeautyProductBarResponse: Codable {
+    let product: BeautyProduct
+}
+
 struct BeautyProduct: Codable {
     let name: String?
     let genericName: String?

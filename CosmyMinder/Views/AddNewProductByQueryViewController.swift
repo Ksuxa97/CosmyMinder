@@ -45,13 +45,7 @@ final class AddNewProductByQueryViewController: UIViewController, AddNewProductB
     }
 
     func showAlert() -> Void {
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: "Не вышло загрузить данные",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-
+        let alert = UIAlertController.failure("Не вышло загрузить данные")
         present(alert, animated: true)
     }
 

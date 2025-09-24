@@ -44,6 +44,7 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CosmeticItemCell.self, forCellReuseIdentifier: CosmeticItemCell.identifier)
+        tableView.isUserInteractionEnabled = true
 
         view.addSubview(tableView)
 
@@ -68,22 +69,18 @@ final class CosmeticListViewController: UIViewController, CosmeticListViewProtoc
 
 // MARK: Navigation to other views
 extension CosmeticListViewController {
-    
-    func navigateToEditCosmeticItemScreen(for item: UserCosmeticRecord) {
-        let editCosmeticItemPresenter = EditCosmeticItemPresenter(cosmeticItem: item)
-        let editCosmeticItemVC = EditCosmeticItemViewController(presenter: editCosmeticItemPresenter)
-        editCosmeticItemPresenter.view = editCosmeticItemVC
-        navigationController?.pushViewController(editCosmeticItemVC, animated: true)
+
+    func navigateToProductDetails(with info: CosmeticInfo?) {
+        let dataManager = DataManager()
+        let productDetailsPresenter = AddNewProductManuallyPresenter(dataManager: dataManager, info: info)
+        let productDetailsVC = AddNewProductManuallyViewController(presenter: productDetailsPresenter)
+        productDetailsPresenter.view = productDetailsVC
+
+        navigationController?.pushViewController(productDetailsVC, animated: true)
     }
 
     func showAlert() {
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: "Не вышло загрузить данные",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-
+        let alert = UIAlertController.failure("Не вышло загрузить данные")
         present(alert, animated: true)
     }
 
@@ -91,7 +88,7 @@ extension CosmeticListViewController {
         let actionSheet = UIAlertController(title: "Добавить новый продукт", message: nil, preferredStyle: .actionSheet)
 
         actionSheet.addAction(UIAlertAction(title: "По фото", style: .default))
-        actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default))
+        actionSheet.addAction(UIAlertAction(title: "Отсканировать штрихкод", style: .default, handler: showScanProductBarCodeView))
         actionSheet.addAction(UIAlertAction(title: "Поиск по базе", style: .default, handler: showAddNewProductByQueryView))
         actionSheet.addAction(UIAlertAction(title: "Вручную", style: .default, handler: showAddNewProductManuallyView))
         actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel))
@@ -116,6 +113,15 @@ extension CosmeticListViewController {
         addAddNewProductByQueryPresenter.view = addAddNewProductByQueryVC
         navigationController?.pushViewController(addAddNewProductByQueryVC, animated: true)
     }
+
+    private func showScanProductBarCodeView(_ action: UIAlertAction) -> Void {
+        let networkService = NetworkService()
+        let beautyService = BeautyFactsService(networkService: networkService)
+        let scanProductBarCodePresenter = ScanProductBarcodePresenter(service: beautyService)
+        let scanProductBarCodeVC = ScanProductBarcodeViewController(presenter: scanProductBarCodePresenter)
+        scanProductBarCodePresenter.view = scanProductBarCodeVC
+        navigationController?.pushViewController(scanProductBarCodeVC, animated: true)
+    }
 }
 
 // MARK: TableView operations
@@ -125,6 +131,21 @@ extension CosmeticListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         presenter.didSelectCosmeticItem(at: indexPath.row)
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] _, _, completion in
+            guard let self else { return }
+            self.presenter.deleteCosmeticRecord(at: indexPath.row)
+            self.presenter.updateCosmeticList()
+            tableView.reloadData()
+            completion(true)
+        }
+
+        deleteAction.backgroundColor = .systemRed
+        deleteAction.image = UIImage(systemName: "trash")
+
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 

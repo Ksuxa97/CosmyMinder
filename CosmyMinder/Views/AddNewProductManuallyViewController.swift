@@ -11,7 +11,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
 
     private let presenter: AddNewProductManuallyPresenterProtocol
     private weak var activeTextField: UITextField?
-  
+
     private let productStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -82,7 +82,9 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
 
         productNameInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
+        productBrandInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         productionDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
+        openDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
         expiryDateInput.addTargetToTextField(self, action: #selector(textFieldDidChange))
     }
 
@@ -91,9 +93,7 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     }
 
     func prefillFields(with info: CosmeticInfo) {
-        if let url = info.imageURL {
-            productImage.setImage(imageURL: url)
-        }
+        productImage.setImage(imageSource: info.image)
         productNameInput.setTextFieldValue(info.name)
         productBrandInput.setTextFieldValue(info.brand)
         productionDateInput.setTextFieldValue(info.productionDate)
@@ -102,25 +102,16 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
     }
 
     @objc private func saveButtonPressed() {
-        let name = productNameInput.getTextFieldValue()
-        let brand = productBrandInput.getTextFieldValue()
-        let productionDate = productionDateInput.getTextFieldValue()
-        let openDate = openDateInput.getTextFieldValue()
-        let expiryDate = expiryDateInput.getTextFieldValue()
-        let image = productImage.getImage()
-
-        presenter.addNewProduct(name: name, brand: brand, productionDate: productionDate, openDate: openDate, expiryDate: expiryDate, imageSource: image)
+        let fieldsData = getFieldsData()
+        presenter.saveProduct(inputData: fieldsData)
 
         guard let navigationController = navigationController else { return }
         navigationController.popToRootViewController(animated: true)
     }
 
     @objc private func textFieldDidChange() {
-        let name = productNameInput.getTextFieldValue()
-        let productionDate = productionDateInput.getTextFieldValue()
-        let expiryDate = expiryDateInput.getTextFieldValue()
-
-        presenter.validateInput(name: name, productionDate: productionDate, expiryDate: expiryDate)
+        let fieldsData = getFieldsData()
+        presenter.validateInput(inputData: fieldsData)
     }
 
     private func setupUI() {
@@ -160,6 +151,24 @@ final class AddNewProductManuallyViewController: UIViewController, AddNewProduct
         productStackView.addArrangedSubview(productionDateInput)
         productStackView.addArrangedSubview(openDateInput)
         productStackView.addArrangedSubview(expiryDateInput)
+    }
+
+    private func getFieldsData() -> CosmeticInfo {
+        let name = productNameInput.getTextFieldValue()
+        let brand = productBrandInput.getTextFieldValue()
+        let productionDate = productionDateInput.getTextFieldValue()
+        let openDate = openDateInput.getTextFieldValue()
+        let expiryDate = expiryDateInput.getTextFieldValue()
+        let image = productImage.getImage()
+
+        return CosmeticInfo(
+            id: nil,
+            name: name,
+            brand: brand,
+            productionDate: productionDate,
+            openDate: openDate,
+            expiryDate: expiryDate,
+            image: image)
     }
 }
 
